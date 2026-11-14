@@ -12,6 +12,7 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 - `hardware.html`: Grip One with interactive 3D, followed by tactile gloves marked Coming soon.
 - `styles.css`: responsive layouts, visual design, and motion preferences.
 - `app.js`: navigation, reveal effects, and the articulated Three.js CAD viewer.
+- `motion-study.js`: homepage action sequence and synchronized hand, trajectory, and sample visualization.
 - `assets/models/grip-one/`: assembled CAD, matching rendered fallback, original URDF, provenance, and upstream license notices.
 - `assets/vendor/`: locally hosted Three.js 0.170.0 and its MIT license.
 - `CNAME`: existing custom domain; keep this file when updating the site.
@@ -20,7 +21,7 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 The homepage introduces Vernia Labs to physical AI researchers; the Hardware page answers what tools Vernia offers. Main navigation links to Our vision, Hardware, and Data. Data remains a compact coming-soon section, without a catalog or platform claims. Existing `/#grip-one` links redirect to `hardware.html#grip-one`. Product and general inquiries open the owner's email client; no form or waitlist collects data.
 
-The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage's abstract trajectory graphic is decorative, not a dataset or application screenshot.
+The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage uses an original procedural motion study: one action function drives a skeletal hand, a trajectory, and normalized sample rows. This is an explanatory illustration, not recorded experiment data or a product interface. The owner requested clearer physical AI research positioning on 2026-11-15; copy describes the research direction without measured performance claims. Visitors can scrub the same sequence with a pointer or keyboard. Autoplay pauses offscreen, in background tabs, and on request; reduced-motion settings show a still pose. Embedded SVG remains visible if JavaScript or the animation module cannot load.
 
 | Claim | Source / date | Status | Public wording / location |
 | --- | --- | --- | --- |

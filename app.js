@@ -46,6 +46,12 @@ if ('IntersectionObserver' in window && !reducedMotion.matches) {
   document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
 }
 
+if (document.querySelector('#action-study')) {
+  import('./motion-study.js?v=research1').then(({ initMotionStudy }) => {
+    initMotionStudy({ isPaused: () => paused, setPaused: value => { paused = value; syncMotion(); } });
+  }).catch(() => { /* Keep the embedded still artwork if motion cannot load. */ });
+}
+
 // UI remains usable when WebGL is disabled or the local renderer cannot load.
 if (document.querySelector('.model-stage')) Promise.all([
   import('./assets/vendor/three.module.min.js'),
