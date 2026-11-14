@@ -26,3 +26,7 @@ The site deliberately leaves hardware specifications, shipping terms, headquarte
 ## Verification
 
 Browser checks cover desktop and mobile layouts (1440, 1024, 768, 760, 640, 390, and 320 px), WebGL rendering, gripper open/close and reset, keyboard rotation, mobile navigation, contact links, anchor targets, reduced motion, and the static fallback. The renderer pauses offscreen and in background tabs, and caps rendering at approximately 30 fps. The Pause motion control stops automatic model movement.
+
+## Brand assets
+
+The two supplied original logo JPGs are preserved in `assets/brand/`. The first is used in the header with a CSS dark-background treatment. The second appears as the footer lockup and social preview. Inline SVG view boxes trim presentation whitespace without altering the supplied files. The favicon is a simplified vector adaptation of the first mark for small sizes. Violet and lavender accents follow the supplied identity.

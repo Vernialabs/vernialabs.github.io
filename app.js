@@ -32,12 +32,12 @@ if ('IntersectionObserver' in window && !reducedMotion.matches) {
 // UI remains usable when WebGL is disabled or the local renderer cannot load.
 import('./assets/vendor/three.module.min.js').then(THREE => {
   const material = (color, metalness = 0, roughness = .45) => new THREE.MeshStandardMaterial({ color, metalness, roughness });
-  const shell = material('#d9ddce', .35, .32);
-  const edge = material('#9ba592', .65, .25);
-  const dark = material('#222a21', .25, .44);
-  const rubber = material('#111810', 0, .92);
-  const lime = material('#c5f268', .15, .35);
-  const screw = material('#6a7464', .85, .2);
+  const shell = material('#dddbe4', .35, .32);
+  const edge = material('#a3a0b0', .65, .25);
+  const dark = material('#282530', .25, .44);
+  const rubber = material('#15131b', 0, .92);
+  const violet = material('#9a6bff', .15, .35);
+  const screw = material('#716b7d', .85, .2);
   const lens = new THREE.MeshPhysicalMaterial({ color: '#173d48', metalness: .8, roughness: .12, clearcoat: 1 });
 
   function box(w, h, d, mat, x = 0, y = 0, z = 0, radius = .05) {
@@ -53,7 +53,7 @@ import('./assets/vendor/three.module.min.js').then(THREE => {
     const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, depth, 40), mat);
     mesh.rotation.x = Math.PI / 2; mesh.position.set(x, y, z); return mesh;
   }
-  function label(text, width, height, x, y, z, color = '#283121') {
+  function label(text, width, height, x, y, z, color = '#30283b') {
     const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 128;
     const ctx = canvas.getContext('2d'); ctx.fillStyle = color; ctx.font = '500 52px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, 256, 64);
     const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
@@ -66,7 +66,7 @@ import('./assets/vendor/three.module.min.js').then(THREE => {
     group.add(box(.53, 1.32, .08, rubber, 0, -1.03, .345));
     for (let i = 0; i < 12; i++) group.add(box(.46, .025, .025, dark, 0, -1.57 + i * .095, .398, .005));
     group.add(box(.77, .17, .69, dark, 0, -1.84, 0));
-    group.add(box(.72, .065, .67, lime, 0, -.2, 0));
+    group.add(box(.72, .065, .67, violet, 0, -.2, 0));
     group.add(box(1.47, .88, .89, shell, 0, .27, 0, .12));
     group.add(box(1.29, .07, .79, dark, 0, .04, 0));
     group.add(box(1.25, .56, .55, dark, 0, .74, .27, .1));
@@ -78,7 +78,7 @@ import('./assets/vendor/three.module.min.js').then(THREE => {
       group.add(cylinder(.055, .027, material('#061112', .7, .2), x, .75, .735));
       group.add(cylinder(.027, .029, material('#7cabb1', .6, .1), x - .034, .79, .75));
     }
-    group.add(cylinder(.025, .02, lime, 0, .75, .61));
+    group.add(cylinder(.025, .02, violet, 0, .75, .61));
     group.add(box(1.46, .16, .64, edge, 0, .76, -.2));
     group.add(box(1.4, .12, .32, dark, 0, .88, -.25));
     group.add(label('V E R N I A', .72, .18, 0, .35, .451));
@@ -117,9 +117,9 @@ import('./assets/vendor/three.module.min.js').then(THREE => {
     stage.appendChild(renderer.domElement);
     renderer.domElement.setAttribute('aria-hidden', 'true');
     const scene = new THREE.Scene();
-    scene.add(new THREE.HemisphereLight('#f3f5e8', '#5b6550', 2.7));
+    scene.add(new THREE.HemisphereLight('#f2eef9', '#625a70', 2.7));
     const key = new THREE.DirectionalLight('#ffffff', 4); key.position.set(-3, 5, 6); scene.add(key);
-    const fill = new THREE.DirectionalLight('#d8f8a0', 2.2); fill.position.set(4, 2, -3); scene.add(fill);
+    const fill = new THREE.DirectionalLight('#dfd2ff', 2.2); fill.position.set(4, 2, -3); scene.add(fill);
     const rim = new THREE.DirectionalLight('#ffffff', 2.5); rim.position.set(-4, -1, -2); scene.add(rim);
     const camera = new THREE.PerspectiveCamera(34, 1, .1, 40); camera.position.set(0, 0, 8.3);
     const { group, jaws } = createGripper(); scene.add(group);
