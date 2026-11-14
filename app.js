@@ -10,6 +10,17 @@ motionButton.addEventListener('click', () => { paused = !paused; syncMotion(); }
 reducedMotion.addEventListener('change', event => { paused = event.matches; syncMotion(); });
 document.querySelector('#year').textContent = new Date().getFullYear();
 
+const hero = document.querySelector('.hero');
+let heroProgress = 0;
+function updateHeroProgress() {
+  if (paused || reducedMotion.matches) return;
+  heroProgress = Math.max(0, Math.min(1, -hero.getBoundingClientRect().top / hero.offsetHeight));
+  hero.style.setProperty('--headline-shift', `${heroProgress * -45}px`);
+}
+window.addEventListener('scroll', updateHeroProgress, { passive: true });
+window.addEventListener('resize', updateHeroProgress, { passive: true });
+updateHeroProgress();
+
 const menu = document.querySelector('#navigation');
 const menuButton = document.querySelector('.menu-toggle');
 function closeMenu() { menu.classList.remove('open'); menuButton.setAttribute('aria-expanded', 'false'); menuButton.setAttribute('aria-label', 'Open navigation'); }
@@ -106,7 +117,7 @@ Promise.all([
     const stage = document.getElementById(id);
     let renderer;
     try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' }); }
-    catch { if (interactive) document.querySelector('#viewer-hint').textContent = 'STATIC CAD VIEW'; return; }
+    catch { if (interactive) document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; return; }
     renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -122,7 +133,7 @@ Promise.all([
     const rim = new THREE.DirectionalLight('#ffffff', 1.5); rim.position.set(-4, -1, -2); scene.add(rim);
     const camera = new THREE.PerspectiveCamera(34, 1, .1, 40); camera.position.set(0, 0, 8.3);
     const { group, setGrip } = createGripper(); scene.add(group);
-    const initial = { x: .28, y: 2.65, z: interactive ? -.18 : -.3 };
+    const initial = { x: interactive ? .28 : .2, y: interactive ? 2.65 : 2.35, z: interactive ? -.18 : -.12 };
     group.rotation.set(initial.x, initial.y, initial.z);
     const view = { stage, renderer, scene, camera, group, setGrip, closure: 0, initial, interactive, visible: true, closed: false, dragged: false, angle: initial.y, tilt: initial.x, tick: 0, dirty: true };
     function resize() {
@@ -138,7 +149,7 @@ Promise.all([
     renderer.render(scene, camera); stage.classList.add('loaded');
     renderer.domElement.addEventListener('webglcontextlost', event => {
       event.preventDefault(); stage.classList.remove('loaded'); view.visible = false;
-      if (interactive) { document.querySelector('#viewer-hint').textContent = 'STATIC CAD VIEW'; document.querySelector('#grip-toggle').disabled = true; document.querySelector('#view-reset').disabled = true; }
+      if (interactive) { document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; document.querySelector('#grip-toggle').disabled = true; document.querySelector('#view-reset').disabled = true; }
     });
     if (interactive) {
       let pointer = null, x = 0, y = 0;
@@ -167,7 +178,9 @@ Promise.all([
       const gripping = Math.abs(v.closure - target) > .001;
       if (!moving && !gripping && !v.dirty) continue;
       if (moving) v.tick += dt;
-      v.group.rotation.y = v.angle + (v.dragged ? 0 : Math.sin(v.tick * .35) * .3);
+      const scrollTurn = v.interactive ? 0 : heroProgress;
+      v.group.rotation.y = v.angle + (v.dragged ? 0 : Math.sin(v.tick * .35) * .18) + scrollTurn * .8;
+      v.group.rotation.z = v.initial.z + scrollTurn * .22;
       v.group.rotation.x = v.tilt;
       v.group.position.y = v.interactive ? 0 : Math.sin(v.tick * .7) * .07;
       v.closure = THREE.MathUtils.lerp(v.closure, target, reducedMotion.matches || paused ? 1 : .15);
@@ -176,4 +189,4 @@ Promise.all([
     }
   }
   requestAnimationFrame(animate);
-}).catch(() => { document.querySelector('#viewer-hint').textContent = 'STATIC CAD VIEW'; });
+}).catch(() => { document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; });

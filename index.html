@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vernia Labs — Intelligence starts with experience.</title>
+  <title>Vernia Labs — Experience becomes intelligence.</title>
   <meta name="description" content="Vernia Labs is building the data layer for physical AI. Meet Grip One, our handheld UMI gripper for real-world demonstrations.">
   <meta name="theme-color" content="#15131d">
-  <meta property="og:title" content="Vernia Labs — Intelligence starts with experience.">
+  <meta property="og:title" content="Vernia Labs — Experience becomes intelligence.">
   <meta property="og:description" content="The data layer for physical AI. Meet Grip One.">
   <meta property="og:image" content="https://vernia.in/assets/brand/vernia-logo.jpg">
   <meta property="og:image:alt" content="Vernia logo with violet orbital mark">
@@ -14,8 +14,8 @@
   <meta property="og:url" content="https://vernia.in/">
   <link rel="canonical" href="https://vernia.in/">
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=metal1">
-  <script type="module" src="app.js?v=metal1"></script>
+  <link rel="stylesheet" href="styles.css?v=experience1">
+  <script type="module" src="app.js?v=experience1"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -27,21 +27,23 @@
   </header>
   <main id="main">
     <section class="hero" id="home" aria-labelledby="hero-title">
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-content">
-        <p class="eyebrow"><span class="status-dot"></span> THE DATA LAYER FOR PHYSICAL AI</p>
-        <h1 id="hero-title">Intelligence<br>starts with<br><span>experience.</span></h1>
-        <p class="hero-description">The physical world is the next frontier.<br>We’re building the tools to learn from it.</p>
-        <a class="button button-accent" href="#grip-one">Meet Grip One <span aria-hidden="true">↗</span></a>
+      <p class="hero-eyebrow">VERNIA LABS <span aria-hidden="true">/</span> THE DATA LAYER FOR PHYSICAL AI</p>
+      <h1 id="hero-title"><span class="hero-word">Experience</span><span class="hero-line">becomes <em>intelligence.</em></span></h1>
+      <div class="experience-field" aria-hidden="true">
+        <svg viewBox="0 0 1440 700" preserveAspectRatio="none"><defs><linearGradient id="trail" x1="0" x2="1"><stop stop-color="#9d7be6" stop-opacity="0"/><stop offset=".35" stop-color="#bfa6ff" stop-opacity=".5"/><stop offset=".7" stop-color="#bfa6ff" stop-opacity=".4"/><stop offset="1" stop-color="#9d7be6" stop-opacity="0"/></linearGradient></defs><g fill="none" stroke="url(#trail)" stroke-width="1"><path d="M0 520C300 520 340 210 720 310S1110 490 1440 170"/><path d="M0 534C300 534 340 224 720 324S1110 504 1440 184"/><path d="M0 548C300 548 340 238 720 338S1110 518 1440 198"/><path d="M0 562C300 562 340 252 720 352S1110 532 1440 212"/><path d="M0 576C300 576 340 266 720 366S1110 546 1440 226"/></g></svg>
       </div>
-      <div class="hero-visual" aria-label="Animated CAD preview of the Grip One handheld gripper">
-        <div class="orbital-ring ring-one" aria-hidden="true"></div><div class="orbital-ring ring-two" aria-hidden="true"></div>
-        <div class="model-stage" id="hero-model"><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.png" alt="CAD rendering of the handheld gripper with camera housing and articulated fingers"></div>
-        <div class="visual-cross cross-top" aria-hidden="true">+</div><div class="visual-cross cross-bottom" aria-hidden="true">+</div>
-        <div class="visual-tag"><span class="status-dot"></span> GRIP ONE <span class="muted">/ 001</span></div>
-        <p class="visual-caption">HUMAN MOTION. MACHINE POSSIBILITY.</p>
+      <div class="hero-visual" aria-label="Grip One handheld gripper">
+        <div class="model-stage" id="hero-model"><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.png" alt="Metallic Grip One handheld gripper"></div>
       </div>
-      <div class="hero-bottom"><span>REAL WORLD → REAL DATA → PHYSICAL INTELLIGENCE</span><a href="#vision">Explore the next frontier <span aria-hidden="true">↓</span></a><button class="motion-toggle" aria-pressed="false">Pause motion <span aria-hidden="true">Ⅱ</span></button></div>
+      <div class="hero-side hero-side-left"><span class="side-index">01</span><span>HUMAN<br>EXPERIENCE</span></div>
+      <div class="hero-side hero-side-right"><span class="side-index">02</span><span>PHYSICAL<br>INTELLIGENCE</span></div>
+      <div class="hero-product-label"><span class="status-dot"></span> GRIP ONE</div>
+      <div class="hero-lower">
+        <p>We build the tools that turn<br>real-world interaction into robot learning.</p>
+        <a class="button button-accent" href="#grip-one">Discover Grip One <span aria-hidden="true">↗</span></a>
+        <a class="hero-scroll" href="#vision">A world worth learning <span aria-hidden="true">↓</span></a>
+      </div>
+      <button class="motion-toggle" aria-pressed="false">Pause motion <span aria-hidden="true">Ⅱ</span></button>
     </section>
     <section class="vision section-pad" id="vision">
       <div class="section-kicker reveal"><span class="tiny-cross">+</span> 01 / THE VISION</div>
@@ -54,9 +56,8 @@
       <div class="product-layout">
         <div class="product-viewer reveal">
           <div class="viewer-top"><span>VERNIA / GRIP ONE</span><span>EXPLORE IN 3D</span></div>
-          <div class="model-stage" id="product-model" tabindex="0" role="img" aria-label="Interactive Grip One CAD preview. Drag or use left and right arrow keys to rotate."><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.png" alt="Grip One reference CAD rendering"></div>
+          <div class="model-stage" id="product-model" tabindex="0" role="img" aria-label="Interactive Grip One gripper. Drag or use left and right arrow keys to rotate."><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.png" alt="Grip One handheld gripper"></div>
           <div class="viewer-controls"><span id="viewer-hint">DRAG TO EXPLORE <span aria-hidden="true">↔</span></span><div><button id="grip-toggle" aria-pressed="false" disabled>Close grip</button><button id="view-reset" aria-label="Reset 3D view" disabled>↺</button></div></div>
-          <p class="concept-note">Showcase finish.</p>
         </div>
         <div class="product-details reveal"><p class="eyebrow product-eyebrow">A HANDHELD UNIVERSAL MANIPULATION INTERFACE</p><h3>Grip One<span class="accent-period">.</span></h3><p class="product-description">Your hands. The starting point<br>for a robot’s next skill.</p><p class="product-copy">A UMI gripper for capturing real-world manipulation demonstrations. Built around a simple idea: collecting physical AI data should be within reach.</p><dl class="product-specs"><div><dt>Form</dt><dd>Handheld gripper</dd></div><div><dt>Purpose</dt><dd>Demonstration capture</dd></div><div><dt>Focus</dt><dd>Physical AI research</dd></div></dl><a class="button button-dark" href="mailto:ishan.upadhyay.iitb@gmail.com?subject=Grip%20One%20inquiry">Get in touch about Grip One <span aria-hidden="true">↗</span></a><p class="purchase-note">Talk to us about availability, configuration, and shipping.</p></div>
       </div>
