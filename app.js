@@ -47,7 +47,7 @@ if ('IntersectionObserver' in window && !reducedMotion.matches) {
 }
 
 if (document.querySelector('#cinematic-stage')) {
-  import('./cinematic-motion.js?v=cinema1').then(({ initCinematicMotion }) => {
+  import('./cinematic-motion.js?v=gesture2').then(({ initCinematicMotion }) => {
     return initCinematicMotion({ isPaused: () => paused });
   }).catch(() => { document.querySelector('.cinematic-study').classList.add('still-only'); });
 }

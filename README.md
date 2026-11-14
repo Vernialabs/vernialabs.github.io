@@ -12,8 +12,10 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 - `hardware.html`: Grip One with interactive 3D, followed by tactile gloves marked Coming soon.
 - `styles.css`: responsive layouts, visual design, and motion preferences.
 - `app.js`: navigation, reveal effects, and the articulated Three.js CAD viewer.
-- `cinematic-motion.js`: photographic hand treatment, subtle gesture deformation, and live particles.
-- `assets/brand/cinematic-hand.png`: generated transparent artwork; matching WebP posters provide static fallbacks.
+- `cinematic-motion.js`: timed reach, pinch, surface dissolution, and flowing particles.
+- `gesture-rig.js`: anatomical rig setup, joint constraints, and fingertip-contact pose solution.
+- `assets/models/gesture-hand/`: preserved CC0 anatomical hand GLB and source provenance.
+- `assets/brand/cinematic-hand.png`: preserved artwork from the earlier treatment, no longer loaded. Matching WebP posters render the current 3D scene as static fallbacks.
 - `assets/models/grip-one/`: assembled CAD, matching rendered fallback, original URDF, provenance, and upstream license notices.
 - `assets/vendor/`: locally hosted Three.js 0.170.0 and its MIT license.
 - `CNAME`: existing custom domain; keep this file when updating the site.
@@ -22,7 +24,7 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 The homepage introduces Vernia Labs to physical AI researchers; the Hardware page answers what tools Vernia offers. Main navigation links to Our vision, Hardware, and Data. Data remains a compact coming-soon section, without a catalog or platform claims. Existing `/#grip-one` links redirect to `hardware.html#grip-one`. Product and general inquiries open the owner's email client; no form or waitlist collects data.
 
-The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage uses generated photographic hand artwork with restrained 2.5D deformation and a live WebGL particle field. The fingertips subtly flex, the hand drifts in depth, and particles sample the image’s alpha silhouette before flowing into violet ribbons. This is an artistic visualization rather than recorded motion capture. The owner requested this cinematic direction on 2026-11-15. No chart, telemetry, or technical control panel appears in the hero. Motion pauses offscreen, in background tabs, and on request; reduced-motion preferences retain a still frame. Matching desktop and mobile WebP posters remain visible without JavaScript, WebGL, or a successful animation download.
+The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage uses an articulated 3D hand with a 16-second reach, pinch, hold, dissolve, and particle-flow cycle. Real finger-joint rotations drive the skinned mesh; the index and thumb are solved into contact with an approximately 1.3 mm model-space pad gap. A clipped wrist boundary is extended into the forearm. Dissolution progresses from the fingertips toward the arm, and particles are released from the corresponding deformed surface vertices. This is a designed animation, not recorded motion capture. The prior photographic moving-image treatment is no longer rendered. The primary CTA is Explore our hardware and opens `hardware.html`; the secondary action opens the contact email. Motion pauses offscreen, in background tabs, and on request. Reduced-motion preferences show a still transition pose; desktop and mobile WebP posters cover unavailable JavaScript/WebGL.
 
 | Claim | Source / date | Status | Public wording / location |
 | --- | --- | --- | --- |
