@@ -1,0 +1,25 @@
+Grip One website CAD visualization
+
+Source: GRABETTE by Pollen Robotics
+Copyright 2026 Pollen Robotics
+License: Apache License 2.0
+
+Repository: https://github.com/pollen-robotics/grabette
+Pinned revision: 1707d4e2ec542a3038b858fae7e919f95ea27305
+Source directory: packages/grabette/urdf/grabette_right_viewer
+
+The original LICENSE, NOTICE, and THIRD_PARTY_NOTICES.md are distributed in
+this directory, along with source.urdf and provenance.json.
+
+Changes by Vernia Labs:
+- Converted source binary STL files and URDF assembly into an indexed GLB.
+- Retained all 64 visual instances, original geometry, and joint definitions.
+- Added coordinate orientation and automatic framing for web presentation.
+- Applied illustrative white/graphite display finishes to selected components.
+- Added a joint-limited illustrative closure pose, not a physics simulation.
+- Rendered a transparent static poster from the assembled CAD.
+- Compressed the model with gzip for faster browser downloads.
+
+Grip One is Vernia Labs' working product name. The reference CAD and display
+finishes do not certify the final supplied configuration. Attribution to
+Pollen Robotics identifies the source design and does not imply endorsement.

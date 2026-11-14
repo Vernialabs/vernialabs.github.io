@@ -10,8 +10,8 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 - `index.html`: page content, price, contact links, and metadata.
 - `styles.css`: responsive layouts, visual design, and motion preferences.
-- `app.js`: navigation, reveal effects, and procedural Three.js product concepts.
-- `assets/gripper-concept.svg`: original static fallback when WebGL is unavailable.
+- `app.js`: navigation, reveal effects, and the articulated Three.js CAD viewer.
+- `assets/models/grip-one/`: assembled CAD, matching rendered fallback, original URDF, provenance, and upstream license notices.
 - `assets/vendor/`: locally hosted Three.js 0.170.0 and its MIT license.
 - `CNAME`: existing custom domain; keep this file when updating the site.
 
@@ -19,7 +19,11 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 The working product name is **Vernia Grip One**, displayed at **$499 USD**. Contact links use `ishan.upadhyay.iitb@gmail.com` and `+91 83029 52133` (India country code assumed from the supplied ten-digit number).
 
-Both product visualizations are original, illustrative geometry created for this website. They are not production CAD, verified dimensions, or a claim about the supplied hardware's precise components. Replace the procedural model and fallback with final approved CAD/photos when available. Product origin information supplied during the brief is not used as the public product name. No upstream hardware models, images, or software were copied into the site.
+Both product views now use the assembled right-hand viewer CAD from [Pollen Robotics' Grabette repository](https://github.com/pollen-robotics/grabette), pinned to commit `1707d4e2ec542a3038b858fae7e919f95ea27305`. All 64 visual instances from 30 source STL meshes are retained, with the original URDF transforms and joint axes. The model is converted to indexed glTF 2.0, with a 1.8 MB gzip download and a standard GLB fallback for browsers without native decompression. The homepage fetches and parses the model once for both viewers.
+
+Grip One remains Vernia's public product name. This reference CAD does not certify Vernia's final hardware configuration. Display finishes are illustrative; the closure animation moves the two original joints within their source limits and is not a physics simulation or a measured hardware stroke. A matching transparent CAD render replaces the old procedural fallback. The upstream copyright, Apache-2.0 license, and notices are retained under `assets/models/grip-one/`, with a visible source/license link beneath the viewer.
+
+To reproduce the conversion, run `python tools/fetch-gripper-source.py` followed by `python tools/build-gripper-model.py .qa/cad-source`. Both scripts use Python's standard library. Source mesh hashes and the output GLB hash are recorded in `provenance.json`. The bundled Three.js loader and geometry utility retain their MIT license; their module import paths were changed to local vendor files.
 
 The site deliberately leaves hardware specifications, shipping terms, headquarters, testimonials, and other unconfirmed details unspecified. Purchase interest opens an email inquiry; no order or payment is taken.
 

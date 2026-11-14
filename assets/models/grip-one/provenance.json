@@ -1,0 +1,164 @@
+{
+  "repository": "https://github.com/pollen-robotics/grabette",
+  "commit": "1707d4e2ec542a3038b858fae7e919f95ea27305",
+  "source_path": "packages/grabette/urdf/grabette_right_viewer",
+  "license": "Apache-2.0",
+  "changes": [
+    "Indexed binary STL geometry and assembled original URDF transforms into glTF 2.0.",
+    "Retained all visual components, colors, joint axes and limits.",
+    "Added a coordinate-system root for browser presentation."
+  ],
+  "mesh_sha256": [
+    {
+      "file": "std00333_plast_tcb_torx_2_5x8__configuration_copy_of_default.stl",
+      "sha256": "2d35d8586f67f835e0c15343582e1b800550586eccfd5382dc2af47ae4c9f0f5",
+      "triangles": 300
+    },
+    {
+      "file": "raspi_box_r.stl",
+      "sha256": "e4caf049c8bcfae52628c4558f09c11c7a51dcbb30dd55c51ab63484c7842c45",
+      "triangles": 5000
+    },
+    {
+      "file": "cameras_holder_r.stl",
+      "sha256": "0ef29e83017306b8672655d2e1cc91d7b7668a5467db1a03d8eb91fcd5e2c121",
+      "triangles": 5000
+    },
+    {
+      "file": "hmi.stl",
+      "sha256": "9e6af03a859b727a50b3b57e2b00d3f12ef9d074b07c87b2241137278cf76af0",
+      "triangles": 5000
+    },
+    {
+      "file": "hex_socket_head_cap_screw_m4x0_70_x_8__a416dc2a8d778a4ef6150c0739aa89d1.stl",
+      "sha256": "a5ed441af2e2194e5dc1447f880a9b6d6132492faa442435217071ce42999f40",
+      "triangles": 300
+    },
+    {
+      "file": "grip_shell_r.stl",
+      "sha256": "8fb153089ca3cab4c15133af5c90e43664838581095e9bf7e4312e21f31dcd6b",
+      "triangles": 5000
+    },
+    {
+      "file": "part_1__configuration_copy_of_2x5.stl",
+      "sha256": "79d27444238eab25157898adc016e026d42a49afa7aa87f1eafd4036a0675912",
+      "triangles": 300
+    },
+    {
+      "file": "arducam_fisheye.stl",
+      "sha256": "8909d19630c4d4a6d9624444e3b27aae228e3332342f57e47d7553fc56d8435b",
+      "triangles": 2216
+    },
+    {
+      "file": "button.stl",
+      "sha256": "b39d8d9d19fac452f2cbc73e3e55a41b25a3fb36ab7fc695dd1e82c7ca33e792",
+      "triangles": 318
+    },
+    {
+      "file": "grip_r.stl",
+      "sha256": "b1792e8b17d762d29641bf313f7b08f89bb3a5880805dbce91f8ef247f5813cf",
+      "triangles": 5000
+    },
+    {
+      "file": "plain_washer_normal_grade_a_m4__69c500a05bd97449cdbc310c67ad03bb.stl",
+      "sha256": "271cd81b94bba4f5852a1bbd505a584b1e083d37fb0643daa08ec7d65f4eb8a1",
+      "triangles": 300
+    },
+    {
+      "file": "grip_soft_tip_r.stl",
+      "sha256": "668fabfceac2bdc45422957949a1893d51389092f7c471b25dd65841dc98f36a",
+      "triangles": 4892
+    },
+    {
+      "file": "hexalobular_socket_pan_head_screw_m2_5x0_45_x_16__d027c88750a7a6e541e7a7a21ff46b0b.stl",
+      "sha256": "ebae58b69825a8eb740355a558499e29b286019fd58682077a439976b4897b7c",
+      "triangles": 300
+    },
+    {
+      "file": "spacer_h8_5.stl",
+      "sha256": "3a7ec0d46bcf7ddfd6f1e0a05e6e0f449d4d7cc4de6cec2d4d72aefb9485a883",
+      "triangles": 300
+    },
+    {
+      "file": "raspberry_pi_4_model_b.stl",
+      "sha256": "44e9465d54d96c8d13c783d6e2c0e2174d031dc0ad62bd130ab4eeea07dddc25",
+      "triangles": 5000
+    },
+    {
+      "file": "pisugar3plus.stl",
+      "sha256": "e67e2bad26a15078857a256d7f138ef2d8c7cabbebf6ce36eca0d6f9529ff8da",
+      "triangles": 5000
+    },
+    {
+      "file": "pz_pan_head_screw_m2_5x0_45_x_6__1594e833f5b11f4fecc3a0ad0b729b46.stl",
+      "sha256": "3a3dbfde85c2af7c76dd4464616b7443667c2065ee8834184e0345c23a7b4ba0",
+      "triangles": 300
+    },
+    {
+      "file": "611_00020_1.stl",
+      "sha256": "c50b66e70c82a1d43f4dd77ea86fe7fdcb10bd7d80e4db24f0fb679eca9b5fba",
+      "triangles": 592
+    },
+    {
+      "file": "611_00020.stl",
+      "sha256": "c9ac5efde7ea210bdae5fce0875d47606935dc31caf3167d7bb080747f701fd4",
+      "triangles": 592
+    },
+    {
+      "file": "sr_lens_py058.stl",
+      "sha256": "62b89470ad5b9ce269d5640ab420ed8bd3e85418388cc02b1b97de90c822a139",
+      "triangles": 880
+    },
+    {
+      "file": "612_00001_tim_thermal_oak_d_poe.stl",
+      "sha256": "aa663fc81c69f43d5d990f100addaa97295d6f7b0754b0e30bc809896f4303ad",
+      "triangles": 12
+    },
+    {
+      "file": "lens_adhesive.stl",
+      "sha256": "9caf21ba54cfcd78af6f13a97f381dcf97a8c2500fc4512b221e090dc1da0c56",
+      "triangles": 600
+    },
+    {
+      "file": "606_00021_sr_back_cover_py074.stl",
+      "sha256": "6c095e1071230f3fce10875b8d8e354b24647e98ebf2c0ff103e0cbff92bb362",
+      "triangles": 5000
+    },
+    {
+      "file": "606_00020_sr_front_cover.stl",
+      "sha256": "467f7440ed7bb19a6ebbbcdc8f714ffabacdb7d8c28e49117a7ed34a9dacd305",
+      "triangles": 5000
+    },
+    {
+      "file": "proximal_shell_r.stl",
+      "sha256": "2e6f8a9f12465dcb59450e8a6b7449f925d1d7811e381269b6a8a20b257c0f9d",
+      "triangles": 5000
+    },
+    {
+      "file": "proximal_bend_r.stl",
+      "sha256": "0630d8147c646e5c9052cc5e90b8f1627a2d69a9dcbb76d1a522929a80467500",
+      "triangles": 5000
+    },
+    {
+      "file": "pivot_bot_r.stl",
+      "sha256": "f1d1961f514b000535011aae12407794e2086c46ee35469b9e5641ffd191fcbd",
+      "triangles": 5000
+    },
+    {
+      "file": "bushing_6x8x4.stl",
+      "sha256": "20cbab1cb107b26dc0302e8a94b8506bddda7c223b9d5ccaa23d8bb76fa94404",
+      "triangles": 300
+    },
+    {
+      "file": "distal_r.stl",
+      "sha256": "57384a24d3036b4eb4fe1e16677b941c952e8cc88b22085a4f0da8c6a104961a",
+      "triangles": 5000
+    },
+    {
+      "file": "distal_soft_tip.stl",
+      "sha256": "c36c4a5942aa1423847f1ff3cd1352553f09532b097d948f07a23fe624343b13",
+      "triangles": 4294
+    }
+  ],
+  "glb_sha256": "cdfd79c4443e6cdeef3dd2ba8267d3fe81c0ed943c792c4420ad4c5bbe969ea2"
+}
