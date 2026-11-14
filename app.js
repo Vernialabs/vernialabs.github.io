@@ -1,19 +1,25 @@
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+// Preserve previously shared product links after moving the hardware collection.
+if (!document.querySelector('.model-stage') && location.hash === '#grip-one') {
+  location.replace('hardware.html#grip-one');
+}
 let paused = reducedMotion.matches;
 const motionButton = document.querySelector('.motion-toggle');
 function syncMotion() {
+  document.documentElement.classList.toggle('motion-paused', paused);
+  if (!motionButton) return;
   motionButton.setAttribute('aria-pressed', String(paused));
   motionButton.innerHTML = paused ? 'Resume motion <span aria-hidden="true">▷</span>' : 'Pause motion <span aria-hidden="true">Ⅱ</span>';
 }
 syncMotion();
-motionButton.addEventListener('click', () => { paused = !paused; syncMotion(); });
+motionButton?.addEventListener('click', () => { paused = !paused; syncMotion(); });
 reducedMotion.addEventListener('change', event => { paused = event.matches; syncMotion(); });
 document.querySelector('#year').textContent = new Date().getFullYear();
 
 const hero = document.querySelector('.hero');
 let heroProgress = 0;
 function updateHeroProgress() {
-  if (paused || reducedMotion.matches) return;
+  if (!hero || paused || reducedMotion.matches) return;
   heroProgress = Math.max(0, Math.min(1, -hero.getBoundingClientRect().top / hero.offsetHeight));
   hero.style.setProperty('--headline-shift', `${heroProgress * -45}px`);
 }
@@ -41,7 +47,7 @@ if ('IntersectionObserver' in window && !reducedMotion.matches) {
 }
 
 // UI remains usable when WebGL is disabled or the local renderer cannot load.
-Promise.all([
+if (document.querySelector('.model-stage')) Promise.all([
   import('./assets/vendor/three.module.min.js'),
   import('./assets/vendor/GLTFLoader.js'),
 ]).then(async ([THREE, { GLTFLoader }]) => {
@@ -115,6 +121,7 @@ Promise.all([
   const views = [];
   function makeView(id, interactive) {
     const stage = document.getElementById(id);
+    if (!stage) return;
     let renderer;
     try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' }); }
     catch { if (interactive) document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; return; }
@@ -189,4 +196,4 @@ Promise.all([
     }
   }
   requestAnimationFrame(animate);
-}).catch(() => { document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; });
+}).catch(() => { const hint = document.querySelector('#viewer-hint'); if (hint) hint.textContent = 'GRIP ONE'; });
