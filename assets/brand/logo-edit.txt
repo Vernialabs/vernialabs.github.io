@@ -1,0 +1,16 @@
+Tool: built-in Imagegen
+Input: assets/brand/vernia-logo.jpg
+Output: assets/brand/vernia-logo-transparent.png
+Transparent background: true
+
+Prompt:
+Use case: background-extraction. Edit target: supplied Vernia logo JPG.
+Create a faithful transparent PNG cutout of this EXACT logo. Remove only the
+off-white background including surrounding whitespace; keep the black and
+violet orbital V symbol, three coordinate arrows, the white crosshair and
+white orbital highlight that are part of the mark, and the exact text
+'vernia.in' below. Preserve proportions, shapes, lettering, gradients,
+positioning, and the violet dot exactly. No new design, no stylistic
+reinterpretation, no extra outlines or shadows. Center the complete original
+lockup on a genuinely transparent canvas, with a small uniform transparent
+margin, tightly framing the entire logo. This is a production website footer logo.

@@ -15,7 +15,7 @@ Changes by Vernia Labs:
 - Converted source binary STL files and URDF assembly into an indexed GLB.
 - Retained all 64 visual instances, original geometry, and joint definitions.
 - Added coordinate orientation and automatic framing for web presentation.
-- Applied illustrative white/graphite display finishes to selected components.
+- Applied illustrative satin aluminum/graphite metal display finishes to selected components.
 - Added a joint-limited illustrative closure pose, not a physics simulation.
 - Rendered a transparent static poster from the assembled CAD.
 - Compressed the model with gzip for faster browser downloads.

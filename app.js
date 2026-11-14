@@ -46,15 +46,38 @@ Promise.all([
   } else {
     model = await loader.loadAsync('./assets/models/grip-one/grip-one.glb');
   }
-  // Illustrative display finishes, applied to the original CAD geometry.
+  // Showcase-only metal finishes; source geometry and joint definitions stay intact.
   model.scene.traverse(object => {
     if (!object.isMesh) return;
-    object.material = object.material.clone();
     const name = object.name;
-    if (/cameras_holder|raspi_box|sr_front_cover|sr_back_cover/.test(name)) object.material.color.set('#37323e');
-    if (/soft_tip|arducam|lens|611_00020/.test(name)) { object.material.color.set('#15121c'); object.material.roughness = .28; }
-    if (/grip_shell|proximal_shell/.test(name)) object.material.color.set('#e8e4ec');
+    const finish = { color: '#b9c0cb', metalness: .94, roughness: .27, clearcoat: .25, clearcoatRoughness: .25, envMapIntensity: 1.15 };
+    if (/cameras_holder|raspi_box|sr_front_cover|sr_back_cover/.test(name)) Object.assign(finish, { color: '#424550', metalness: .9, roughness: .3 });
+    if (/screw|washer|spacer|bushing/.test(name)) Object.assign(finish, { color: '#d1d5df', metalness: 1, roughness: .19 });
+    if (/soft_tip/.test(name)) Object.assign(finish, { color: '#19171f', metalness: 0, roughness: .85, clearcoat: 0 });
+    if (/arducam|lens|611_00020/.test(name)) Object.assign(finish, { color: '#12151f', metalness: .55, roughness: .09, clearcoat: 1, clearcoatRoughness: .08 });
+    if (/lens/.test(name) && object.material.opacity < 1) Object.assign(finish, { color: '#3a3d47', metalness: 0, opacity: .24, transparent: true, depthWrite: false });
+    if (/button|hmi/.test(name)) Object.assign(finish, { color: '#73618f', metalness: .85, roughness: .3 });
+    object.material = new THREE.MeshPhysicalMaterial(finish);
   });
+
+  function studioEnvironment(renderer) {
+    const studio = new THREE.Scene();
+    studio.background = new THREE.Color('#36343d');
+    const panel = (w, h, position, color, intensity) => {
+      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({color: new THREE.Color(color).multiplyScalar(intensity), side: THREE.DoubleSide}));
+      mesh.position.set(...position); mesh.lookAt(0, 0, 0); studio.add(mesh);
+    };
+    panel(4, 7, [-4, 2, 4], '#ffffff', 5);
+    panel(2, 6, [5, 1, 1], '#e4e5ff', 3.5);
+    panel(5, 3, [0, 6, -2], '#ffffff', 4);
+    panel(3, 5, [-2, 0, -5], '#bba8ec', 1.5);
+    panel(3, 7, [3, 0, 5], '#09090d', 1);
+    const generator = new THREE.PMREMGenerator(renderer);
+    const environment = generator.fromScene(studio, .08);
+    generator.dispose();
+    studio.traverse(object => { if (object.isMesh) { object.geometry.dispose(); object.material.dispose(); } });
+    return environment;
+  }
   function createGripper() {
     const cad = model.scene.clone(true);
     const bounds = new THREE.Box3().setFromObject(cad);
@@ -91,10 +114,12 @@ Promise.all([
     stage.appendChild(renderer.domElement);
     renderer.domElement.setAttribute('aria-hidden', 'true');
     const scene = new THREE.Scene();
-    scene.add(new THREE.HemisphereLight('#f2eef9', '#625a70', 1.5));
-    const key = new THREE.DirectionalLight('#ffffff', 2.5); key.position.set(-3, 5, 6); scene.add(key);
-    const fill = new THREE.DirectionalLight('#dfd2ff', 2.2); fill.position.set(4, 2, -3); scene.add(fill);
-    const rim = new THREE.DirectionalLight('#ffffff', 2.5); rim.position.set(-4, -1, -2); scene.add(rim);
+    const environment = studioEnvironment(renderer);
+    scene.environment = environment.texture;
+    scene.add(new THREE.HemisphereLight('#f2eef9', '#625a70', .65));
+    const key = new THREE.DirectionalLight('#ffffff', 1.5); key.position.set(-3, 5, 6); scene.add(key);
+    const fill = new THREE.DirectionalLight('#dfd2ff', .8); fill.position.set(4, 2, -3); scene.add(fill);
+    const rim = new THREE.DirectionalLight('#ffffff', 1.5); rim.position.set(-4, -1, -2); scene.add(rim);
     const camera = new THREE.PerspectiveCamera(34, 1, .1, 40); camera.position.set(0, 0, 8.3);
     const { group, setGrip } = createGripper(); scene.add(group);
     const initial = { x: .28, y: 2.65, z: interactive ? -.18 : -.3 };
