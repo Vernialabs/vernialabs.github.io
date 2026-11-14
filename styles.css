@@ -188,3 +188,22 @@ footer .brand img.brand-lockup{width:174px;height:auto;display:block}
   .research-bottom{grid-template-columns:1fr;justify-items:center;text-align:center;gap:20px;margin-top:20px;padding-top:25px}.research-bottom>p{font-size:12px}.research-hardware{justify-self:center;font-size:12px}.research-bottom .button{width:auto;min-width:220px}
 }
 @media(max-width:400px){.research-hero h1{font-size:38px}.study-controls{gap:10px}.study-controls label{font-size:9px}.study-controls .motion-toggle{font-size:8px;min-width:94px}}
+
+/* One continuous cinematic scene, with the controls kept outside the image. */
+.cinematic-study{position:relative;margin:0 calc(-1 * var(--pad));overflow:hidden}
+#cinematic-stage{position:relative;width:100%;height:clamp(440px,40vw,620px);overflow:hidden;mask-image:linear-gradient(180deg,transparent,#000 8%,#000 86%,transparent)}
+#cinematic-stage picture{display:block;width:100%;height:100%}
+#cinematic-stage canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s}
+#cinematic-stage.cinematic-ready canvas{opacity:1}
+.cinematic-poster{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .8s}
+.cinematic-ready .cinematic-poster{opacity:0}
+.cinematic-caption{display:flex;justify-content:space-between;align-items:center;margin:-15px var(--pad) 0;position:relative;z-index:1;color:#9e8dae;font-size:11px;letter-spacing:.1px}
+.cinematic-caption .motion-toggle{color:#b4a1ca;font-size:9px;visibility:hidden}
+.motion-ready .motion-toggle{visibility:visible}
+.still-only .cinematic-caption .motion-toggle{visibility:hidden}
+.research-hero{padding-bottom:32px}.research-bottom{margin-top:22px}
+@media(max-width:760px){
+  .cinematic-study{margin:8px -24px 0}#cinematic-stage{height:440px}
+  .cinematic-caption{margin:-10px 24px 0;font-size:10px}.cinematic-caption .motion-toggle{font-size:8px}
+  .cinematic-poster{object-fit:cover;object-position:center}
+}

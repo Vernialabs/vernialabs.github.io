@@ -46,10 +46,10 @@ if ('IntersectionObserver' in window && !reducedMotion.matches) {
   document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
 }
 
-if (document.querySelector('#action-study')) {
-  import('./motion-study.js?v=research1').then(({ initMotionStudy }) => {
-    initMotionStudy({ isPaused: () => paused, setPaused: value => { paused = value; syncMotion(); } });
-  }).catch(() => { /* Keep the embedded still artwork if motion cannot load. */ });
+if (document.querySelector('#cinematic-stage')) {
+  import('./cinematic-motion.js?v=cinema1').then(({ initCinematicMotion }) => {
+    return initCinematicMotion({ isPaused: () => paused });
+  }).catch(() => { document.querySelector('.cinematic-study').classList.add('still-only'); });
 }
 
 // UI remains usable when WebGL is disabled or the local renderer cannot load.
