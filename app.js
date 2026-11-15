@@ -131,7 +131,7 @@ if (document.querySelector('.model-stage')) Promise.all([
     if (!stage) return;
     let renderer;
     try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' }); }
-    catch { if (interactive) document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; return; }
+    catch { if (interactive) document.querySelector('#viewer-hint').textContent = 'Static CAD view · 3D is unavailable in this browser'; return; }
     renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -149,13 +149,14 @@ if (document.querySelector('.model-stage')) Promise.all([
     const { group, setGrip } = createGripper(); scene.add(group);
     const initial = { x: .28, y: 2.65, z: -.18 };
     group.rotation.set(initial.x, initial.y, initial.z);
-    const view = { stage, renderer, scene, camera, group, setGrip, closure: 0, initial, interactive, scrollDriven, scrollProgress: 0, visible: true, closed: false, dragged: false, angle: initial.y, tilt: initial.x, tick: 0, dirty: true };
+    const view = { stage, renderer, scene, camera, group, setGrip, closure: 0, initial, interactive, scrollDriven, scrollProgress: 0, visible: true, closed: false, dragged: interactive, angle: initial.y, tilt: initial.x, tick: 0, dirty: true, zoom: 1, baseDistance: 8.1 };
     function resize() {
       const { width, height } = stage.getBoundingClientRect();
       if (!width || !height) return;
       renderer.setSize(width, height); camera.aspect = width / height;
       // Fit the diagonal silhouette on both portrait phones and wide desktop stages.
-      camera.position.z = scrollDriven ? Math.max(7.5, 7.3 / camera.aspect) : Math.max(8.1, 7.8 / camera.aspect);
+      view.baseDistance = scrollDriven ? Math.max(7.5, 7.3 / camera.aspect) : Math.max(8.1, 7.8 / camera.aspect);
+      camera.position.z = view.baseDistance / view.zoom;
       camera.updateProjectionMatrix(); view.dirty = true;
     }
     new ResizeObserver(resize).observe(stage); resize();
@@ -167,18 +168,28 @@ if (document.querySelector('.model-stage')) Promise.all([
       event.preventDefault(); stage.classList.remove('loaded'); view.visible = false;
       if (scrollDriven) hero.classList.remove('scroll-ready');
       if (motionButton) motionButton.disabled = true;
-      if (interactive) { document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; document.querySelector('#grip-toggle').disabled = true; document.querySelector('#view-reset').disabled = true; }
+      if (interactive) { document.querySelector('#viewer-hint').textContent = 'Static CAD view · reload to retry 3D'; document.querySelectorAll('.explorer-controls button,#grip-toggle,#view-reset').forEach(button=>button.disabled=true); }
     });
     if (interactive) {
+      document.querySelector('#viewer-hint').textContent = 'Drag to rotate · arrow keys also work';
+      const presets = document.querySelectorAll('[data-cad-view]');
+      const viewLabel = document.querySelector('#cad-view-label');
+      const nameFreeView = () => { presets.forEach(button=>button.setAttribute('aria-pressed','false')); if(viewLabel)viewLabel.textContent='Free view'; };
       let pointer = null, x = 0, y = 0;
       stage.addEventListener('pointerdown', event => { if (event.button !== 0) return; pointer = event.pointerId; x = event.clientX; y = event.clientY; stage.setPointerCapture(pointer); view.dragged = true; });
-      stage.addEventListener('pointermove', event => { if (event.pointerId !== pointer) return; view.angle += (event.clientX - x) * .012; view.tilt = THREE.MathUtils.clamp(view.tilt + (event.clientY - y) * .006, -.7, .7); x = event.clientX; y = event.clientY; view.dirty = true; });
+      stage.addEventListener('pointermove', event => { if (event.pointerId !== pointer) return; view.angle += (event.clientX - x) * .012; if(event.pointerType!=='touch') view.tilt = THREE.MathUtils.clamp(view.tilt + (event.clientY - y) * .006, -.9, .9); x = event.clientX; y = event.clientY; view.dirty = true; nameFreeView(); });
       const end = () => { pointer = null; }; stage.addEventListener('pointerup', end); stage.addEventListener('pointercancel', end); stage.addEventListener('lostpointercapture', end);
-      stage.addEventListener('keydown', event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); view.angle += event.key === 'ArrowLeft' ? -.15 : .15; view.dragged = true; view.dirty = true; } });
+      stage.addEventListener('keydown', event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return; event.preventDefault(); if(event.key==='ArrowLeft'||event.key==='ArrowRight') view.angle += event.key === 'ArrowLeft' ? -.15 : .15; else view.tilt=THREE.MathUtils.clamp(view.tilt+(event.key==='ArrowUp'?-.12:.12),-.9,.9); view.dragged = true; view.dirty = true; nameFreeView(); });
       const grip = document.querySelector('#grip-toggle'), reset = document.querySelector('#view-reset');
       grip.disabled = false; reset.disabled = false;
       grip.addEventListener('click', () => { view.closed = !view.closed; grip.textContent = view.closed ? 'Open grip' : 'Close grip'; grip.setAttribute('aria-pressed', String(view.closed)); view.dirty = true; });
-      reset.addEventListener('click', () => { view.angle = initial.y; view.tilt = initial.x; view.dragged = false; view.closed = false; view.tick = 0; view.dirty = true; grip.textContent = 'Close grip'; grip.setAttribute('aria-pressed', 'false'); });
+      const zoomIn=document.querySelector('#zoom-in'),zoomOut=document.querySelector('#zoom-out');
+      const updateZoom=()=>{camera.position.z=view.baseDistance/view.zoom;view.dirty=true;if(zoomIn)zoomIn.disabled=view.zoom>=1.45;if(zoomOut)zoomOut.disabled=view.zoom<=.8;};
+      if(zoomIn){zoomIn.disabled=false;zoomIn.addEventListener('click',()=>{view.zoom=Math.min(1.45,view.zoom+.15);updateZoom();});}
+      if(zoomOut){zoomOut.disabled=false;zoomOut.addEventListener('click',()=>{view.zoom=Math.max(.8,view.zoom-.15);updateZoom();});}
+      const angles={perspective:[.28,2.65,-.18,'Three-quarter view'],front:[.08,Math.PI,0,'Camera view'],side:[.12,Math.PI/2,0,'Side view'],rear:[.12,0,0,'Rear assembly']};
+      for(const button of presets){button.disabled=false;button.addEventListener('click',()=>{const [tilt,angle,roll,label]=angles[button.dataset.cadView];view.tilt=tilt;view.angle=angle;view.initial.z=roll;view.dirty=true;view.dragged=true;presets.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));if(viewLabel)viewLabel.textContent=label;});}
+      reset.addEventListener('click', () => { view.angle = 2.65; view.tilt = .28; view.initial.z=-.18; view.zoom=1; updateZoom();view.dragged = true; view.closed = false; view.tick = 0; view.dirty = true; grip.textContent = 'Close grip'; grip.setAttribute('aria-pressed', String(view.closed));presets.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.cadView==='perspective')));if(viewLabel)viewLabel.textContent='Three-quarter view'; });
     }
     views.push(view);
   }
@@ -218,4 +229,4 @@ if (document.querySelector('.model-stage')) Promise.all([
     }
   }
   requestAnimationFrame(animate);
-}).catch(() => { const hint = document.querySelector('#viewer-hint'); if (hint) hint.textContent = 'GRIP ONE'; });
+}).catch(() => { const hint = document.querySelector('#viewer-hint'); if (hint) hint.textContent = 'Static CAD view · interactive model could not load'; });

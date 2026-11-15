@@ -10,8 +10,8 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 - `index.html`: product-led company homepage with scroll-driven Grip One, company vision, and Hardware / Data lineup.
 - `home.css`: scoped full-width product cover, responsive layout, and editorial lineup styling.
-- `hardware.html`: enlarged scroll-driven Grip One cover, concise product details, and tactile gloves marked Coming soon.
-- `hardware.css`: Hardware-specific details and tactile chapter, using the shared homepage design.
+- `hardware.html`: interactive Grip One CAD explorer, confirmed sensor and weight specifications, a conceptual data-flow illustration, and tactile gloves marked Coming soon.
+- `hardware.css`, `hardware-explorer.css`: Hardware showroom, CAD controls, sensor specifications, and tactile chapter.
 - `styles.css`: responsive layouts, visual design, and motion preferences.
 - `app.js`: navigation, reveal effects, and the articulated Three.js CAD viewer.
 - `cinematic-motion.js`: archived hand animation, not used on the current site.
@@ -26,7 +26,7 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 The homepage immediately introduces Grip One to physical AI researchers, then explains Vernia’s data-layer focus. The Hardware page provides product details. Main navigation links to Our vision, Hardware, and Data. Data remains a compact coming-soon section, without a catalog or platform claims. Existing `/#grip-one` links redirect to `hardware.html#grip-one`. Product and general inquiries open the owner's email client. The shared waitlist collects product interest with explicit consent.
 
-The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage now opens with Grip One in a full-width product cover: oversized typography, a diagonal lavender light field, and the metallic CAD at its centre. A larger gripper rotates through roughly 120 degrees as visitors scroll through the opening cover. Exponential interpolation eases the motion; it settles when scrolling stops and reverses when visitors scroll up. No drag, close, reset, or pause controls appear on the homepage. The Hardware page uses the same large scroll-driven cover and has no close, reset, drag, or pause controls. The primary CTA opens `hardware.html#grip-one`; a secondary action opens a product email inquiry. A concise human / hardware / data explanation leads to a three-row lineup for Grip One, tactile gloves, and Data. The latter two are clearly marked Coming soon. The earlier hand animation files remain archived in the repository and are no longer requested by the homepage. Reduced-motion preferences disable homepage rotation and its extended scroll section. The product poster covers unavailable JavaScript/WebGL without an extended scroll section. Homepage body copy is at least 16px, secondary labels are 11–12px, and contrast is strengthened across the hero, lineup, and contact sections. Product motion stops offscreen and in background tabs.
+The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage now opens with Grip One in a full-width product cover: oversized typography, a diagonal lavender light field, and the metallic CAD at its centre. A larger gripper rotates through roughly 120 degrees as visitors scroll through the opening cover. Exponential interpolation eases the motion; it settles when scrolling stops and reverses when visitors scroll up. No drag, close, reset, or pause controls appear on the homepage. The Hardware page now opens with an interactive CAD explorer: drag/arrow-key rotation, overview/camera/side/rear presets, zoom buttons, and open/close/reset controls. The homepage retains its scroll-led cover. The primary CTA opens `hardware.html#grip-one`; a secondary action opens a product email inquiry. A concise human / hardware / data explanation leads to a three-row lineup for Grip One, tactile gloves, and Data. The latter two are clearly marked Coming soon. The earlier hand animation files remain archived in the repository and are no longer requested by the homepage. Reduced-motion preferences disable homepage rotation and its extended scroll section. The product poster covers unavailable JavaScript/WebGL without an extended scroll section. Homepage body copy is at least 16px, secondary labels are 11–12px, and contrast is strengthened across the hero, lineup, and contact sections. Product motion stops offscreen and in background tabs.
 
 | Claim | Source / date | Status | Public wording / location |
 | --- | --- | --- | --- |
@@ -45,7 +45,7 @@ Grip One remains Vernia's public product name. This reference CAD does not certi
 
 To reproduce the conversion, run `python tools/fetch-gripper-source.py` followed by `python tools/build-gripper-model.py .qa/cad-source`. Both scripts use Python's standard library. Source mesh hashes and the output GLB hash are recorded in `provenance.json`. The bundled Three.js loader and geometry utility retain their MIT license; their module import paths were changed to local vendor files.
 
-The site deliberately leaves hardware specifications, shipping terms, headquarters, testimonials, and other unconfirmed details unspecified. Purchase interest opens an email inquiry; no order or payment is taken.
+The site publishes only the owner-confirmed hardware specifications listed below; shipping terms, headquarters, testimonials, and other unconfirmed details remain unspecified. Purchase interest opens an email inquiry; no order or payment is taken.
 
 ## Verification
 
@@ -58,7 +58,7 @@ The two supplied original logo JPGs are preserved in `assets/brand/`. The first 
 
 ## Production waitlist and analytics
 
-The site now includes `waitlist.html`, `privacy.html`, and a custom `404.html`. Home and Hardware link to one shared waitlist; Hardware preselects the relevant product. The charcoal/lavender design and scroll-driven CAD remain in place. No prices, shipping commitments, customer logos, or hardware specifications were invented.
+The site now includes `waitlist.html`, `privacy.html`, and a custom `404.html`. Home and Hardware link to one shared waitlist; Hardware preselects the relevant product. The charcoal/lavender design and scroll-driven CAD remain in place. No prices, shipping commitments, customer logos, or unconfirmed hardware specifications were invented.
 
 The waitlist API uses Cloudflare Workers, a dedicated D1 database, and Turnstile with server-side verification. Public configuration lives in `site-config.js`; the Turnstile secret is stored only as a Worker secret. It must never be copied into the site, Git, or a client-side environment variable.
 
@@ -100,3 +100,25 @@ The current Cloudflare plugin connection supports Workers and D1 but lacks DNS, 
 ## Team dashboard and automated mail
 
 The protected dashboard at https://admin.vernia.in/admin combines consented website visits, engagement, sources, countries, waitlist conversions, and email submission status. PostHog receives the same optional events; RB2B is deferred. Access is restricted to the four approved Vernia addresses using emailed single-use codes. See [backend/README.md](backend/README.md) for authentication, delivery retries, retention, testing, deployment, and rollback.
+
+## Interactive Hardware update — 15 November 2026
+
+The owner redirected the visual update to the Hardware page reached through the existing “Explore Grip One” CTA. The homepage hero remains unchanged. The Hardware showroom renders the existing assembled CAD with no mesh or dimensional changes. Controls support horizontal drag (vertical touch movement keeps page scrolling), arrow keys, bounded zoom, four views, illustrative joint movement, and reset. It rests when not being manipulated and preserves the static poster if WebGL fails.
+
+### Confirmed product claims
+
+| Claim | Source | Status | Published wording |
+| --- | --- | --- | --- |
+| Fisheye camera | Owner confirmation, 2026-11-15 | Owner-confirmed configuration | Fisheye camera / wide visual context |
+| Depth camera | Same confirmation | Owner-confirmed configuration | Depth camera / distance and scene geometry |
+| Force sensor | Same confirmation | Owner-confirmed configuration | Force sensor / contact force |
+| Grip encoder | Same confirmation | Owner-confirmed configuration | Grip encoder / opening and closing position |
+| Device weight 200 g | Same confirmation | Owner-confirmed, not independently weighed | Device weight: 200 g |
+
+Sensor models, rates, precision, dimensions, payload, battery life, synchronization guarantees, training performance and shipping dates are not asserted. The CAD is still the attributed reference assembly; the model does not certify final component placement. In particular, no force-sensor location was invented or added to its geometry. The data-flow graphic is original HTML/SVG and explicitly conceptual, not a live recording or measured trace.
+
+References reviewed: [Grabette on Hugging Face](https://huggingface.co/blog/grabette) for actual structure and demonstration workflow, and [UMI/LeRobot](https://huggingface.co/blog/zfff/umi-lerobot) for background on demonstration data. Their photographs, wording, and performance claims are not republished. All generated hand images were rejected by the owner and are excluded from the site. The native CAD assets retain their existing Apache-2.0 provenance and notices.
+
+Rollback target for this Hardware update: `5a9bd1e`. Static publication remains GitHub Pages from `main`; no backend, admin, mail, or DNS deployment is required.
+
+Hardware QA: JavaScript syntax, local asset/link/anchor checks, and `git diff --check` pass. Browser checks passed for four view presets, keyboard rotation, pointer drag, grip toggle, zoom, reset, and layouts at 1440, 768, 390 and 360 px (no horizontal overflow). The browser console reported no errors. Static fallback markup is retained; a forced WebGL failure and physical touchscreen testing were not performed in this update.

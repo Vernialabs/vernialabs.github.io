@@ -5,12 +5,12 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com https://vernia-waitlist.ishan-upadhyay-iitb.workers.dev; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hardware — Vernia Labs</title>
-  <meta name="description" content="Explore Vernia Labs hardware for physical AI: Grip One, a handheld UMI gripper, and tactile gloves, coming soon.">
+  <meta name="description" content="Explore Grip One in interactive 3D. A 200 g handheld UMI gripper with fisheye and depth cameras, force sensing, and a grip encoder.">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#15131d">
   <meta property="og:title" content="Hardware — Vernia Labs">
-  <meta property="og:description" content="Tools for physical AI. Explore Grip One and what’s next in Vernia hardware.">
+  <meta property="og:description" content="Explore Grip One in 3D: 200 g, fisheye camera, depth camera, force sensor, and grip encoder.">
   <meta property="og:image" content="https://vernia.in/assets/brand/vernia-logo.jpg">
   <meta property="og:image:alt" content="Vernia logo with violet orbital mark">
   <meta property="og:type" content="website">
@@ -20,12 +20,13 @@
   <link rel="stylesheet" href="styles.css?v=hardware5">
   <link rel="stylesheet" href="home.css?v=hardware5">
   <link rel="stylesheet" href="hardware.css?v=hardware5">
+  <link rel="stylesheet" href="hardware-explorer.css?v=1">
   <link rel="stylesheet" href="production.css?v=1">
-  <script type="module" src="app.js?v=production1"></script>
+  <script type="module" src="app.js?v=explorer1"></script>
   <link rel="stylesheet" href="analytics.css?v=1">
   <script type="module" src="analytics.js?v=2"></script>
 </head>
-<body class="hardware-page instrument-home hardware-refresh">
+<body class="hardware-page instrument-home hardware-refresh hardware-explorer">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header" id="home">
     <a class="brand" href="index.html" aria-label="Vernia Labs home"><svg class="brand-mark" viewBox="100 200 1050 980" aria-hidden="true"><image href="assets/brand/vernia-mark.jpg" width="1254" height="1254"/></svg><span>vernia<span class="brand-labs">labs</span></span></a>
@@ -34,22 +35,54 @@
     <button class="menu-toggle" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
   </header>
   <main id="main">
-    <section class="instrument-hero" id="grip-one" aria-labelledby="hardware-title">
-      <div class="instrument-cover">
-        <div class="instrument-topline"><p>Vernia hardware. Built around human action.</p><a href="#tactile-gloves">Up next: tactile gloves <span aria-hidden="true">↓</span></a></div>
-        <h1 id="hardware-title">Grip <span>One.</span></h1>
-        <p class="instrument-subtitle">A handheld interface for real-world demonstrations.</p>
-        <div class="instrument-light" aria-hidden="true"></div>
-        <div class="instrument-note"><p>Your movement.<br>A starting point for learning.</p></div>
-        <div class="instrument-model model-stage" id="hero-model" role="img" aria-label="Grip One handheld UMI gripper"><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.png" width="1000" height="1000" alt="Grip One metallic handheld UMI gripper" fetchpriority="high"></div>
-        <div class="instrument-bottom"><div><span class="eyebrow">A HANDHELD UMI GRIPPER</span><p>Capture the actions<br>you want robots to learn.</p></div><a class="button button-accent" href="waitlist.html?from=hardware&amp;interest=grip-one">Join the waitlist <span aria-hidden="true">↗</span></a><a class="instrument-inquiry" href="#details">Meet Grip One <span aria-hidden="true">↓</span></a></div>
+    <section class="grip-showroom" id="grip-one" aria-labelledby="hardware-title">
+      <div class="showroom-intro">
+        <p class="eyebrow">01 / VERNIA HARDWARE</p>
+        <h1 id="hardware-title">Grip <span class="serif">One.</span></h1>
+        <p class="showroom-lead">Human movement.<br>A richer record.</p>
+        <p class="showroom-copy">A handheld UMI gripper for collecting real-world manipulation demonstrations. See the scene, measure contact, and capture how the grip changes.</p>
+        <div class="weight-note"><strong>200<span>g</span></strong><div>Device weight<br><span>Made for handheld capture.</span></div></div>
+        <a class="button button-accent" href="waitlist.html?from=hardware&amp;interest=grip-one">Join the waitlist <span aria-hidden="true">↗</span></a>
+        <a class="showroom-detail-link" href="#specifications">Explore the sensors <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="cad-explorer" aria-label="Grip One CAD explorer">
+        <div class="explorer-topline"><span>GRIP ONE / CAD EXPLORER</span><span class="cad-badge">3D MODEL</span></div>
+        <div class="explorer-ground" aria-hidden="true"></div>
+        <div class="model-stage explorer-stage" id="product-model" tabindex="0" role="group" aria-label="Interactive Grip One CAD. Drag horizontally or use the arrow keys to rotate. Zoom and grip controls follow."><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.png" width="1000" height="1000" alt="The assembled Grip One reference CAD, showing the two camera modules, open frame, and opposing jaws" fetchpriority="high"></div>
+        <div class="explorer-view-label"><span id="cad-view-label">Three-quarter view</span><span id="viewer-hint" role="status">Loading interactive model…</span></div>
+        <div class="explorer-controls">
+          <div class="view-presets" role="group" aria-label="Choose a CAD view"><button type="button" data-cad-view="perspective" aria-pressed="true" disabled>Overview</button><button type="button" data-cad-view="front" aria-pressed="false" disabled>Cameras</button><button type="button" data-cad-view="side" aria-pressed="false" disabled>Side</button><button type="button" data-cad-view="rear" aria-pressed="false" disabled>Rear</button></div>
+          <div class="model-actions"><button type="button" id="grip-toggle" aria-pressed="false" disabled>Close grip</button><div class="zoom-actions" role="group" aria-label="Model zoom"><button type="button" id="zoom-out" aria-label="Zoom out" disabled>−</button><button type="button" id="zoom-in" aria-label="Zoom in" disabled>+</button></div><button type="button" id="view-reset" disabled>Reset view</button></div>
+        </div>
+        <noscript><p class="cad-noscript">Enable JavaScript to rotate the model. The static CAD view and all specifications are available below.</p></noscript>
       </div>
     </section>
-    <section class="field-story section-pad hardware-details" id="details" aria-labelledby="details-title">
-      <div class="section-kicker"><span class="tiny-cross">+</span> THE FIRST TOOL IN THE VERNIA LINEUP</div>
-      <div class="field-heading"><h2 id="details-title">A familiar gesture.<br>A new <span class="serif">starting point.</span></h2><div><p>A reach, a grasp, a placement.</p><p>Grip One is a handheld Universal Manipulation Interface (UMI) gripper for collecting real-world manipulation demonstrations. It’s our first step toward making physical AI data collection more accessible.</p><a class="field-link" href="mailto:ishan.upadhyay.iitb@gmail.com?subject=Grip%20One%20inquiry">Discuss your setup <span aria-hidden="true">↗</span></a></div></div>
-      <dl class="hardware-facts"><div><dt>Form</dt><dd>Handheld gripper</dd></div><div><dt>Purpose</dt><dd>Demonstration capture</dd></div><div><dt>Focus</dt><dd>Physical AI research</dd></div></dl>
-      <p class="hardware-availability">Talk to us about availability, configuration, and shipping.</p>
+    <div class="cad-caption"><span>Explore the actual assembled CAD from every angle.</span><span>Reference CAD · illustrative finish and grip movement</span></div>
+    <section class="sensor-section section-pad" id="specifications" aria-labelledby="specifications-title">
+      <span id="details" aria-hidden="true"></span>
+      <div class="sensor-heading"><div><p class="section-kicker"><span class="tiny-cross">+</span> BUILT TO OBSERVE THE WHOLE ACTION</p><h2 id="specifications-title">More than<br><span class="serif">what a camera sees.</span></h2></div><p>Visual context, scene depth, contact force, and grip position. Four complementary signals describe what happens during a demonstration.</p></div>
+      <div class="sensor-layout">
+        <figure class="sensor-study"><div class="study-grid" aria-hidden="true"></div><div class="study-title"><span>GRIP ONE</span><span>INSTRUMENTED BY DESIGN</span></div><img src="assets/models/grip-one/grip-one-poster-metal.png" width="1000" height="1000" alt="CAD study of Grip One's camera tower, frame and gripper mechanism" loading="lazy"><figcaption>One handheld tool.<br><em>Several ways to understand an action.</em></figcaption></figure>
+        <dl class="sensor-specs">
+          <div><dt><span class="spec-index">01</span><span>Fisheye camera<small>VISUAL CONTEXT</small></span><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="10"/><path d="M6 24h36M24 6c-12 10-12 26 0 36M24 6c12 10 12 26 0 36"/></svg></dt><dd>A wide view of the gripper and its surroundings, keeping the object and the wider scene in context.</dd></div>
+          <div><dt><span class="spec-index">02</span><span>Depth camera<small>SPATIAL CONTEXT</small></span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 17 10v19L24 44 7 34V15Zm0 20v19M7 15l17 10 17-10M15 20l17-10"/></svg></dt><dd>Captures distance and scene geometry, adding a spatial dimension to the visual record of an interaction.</dd></div>
+          <div><dt><span class="spec-index">03</span><span>Force sensor<small>CONTACT FEEDBACK</small></span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 24h9l5-13 9 26 6-13h9M8 6v7M40 35v7"/></svg></dt><dd>Measures contact force during a grasp, adding information about the interaction that imagery alone cannot provide.</dd></div>
+          <div><dt><span class="spec-index">04</span><span>Grip encoder<small>GRIP POSITION</small></span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 10v28h11M41 10v28H30M15 24h18m-14-4-4 4 4 4m10-8 4 4-4 4M24 5v5M24 38v5"/></svg></dt><dd>Tracks the gripper’s opening and closing, recording grip position as the demonstration unfolds.</dd></div>
+          <div class="weight-spec"><dt><span class="spec-index">05</span><span>Device weight<small>HANDHELD FORM</small></span></dt><dd><strong>200 g</strong><span>A compact tool for collecting demonstrations by hand.</span></dd></div>
+        </dl>
+      </div>
+      <div class="specification-foot"><p>Planning a collection setup? Talk to us about sensor models, recording requirements, and availability.</p><a class="field-link" href="mailto:team@vernia.in?subject=Grip%20One%20configuration">Discuss your setup <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section class="capture-story section-pad" aria-labelledby="capture-title">
+      <div class="capture-heading"><p class="section-kicker"><span class="tiny-cross">+</span> FROM ACTION TO INFORMATION</p><h2 id="capture-title">An action has<br><span class="serif">more than one story.</span></h2><p>A grasp has a visual scene, a distance, a contact force, and a grip position. Bringing those signals together gives a demonstration more context.</p></div>
+      <div class="capture-visual" role="img" aria-label="Conceptual data flow: fisheye images, depth observations, contact force, and grip position form a record of one demonstration. This is a diagram, not a live recording.">
+        <div class="capture-visual-heading"><span>ONE DEMONSTRATION</span><span>CONCEPTUAL DATA FLOW</span></div>
+        <div class="signal-row"><span>01 / Vision</span><div class="vision-strip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><strong>Scene</strong></div>
+        <div class="signal-row"><span>02 / Depth</span><div class="depth-strip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><strong>Geometry</strong></div>
+        <div class="signal-row"><span>03 / Force</span><svg viewBox="0 0 400 42" preserveAspectRatio="none" aria-hidden="true"><path d="M0 31h55l16-2 12-17 18 5 12-10 20 9 13-3 20 6 15-3 15 3 15-6 17 6 16-5 18 2 18-7 17 10 18 1 15 8 22 3h48"/></svg><strong>Contact</strong></div>
+        <div class="signal-row"><span>04 / Encoder</span><svg viewBox="0 0 400 42" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6h63q14 0 25 16t25 15h157q15 0 24-15t25-16h81"/></svg><strong>Grip state</strong></div>
+        <div class="capture-output"><span>Reach <span aria-hidden="true">→</span> Grasp <span aria-hidden="true">→</span> Move <span aria-hidden="true">→</span> Release</span><p>One action. Multiple observations.</p></div>
+      </div>
     </section>
     <section class="hardware-next section-pad" id="tactile-gloves" aria-labelledby="tactile-title">
       <div class="section-kicker"><span class="tiny-cross">+</span> THE NEXT CHAPTER</div>
