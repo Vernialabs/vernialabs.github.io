@@ -2,65 +2,246 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com https://vernia-waitlist.ishan-upadhyay-iitb.workers.dev; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vernia Labs — Physical AI research</title>
-  <meta name="description" content="Hardware for the data layer of physical AI. Meet Grip One, Vernia Labs’ handheld UMI gripper for real-world manipulation demonstrations.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com https://vernia-waitlist.ishan-upadhyay-iitb.workers.dev; frame-src https://challenges.cloudflare.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vernia Labs: real-world robot manipulation data</title>
+  <meta name="description" content="Vernia collects real-world manipulation data for robot learning with Grip One, a handheld gripper, and View One, a head-worn camera rig, or with the rig you already train on.">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#15131d">
-  <meta property="og:title" content="Vernia Labs — Physical AI research">
-  <meta property="og:description" content="Meet Grip One. A handheld UMI gripper for capturing human demonstrations and building the data layer for physical AI.">
+  <meta name="theme-color" content="#f6f5f2">
+  <meta property="og:title" content="Vernia Labs: robot hands learn from human ones">
+  <meta property="og:description" content="Real-world manipulation data, collected with Grip One and View One, or with your rig.">
   <meta property="og:image" content="https://vernia.in/assets/brand/vernia-logo.jpg">
-  <meta property="og:image:alt" content="Vernia logo with violet orbital mark">
+  <meta property="og:image:alt" content="Vernia logo">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vernia.in/">
   <link rel="canonical" href="https://vernia.in/">
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=hardware5">
-  <link rel="stylesheet" href="home.css?v=fit2">
-  <link rel="stylesheet" href="production.css?v=1">
-  <script type="module" src="app.js?v=fit2"></script>
+  <link rel="preload" href="assets/fonts/newsreader-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/archivo-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fonts.css?v=1">
+  <link rel="stylesheet" href="home-dreamy.css?v=1">
+  <link rel="stylesheet" href="analytics.css?v=1">
   <link rel="modulepreload" href="assets/vendor/three.module.min.js">
   <link rel="modulepreload" href="assets/vendor/GLTFLoader.js">
-  <link rel="modulepreload" href="assets/vendor/BufferGeometryUtils.js">
-  <link rel="stylesheet" href="analytics.css?v=1">
+  <script type="module" src="home.js?v=1"></script>
   <script type="module" src="analytics.js?v=2"></script>
 </head>
-<body class="instrument-home">
+<body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <a class="brand" href="index.html" aria-label="Vernia Labs home"><svg class="brand-mark" viewBox="100 200 1050 980" aria-hidden="true"><image href="assets/brand/vernia-mark.webp" width="1254" height="1254"/></svg><span>vernia<span class="brand-labs">labs</span></span></a>
-    <nav aria-label="Main navigation" id="navigation"><a href="index.html#vision">Our vision</a><a href="hardware.html">Hardware</a><a href="index.html#data">Data</a></nav>
-    <a class="header-contact" href="waitlist.html?from=home">Join the waitlist <span aria-hidden="true">↗</span></a>
-    <button class="menu-toggle" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
-  </header>
   <main id="main">
-    <section class="instrument-hero" id="home" aria-labelledby="hero-title">
-      <div class="instrument-cover">
-      <div class="instrument-topline"><p>Human experience. The next training ground.</p><span>Vernia Labs / Physical AI</span></div>
-      <h1 id="hero-title">Grip <span>One.</span></h1>
-      <p class="instrument-subtitle">Human demonstrations, captured by hand.</p>
-      <div class="instrument-light" aria-hidden="true"></div>
-      <div class="instrument-note"><p>The next robot skill<br>starts in your hand.</p></div>
-      <div class="instrument-model model-stage" id="hero-model" role="img" aria-label="Grip One handheld UMI gripper"><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.webp" width="800" height="800" alt="Grip One metallic handheld UMI gripper" fetchpriority="high"></div>
-      <div class="instrument-bottom"><div><span class="eyebrow">A HANDHELD UMI GRIPPER</span><p>Bring real-world manipulation<br>into the learning process.</p></div><a class="button button-accent" href="hardware.html#grip-one">Explore Grip One <span aria-hidden="true">↗</span></a><a class="instrument-inquiry" href="mailto:team@vernia.in?subject=Grip%20One%20inquiry">Build with Grip One <span aria-hidden="true">↗</span></a></div>
+  <div class="sky">
+    <header class="wrap top">
+      <a class="brand" href="#main" aria-label="Vernia Labs home"><img src="assets/brand/vernia-mark.webp" alt="" width="30" height="30">Vernia</a>
+      <nav class="nav" aria-label="Main">
+        <a href="#hardware">Hardware</a>
+        <a href="#play">Try it</a>
+        <a href="#work">Data</a>
+        <a href="#places">Sites</a>
+      </nav>
+      <a class="btn btn-ink" href="#pilot" data-cta="nav">Plan a pilot</a>
+    </header>
+
+    <section class="wrap hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">Robot hands learn from human ones.</h1>
+      <p class="lede">We collect real-world manipulation data with Grip One and View One, or with the rig you already train on.</p>
+      <div class="actions">
+        <a class="btn btn-ink" href="#pilot" data-cta="hero">Plan a pilot</a>
+        <a class="link" href="#play">Try Grip One</a>
       </div>
     </section>
-    <section class="field-story section-pad" id="vision" aria-labelledby="vision-title">
-      <p class="section-kicker">OUR VISION</p>
-      <div class="vision-editorial"><h2 id="vision-title">Physical intelligence.<br><span class="serif">Human beginnings.</span></h2><div class="vision-statement"><p>We’re building the data layer for physical AI, starting with the way people interact with the world.</p><p>Grip One captures real-world manipulation demonstrations by hand. Our work begins with the tools that make those demonstrations possible.</p><a class="field-link" href="hardware.html">Meet Grip One <span aria-hidden="true">↗</span></a></div></div>
+
+    <section class="wrap hardware" id="hardware" aria-label="Hardware">
+      <article class="product product-grip" aria-labelledby="grip-name">
+        <div class="stage" id="stage-grip" tabindex="0" aria-label="Grip One in 3D. Drag or use the arrow keys to turn it. Press Enter to close the jaws.">
+          <div class="stage-canvas"><img class="poster" src="assets/models/grip-one/grip-one-poster-metal.webp" width="800" height="800" alt="Grip One, Vernia's handheld gripper"></div>
+          <svg class="lines" aria-hidden="true"></svg>
+          <ul class="callouts">
+            <li class="callout" data-anchor="fisheye" style="top:8%"><b>Fisheye camera</b><span>The jaws and the scene around them</span></li>
+            <li class="callout" data-anchor="depth" style="top:24%"><b>Stereo depth camera</b><span>Distance to every surface</span></li>
+            <li class="callout" data-anchor="imu" style="top:40%"><b>IMU</b><span>Acceleration and rotation</span></li>
+            <li class="callout" data-anchor="encoder" style="top:56%"><b>Jaw encoder</b><span>How far the jaws open, every frame</span></li>
+            <li class="callout" data-anchor="force" style="top:72%"><b>Force sensor</b><span>How hard the fingertips press</span></li>
+            <li class="callout" data-anchor="button" style="top:88%"><b>Record button</b><span>Starts and stops an episode</span></li>
+          </ul>
+          <p class="drag-hint">Drag to turn. Tap to grip.</p>
+        </div>
+        <div class="buy">
+          <h3 id="grip-name">Grip One</h3>
+          <p class="price">$300</p>
+          <p>A handheld gripper for manipulation demonstrations.</p>
+          <a class="btn btn-line" href="#pilot" data-interest="grip-one">Reserve Grip One</a>
+        </div>
+      </article>
+      <article class="product product-view" aria-labelledby="view-name">
+        <div class="stage" id="stage-view" tabindex="0" aria-label="View One in 3D. Drag or use the arrow keys to turn it.">
+          <div class="stage-canvas"></div>
+          <svg class="lines" aria-hidden="true"></svg>
+          <ul class="callouts">
+            <li class="callout" data-anchor="stereo" style="top:10%"><b>Stereo cameras</b><span>Two eyes at head height</span></li>
+            <li class="callout" data-anchor="fisheye" style="top:27%"><b>Fisheye camera</b><span>Both hands in view</span></li>
+            <li class="callout" data-anchor="imu" style="top:44%"><b>IMU</b><span>Head motion and gravity</span></li>
+            <li class="callout" data-anchor="compute" style="top:61%"><b>Compute and battery</b><span>Records and stores on the headset</span></li>
+            <li class="callout" data-anchor="button" style="top:78%"><b>Record button</b><span>One press per episode</span></li>
+            <li class="callout" data-anchor="strap" style="top:93%"><b>Adjustable strap</b><span>Fits most heads</span></li>
+          </ul>
+          <p class="drag-hint">Drag to turn.</p>
+        </div>
+        <div class="buy">
+          <h3 id="view-name">View One</h3>
+          <p class="price">$250</p>
+          <p>A head-worn camera rig for first-person demonstrations.</p>
+          <a class="btn btn-line" href="#pilot" data-interest="headset">Reserve View One</a>
+        </div>
+      </article>
     </section>
-    <section class="collection section-pad" id="focus" aria-labelledby="collection-title">
-      <div class="collection-heading"><div class="section-kicker"><span class="tiny-cross">+</span> THE VERNIA LINEUP</div><h2 id="collection-title">Starting with grip.<br>Building <span class="serif">beyond it.</span></h2></div>
-      <a class="collection-row collection-live" href="hardware.html#grip-one"><span class="collection-number">01</span><div><span class="eyebrow">HARDWARE / UMI GRIPPER</span><h3>Grip One</h3></div><p>A handheld interface for<br>real-world demonstrations.</p><span class="collection-link">Explore <span aria-hidden="true">↗</span></span></a>
-      <a class="collection-row" href="hardware.html#tactile-gloves"><span class="collection-number">02</span><div><span class="eyebrow">HARDWARE / WHAT’S NEXT</span><h3>Tactile gloves</h3></div><p>The next addition to<br>our hardware lineup.</p><span class="availability">Coming soon</span></a>
-      <article class="collection-row" id="data"><span class="collection-number">03</span><div><span class="eyebrow">THE NEXT LAYER</span><h3>Data</h3></div><p>The data layer for physical AI.<br>More to come.</p><span class="availability">Coming soon</span></article>
+
+    <section class="play" id="play" aria-labelledby="play-title">
+      <div class="wrap play-head">
+        <h2 id="play-title">Fill the fruit bowl.</h2>
+        <p>Move to aim and hold to grip. Grip One records you the way it records our operators.</p>
+      </div>
+      <div class="wrap play-body">
+        <div class="game" id="game-stage" tabindex="0" aria-label="Fruit bowl demo on a floating table. Put the apple, the orange and the lime in the bowl. Move the gripper with the mouse or arrow keys. Hold the mouse button or Space to grip.">
+          <div class="fisheye" id="fisheye" hidden><span>Wrist camera</span></div>
+          <p class="game-msg" id="game-msg">Loading Grip One</p>
+        </div>
+        <div class="rec" aria-live="polite">
+          <p class="rec-status" id="rec-status">Move over the table to start recording.</p>
+          <div class="trace">
+            <div class="trace-row"><span>Jaw width</span><b id="v-jaw">0 mm</b></div>
+            <canvas id="c-jaw" aria-hidden="true"></canvas>
+          </div>
+          <div class="trace">
+            <div class="trace-row"><span>Grip force</span><b id="v-force">0.0 N</b></div>
+            <canvas id="c-force" aria-hidden="true"></canvas>
+          </div>
+          <dl class="summary" id="summary" hidden>
+            <div><dt>Duration</dt><dd id="r-time">0 s</dd></div>
+            <div><dt>Frames</dt><dd id="r-frames">0</dd></div>
+            <div><dt>Hand travel</dt><dd id="r-path">0 cm</dd></div>
+            <div><dt>Grasps</dt><dd id="r-grasps">0</dd></div>
+          </dl>
+          <button class="btn btn-ink" id="again" type="button" hidden>Record another</button>
+          <button class="btn btn-line grip-btn" id="grip-btn" type="button" aria-pressed="false">Hold to grip</button>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <section class="report" id="report" hidden aria-labelledby="report-title">
+          <div class="report-head">
+            <h3 id="report-title">Your episode, as we would deliver it</h3>
+            <p>Every number below comes from the episode you just recorded.</p>
+          </div>
+          <div>
+            <h4>From hand to dataset</h4>
+            <ol class="steps" id="steps"></ol>
+          </div>
+          <div>
+            <h4>Streams</h4>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th scope="col">Stream</th><th scope="col">Rate</th><th scope="col" class="num">Samples</th><th scope="col">Stored as</th><th scope="col" class="num">Size</th></tr></thead>
+                <tbody id="streams"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="code-pair">
+            <div><h4>One frame, as a training row</h4><pre class="code" id="sample-row"></pre></div>
+            <div><h4>Dataset layout</h4><pre class="code" id="layout"></pre></div>
+          </div>
+          <details class="frames">
+            <summary>Every frame of your episode</summary>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th scope="col">Frame</th><th scope="col" class="num">Time (s)</th><th scope="col" class="num">x (mm)</th><th scope="col" class="num">y (mm)</th><th scope="col" class="num">z (mm)</th><th scope="col" class="num">Jaw (mm)</th><th scope="col" class="num">Force (N)</th><th scope="col" class="num">Accel up (m/s²)</th></tr></thead>
+                <tbody id="frames-body"></tbody>
+              </table>
+            </div>
+          </details>
+        </section>
+      </div>
     </section>
-    <section class="waitlist-band" aria-labelledby="waitlist-heading"><div><span class="eyebrow">STAY CLOSE TO WHAT’S NEXT</span><h2 id="waitlist-heading">Build with us, from the beginning.</h2><p>One waitlist for Grip One, tactile gloves, and Data.<br>Choose your interests. Hear from us as things take shape.</p></div><a class="button button-dark" href="waitlist.html?from=home">Join the waitlist <span aria-hidden="true">↗</span></a></section>
-    <section class="contact section-pad" id="contact"><div class="section-kicker reveal"><span class="tiny-cross">+</span> LET’S BUILD WHAT COMES NEXT</div><a class="contact-title reveal" href="mailto:team@vernia.in">Bring your<br><span class="serif">curiosity.</span><span class="contact-arrow" aria-hidden="true">↗</span></a><div class="contact-bottom reveal"><p>Exploring physical AI? Building a dataset?<br>We’d love to hear what you’re working on.</p><div><a href="mailto:team@vernia.in">team@vernia.in <span aria-hidden="true">↗</span></a><a href="tel:+918302952133">+91 83029 52133 <span aria-hidden="true">↗</span></a></div></div></section>
+  </div>
+
+  <section class="wrap section" id="work" aria-labelledby="work-title">
+    <h2 id="work-title">Your task, on the hardware you train with.</h2>
+    <ul class="rows">
+      <li><h3>Our hardware</h3><p>Grip One for the hands, View One for the head. Our operators, your task list.</p></li>
+      <li><h3>Your rig</h3><p>Send the device or its build files. We build it, run it and collect to your protocol.</p></li>
+      <li><h3>A new rig</h3><p>Touch, long tasks, cloth, paired human and robot clips. We design the rig and the protocol with you.</p></li>
+    </ul>
+  </section>
+
+  <section class="places" id="places" aria-labelledby="places-title">
+    <div class="wrap">
+      <ul class="places-list">
+        <li>Home kitchens</li>
+        <li>Tailoring shops</li>
+        <li>Corner stores</li>
+        <li>Repair benches</li>
+        <li>Restaurant prep lines</li>
+      </ul>
+      <div class="places-copy">
+        <h2 id="places-title">Robots fail in rooms they have never seen.</h2>
+        <div>
+          <p>We record in real homes and shops across Indian cities, where layouts, light and objects change from door to door. Every person who records signs up and is paid.</p>
+          <p>Some sites we keep back and never sell as training data, so you can test a dataset or a policy somewhere it has not been.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section" id="lots" aria-labelledby="lots-title">
+    <h2 id="lots-title">Every lot arrives with its numbers.</h2>
+    <dl class="spec">
+      <div><dt>Yield</dt><dd>How many episodes passed, and why the rest failed.</dd></div>
+      <div><dt>Tracking</dt><dd>Pose error for every episode.</dd></div>
+      <div><dt>Variety</dt><dd>How many places, people and objects the lot covers.</dd></div>
+      <div><dt>Consent</dt><dd>A signed record for every person on camera.</dd></div>
+      <div><dt>Format</dt><dd>LeRobot, RLDS or MCAP, or your own schema.</dd></div>
+    </dl>
+  </section>
+
+  <section class="pilot" id="pilot" aria-labelledby="pilot-title">
+    <div class="wrap pilot-grid">
+      <div class="pilot-copy">
+        <h2 id="pilot-title">Plan a pilot.</h2>
+        <p>Tell us who you are and what you want to collect. We reply with a plan and a price.</p>
+        <div class="reach"><span>team@vernia.in</span><span>+91 83029 52133</span></div>
+      </div>
+      <form class="lead" id="lead-form" novalidate>
+        <div class="field-row">
+          <div class="field"><label for="lead-name">Name</label><input id="lead-name" name="name" type="text" autocomplete="name" maxlength="100" required></div>
+          <div class="field"><label for="lead-email">Work email</label><input id="lead-email" name="email" type="email" autocomplete="email" maxlength="254" required></div>
+        </div>
+        <div class="field"><label for="lead-org">Company or lab <span class="optional">(optional)</span></label><input id="lead-org" name="organisation" type="text" autocomplete="organization" maxlength="160"></div>
+        <fieldset>
+          <legend>I'm interested in</legend>
+          <div class="choices">
+            <label><input type="checkbox" name="interest" value="data">A data pilot</label>
+            <label><input type="checkbox" name="interest" value="grip-one">Grip One, $300</label>
+            <label><input type="checkbox" name="interest" value="headset">View One, $250</label>
+          </div>
+        </fieldset>
+        <div class="trap" aria-hidden="true"><label for="lead-website">Leave this field empty</label><input id="lead-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <label class="consent"><input type="checkbox" name="consent" value="yes" required><span>Vernia Labs may email me about what I selected. Reserving takes no payment. I can ask to be removed at any time. Read the <a href="privacy.html">privacy notice</a>.</span></label>
+        <div id="security-check"></div>
+        <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        <button class="btn btn-ink" type="submit" id="lead-submit">Send</button>
+      </form>
+      <div class="lead done" id="lead-done" hidden tabindex="-1">
+        <h3>Thank you.</h3>
+        <p id="lead-done-msg">We have your details and will reply by email.</p>
+      </div>
+    </div>
+  </section>
   </main>
-  <footer><a class="brand" href="#home" aria-label="Vernia Labs home"><img class="brand-lockup" src="assets/brand/vernia-logo-footer.webp" width="384" height="384" alt="Vernia.in" loading="lazy"></a><p>Physical intelligence. Human beginnings.</p><span>© <span id="year">2026</span> Vernia Labs</span><a class="footer-policy" href="privacy.html">Privacy</a><a href="#home">Back to top ↑</a></footer>
+
+  <footer class="wrap foot">
+    <span>© 2026 Vernia Labs</span>
+    <nav aria-label="Footer"><a href="hardware.html">Grip One CAD explorer</a><a href="privacy.html">Privacy</a><a href="#main">Back to top</a></nav>
+  </footer>
   <!-- Cloudflare Web Analytics: public site token; no form fields are sent. -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"bb77381b2d524f4d95a134a748b5c096"}'></script>
 </body>
