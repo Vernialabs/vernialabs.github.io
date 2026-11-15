@@ -392,7 +392,7 @@ function startGame(gltf) {
   }
 
   const hoverY = 2 * maxR + .07;
-  const st = { x: 0, z: 0, tx: 0, tz: 0, y: hoverY, ty: hoverY, closure: 0, squeeze: 0, held: null, target: null, mode: 'free', grip: false, keys: new Set() };
+  const st = { x: 0, z: 0, tx: 0, tz: 0, y: hoverY, ty: hoverY, closure: 0, squeeze: 0, held: null, target: null, mode: 'free', grip: false, pending: null, keys: new Set() };
   const rec = { on: false, done: false, t0: 0, last: 0, samples: [], grasps: 0, path: 0, prev: null };
   function place() {
     const lim = xLim - .05;
@@ -421,7 +421,19 @@ function startGame(gltf) {
     if (ray.ray.intersectPlane(plane, hit)) { st.tx = hit.x; st.tz = hit.z; start(); }
   }
   stage.addEventListener('pointermove', aimAt);
-  stage.addEventListener('pointerdown', e => { aimAt(e); if (e.pointerType === 'mouse' && e.button === 0) { e.preventDefault(); grip(true); } });
+  let touch = null;
+  stage.addEventListener('pointerdown', e => {
+    aimAt(e);
+    if (e.pointerType === 'mouse') { if (e.button === 0) { e.preventDefault(); grip(true); } return; }
+    touch = { x: e.clientX, y: e.clientY };
+  });
+  // on touch, a tap sends the gripper to that spot, then picks up or puts down
+  stage.addEventListener('pointerup', e => {
+    if (e.pointerType === 'mouse' || !touch) return;
+    const moved = Math.hypot(e.clientX - touch.x, e.clientY - touch.y); touch = null;
+    if (moved < 14) st.pending = st.held || st.grip ? 'release' : 'grab';
+  });
+  stage.addEventListener('pointercancel', () => { touch = null; });
   addEventListener('pointerup', e => { if (e.pointerType === 'mouse') grip(false); });
   const gb = $('#grip-btn');
   gb.addEventListener('pointerdown', e => { e.preventDefault(); gb.setPointerCapture(e.pointerId); grip(true); });
@@ -483,14 +495,17 @@ function startGame(gltf) {
   }
   $('#again').addEventListener('click', () => {
     Object.assign(rec, { on: false, done: false, samples: [], grasps: 0, path: 0, prev: null });
-    Object.assign(st, { held: null, target: null, mode: 'free', closure: 0, squeeze: 0, grip: false });
+    Object.assign(st, { held: null, target: null, mode: 'free', closure: 0, squeeze: 0, grip: false, pending: null });
     place(); $('#summary').hidden = true; $('#again').hidden = true; gb.hidden = false; $('#report').hidden = true;
     stage.classList.remove('is-playing');
-    $('#rec-status').textContent = 'Move over the table to start recording.';
+    $('#rec-status').textContent = idleText;
     stage.focus({ preventScroll: true });
   });
 
-  $('#game-msg').textContent = matchMedia('(pointer: coarse)').matches ? 'Drag to aim. Hold the grip button.' : 'Move to aim. Hold the mouse button or Space to grip.';
+  const coarse = matchMedia('(pointer: coarse)').matches;
+  const idleText = coarse ? 'Tap a fruit to pick it up, then tap the bowl.' : 'Move over the table to start recording.';
+  $('#rec-status').textContent = idleText;
+  $('#game-msg').textContent = coarse ? 'Tap a fruit, then tap the bowl.' : 'Move to aim. Hold the mouse button or Space to grip.';
   fe.hidden = false;
 
   const tmp = V3(), camP = V3(), look = V3();
@@ -505,6 +520,7 @@ function startGame(gltf) {
     if (st.keys.has('ArrowDown')) st.tz += k;
     st.tx = clamp(st.tx, -xLim, xLim); st.tz = clamp(st.tz, -zLim, zLim);
     st.x += (st.tx - st.x) * Math.min(1, dt * 10); st.z += (st.tz - st.z) * Math.min(1, dt * 10);
+    if (st.pending && Math.hypot(st.tx - st.x, st.tz - st.z) < .008) { const p = st.pending; st.pending = null; grip(p === 'grab'); }
 
     const held = st.held;
     const hx = st.x + (held ? held.hold.x : 0), hz = st.z + (held ? held.hold.z : 0);
