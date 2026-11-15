@@ -163,14 +163,15 @@ h2{font-size:clamp(34px,4.4vw,64px)}
 .rows h3{font-size:clamp(28px,3.2vw,44px)}
 .rows p{font-size:19px;max-width:30em}
 @media (max-width:760px){.rows li{grid-template-columns:minmax(0,1fr)}}
-.places{border-radius:28px;background:var(--ink);color:var(--on-ink);padding-block:112px;margin-inline:clamp(0px,1.5vw,24px)}
-.places-list{list-style:none;margin:0 0 64px;padding:0;font-family:var(--serif);font-weight:300;font-size:clamp(44px,8.2vw,132px);line-height:.98;letter-spacing:-.03em}
-.places-list li:nth-child(even){padding-left:14%;color:var(--on-ink-2)}
-.places-copy{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:24px 48px;border-top:1px solid var(--on-ink-2);padding-top:32px}
-.places-copy h2{font-size:clamp(30px,3.4vw,48px)}
-.places-copy div{display:flex;flex-direction:column;gap:18px;font-size:18px;color:var(--on-ink-2)}
-.places-copy div p:first-child{color:var(--on-ink)}
-@media (max-width:760px){.places{padding-block:72px}.places-copy{grid-template-columns:minmax(0,1fr)}.places-list li:nth-child(even){padding-left:8%}}
+.places{border-radius:28px;background:var(--paper);color:var(--ink);padding-block:112px;margin-inline:clamp(0px,1.5vw,24px)}
+.places .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:40px 72px;align-items:start}
+.places-list{order:2;list-style:none;margin:0;padding:0;font-family:var(--serif);font-weight:300;font-size:clamp(24px,2.3vw,32px);line-height:1.25;letter-spacing:-.015em;border-bottom:1px solid var(--line)}
+.places-list li{border-top:1px solid var(--line);padding-block:14px}
+.places-copy{order:1;display:flex;flex-direction:column;gap:22px}
+.places-copy h2{font-size:clamp(34px,3.8vw,56px)}
+.places-copy div{display:flex;flex-direction:column;gap:16px;font-size:18px;color:var(--ink-2);max-width:30em}
+.places-copy div p:first-child{color:var(--ink)}
+@media (max-width:860px){.places{padding-block:72px}.places .wrap{grid-template-columns:minmax(0,1fr)}}
 .spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px;margin:56px 0 0}
 .spec div{border-top:1px solid var(--ink);padding-block:20px 36px}
 .spec dt{font-size:22px;font-weight:620;font-stretch:108%;letter-spacing:-.015em}
