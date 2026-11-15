@@ -8,7 +8,7 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 ## Files
 
-- `index.html`: product-led company homepage with interactive Grip One, company vision, and Hardware / Data lineup.
+- `index.html`: product-led company homepage with scroll-driven Grip One, company vision, and Hardware / Data lineup.
 - `home.css`: scoped full-width product cover, responsive layout, and editorial lineup styling.
 - `hardware.html`: Grip One with interactive 3D, followed by tactile gloves marked Coming soon.
 - `styles.css`: responsive layouts, visual design, and motion preferences.
@@ -25,7 +25,7 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 The homepage immediately introduces Grip One to physical AI researchers, then explains Vernia’s data-layer focus. The Hardware page provides product details. Main navigation links to Our vision, Hardware, and Data. Data remains a compact coming-soon section, without a catalog or platform claims. Existing `/#grip-one` links redirect to `hardware.html#grip-one`. Product and general inquiries open the owner's email client; no form or waitlist collects data.
 
-The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage now opens with Grip One in a full-width product cover: oversized typography, a diagonal lavender light field, and the metallic CAD at its centre. Visitors can rotate, close, reset, and pause the gripper. The primary CTA opens `hardware.html#grip-one`; a secondary action opens a product email inquiry. A concise human / hardware / data explanation leads to a three-row lineup for Grip One, tactile gloves, and Data. The latter two are clearly marked Coming soon. The earlier hand animation files remain archived in the repository and are no longer requested by the homepage. Reduced-motion preferences stop automatic movement; the product poster covers unavailable JavaScript/WebGL. Product motion stops offscreen and in background tabs.
+The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage now opens with Grip One in a full-width product cover: oversized typography, a diagonal lavender light field, and the metallic CAD at its centre. A larger gripper rotates through roughly 120 degrees as visitors scroll through the opening cover. Exponential interpolation eases the motion; it settles when scrolling stops and reverses when visitors scroll up. No drag, close, reset, or pause controls appear on the homepage. The Hardware page retains its interactive product viewer. The primary CTA opens `hardware.html#grip-one`; a secondary action opens a product email inquiry. A concise human / hardware / data explanation leads to a three-row lineup for Grip One, tactile gloves, and Data. The latter two are clearly marked Coming soon. The earlier hand animation files remain archived in the repository and are no longer requested by the homepage. Reduced-motion preferences disable homepage rotation and its extended scroll section. The product poster covers unavailable JavaScript/WebGL without an extended scroll section. Homepage body copy is at least 16px, secondary labels are 11–12px, and contrast is strengthened across the hero, lineup, and contact sections. Product motion stops offscreen and in background tabs.
 
 | Claim | Source / date | Status | Public wording / location |
 | --- | --- | --- | --- |
@@ -48,7 +48,7 @@ The site deliberately leaves hardware specifications, shipping terms, headquarte
 
 ## Verification
 
-Browser checks cover desktop and mobile layouts (1440, 1024, 768, 760, 640, 390, and 320 px), WebGL rendering, gripper open/close and reset, keyboard rotation, mobile navigation, contact links, anchor targets, reduced motion, and the static fallback. The renderer pauses offscreen and in background tabs, and caps rendering at approximately 30 fps. The Pause motion control stops automatic model movement.
+Browser checks cover desktop and mobile layouts (1920, 1440, 1024, 768, 640, 390, 360, and 320 px), 200% zoom, smooth scroll rotation and reversal, settling at rest, readable body text, WebGL rendering, gripper open/close and reset, keyboard rotation, mobile navigation, contact links, anchor targets, reduced motion, and the static fallback. The renderer pauses offscreen and in background tabs, and caps rendering at approximately 30 fps. The Pause motion control stops automatic model movement.
 
 ## Brand assets
 

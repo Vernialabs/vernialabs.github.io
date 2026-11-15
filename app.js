@@ -16,12 +16,12 @@ motionButton?.addEventListener('click', () => { paused = !paused; syncMotion(); 
 reducedMotion.addEventListener('change', event => { paused = event.matches; syncMotion(); });
 document.querySelector('#year').textContent = new Date().getFullYear();
 
-const hero = document.querySelector('.hero');
+const hero = document.querySelector('.instrument-hero');
 let heroProgress = 0;
 function updateHeroProgress() {
-  if (!hero || paused || reducedMotion.matches) return;
-  heroProgress = Math.max(0, Math.min(1, -hero.getBoundingClientRect().top / hero.offsetHeight));
-  hero.style.setProperty('--headline-shift', `${heroProgress * -45}px`);
+  if (!hero) return;
+  const travel = Math.max(1, hero.offsetHeight - innerHeight);
+  heroProgress = Math.max(0, Math.min(1, -hero.getBoundingClientRect().top / travel));
 }
 window.addEventListener('scroll', updateHeroProgress, { passive: true });
 window.addEventListener('resize', updateHeroProgress, { passive: true });
@@ -126,6 +126,7 @@ if (document.querySelector('.model-stage')) Promise.all([
 
   const views = [];
   function makeView(id, interactive) {
+    const scrollDriven = id === 'hero-model' && !!hero;
     const stage = document.getElementById(id);
     if (!stage) return;
     let renderer;
@@ -146,23 +147,25 @@ if (document.querySelector('.model-stage')) Promise.all([
     const rim = new THREE.DirectionalLight('#ffffff', 1.5); rim.position.set(-4, -1, -2); scene.add(rim);
     const camera = new THREE.PerspectiveCamera(34, 1, .1, 40); camera.position.set(0, 0, 8.3);
     const { group, setGrip } = createGripper(); scene.add(group);
-    const initial = { x: interactive ? .28 : .2, y: interactive ? 2.65 : 2.35, z: interactive ? -.18 : -.12 };
+    const initial = { x: .28, y: 2.65, z: -.18 };
     group.rotation.set(initial.x, initial.y, initial.z);
-    const view = { stage, renderer, scene, camera, group, setGrip, closure: 0, initial, interactive, visible: true, closed: false, dragged: false, angle: initial.y, tilt: initial.x, tick: 0, dirty: true };
+    const view = { stage, renderer, scene, camera, group, setGrip, closure: 0, initial, interactive, scrollDriven, scrollProgress: 0, visible: true, closed: false, dragged: false, angle: initial.y, tilt: initial.x, tick: 0, dirty: true };
     function resize() {
       const { width, height } = stage.getBoundingClientRect();
       if (!width || !height) return;
       renderer.setSize(width, height); camera.aspect = width / height;
       // Fit the diagonal silhouette on both portrait phones and wide desktop stages.
-      camera.position.z = Math.max(interactive ? 8.1 : 7.6, 7.8 / camera.aspect);
+      camera.position.z = scrollDriven ? Math.max(7.5, 7.3 / camera.aspect) : Math.max(8.1, 7.8 / camera.aspect);
       camera.updateProjectionMatrix(); view.dirty = true;
     }
     new ResizeObserver(resize).observe(stage); resize();
     new IntersectionObserver(entries => { view.visible = entries[0].isIntersecting; view.dirty = true; }).observe(stage);
     renderer.render(scene, camera); stage.classList.add('loaded');
+    if (scrollDriven) { hero.classList.add('scroll-ready'); updateHeroProgress(); }
     if (motionButton) motionButton.disabled = false;
     renderer.domElement.addEventListener('webglcontextlost', event => {
       event.preventDefault(); stage.classList.remove('loaded'); view.visible = false;
+      if (scrollDriven) hero.classList.remove('scroll-ready');
       if (motionButton) motionButton.disabled = true;
       if (interactive) { document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; document.querySelector('#grip-toggle').disabled = true; document.querySelector('#view-reset').disabled = true; }
     });
@@ -185,9 +188,20 @@ if (document.querySelector('.model-stage')) Promise.all([
   function animate(now) {
     requestAnimationFrame(animate);
     if (document.hidden || now - last < 32) return;
-    const dt = Math.min((now - last) / 1000, .05); last = now;
+    const frameDt = Math.min((now - last) / 1000, .25);
+    const dt = Math.min(frameDt, .05); last = now;
     for (const v of views) {
       if (!v.visible) continue;
+      if (v.scrollDriven) {
+        const targetProgress = reducedMotion.matches ? 0 : heroProgress;
+        const delta = targetProgress - v.scrollProgress;
+        if (delta === 0 && !v.dirty) continue;
+        v.scrollProgress = Math.abs(delta) < .0001 ? targetProgress : v.scrollProgress + delta * (1 - Math.exp(-frameDt * 10));
+        const turn = v.scrollProgress * v.scrollProgress * (3 - 2 * v.scrollProgress);
+        v.group.rotation.set(v.initial.x - turn * .22, v.initial.y + turn * 2.1, v.initial.z + turn * .28);
+        v.renderer.render(v.scene, v.camera); v.dirty = false;
+        continue;
+      }
       const moving = !paused && (!v.interactive || !v.dragged);
       const target = v.closed ? 1 : 0;
       const gripping = Math.abs(v.closure - target) > .001;

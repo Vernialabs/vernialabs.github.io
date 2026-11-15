@@ -1,32 +1,25 @@
-/* Grip One: a full-width product cover, with an interactive object at its centre. */
-.instrument-home{--paper:#f3f1ed;--ink:#201e25;--line:#d8d4d9}
+/* Scroll-led product cover. The object rests whenever the page does. */
+.instrument-home{--paper:#f3f1ed;--ink:#201e25;--line:#d8d4d9;--cover-height:clamp(960px,100svh,1120px)}
 .instrument-home .site-header{background:#17151c}
-.instrument-hero{position:relative;isolation:isolate;overflow:hidden;background:#17151c;color:#f4f1f5;padding:122px var(--pad) 0;min-height:850px}
-.instrument-topline{display:flex;justify-content:space-between;gap:24px;font:9px/1.6 var(--mono);letter-spacing:1.4px;color:#bcb3c9;position:relative;z-index:3}
-.instrument-hero h1{position:relative;z-index:1;display:flex;justify-content:space-between;font-size:clamp(110px,21vw,340px);line-height:.9;letter-spacing:-.08em;margin:28px 0 0;font-weight:400;pointer-events:none}
+.instrument-home .site-header nav,.instrument-home .header-contact{font-size:14px}
+.instrument-hero{position:relative;isolation:isolate;background:#17151c;color:#f4f1f5;height:var(--cover-height)}
+.instrument-hero.scroll-ready{height:calc(var(--cover-height) + 70svh)}
+.instrument-cover{position:relative;height:var(--cover-height);overflow:hidden;padding:122px var(--pad) 0}
+.scroll-ready .instrument-cover{position:sticky;top:min(0px,calc(100svh - var(--cover-height)))}
+.instrument-topline{display:flex;justify-content:space-between;gap:24px;font-size:14px;line-height:1.6;color:#c9bed5;position:relative;z-index:3}
+.instrument-hero h1{position:relative;z-index:1;display:flex;justify-content:space-between;font-size:clamp(110px,20vw,320px);line-height:.9;letter-spacing:-.075em;margin:28px 0 0;font-weight:400;pointer-events:none}
 .instrument-hero h1 span{color:#c5b1eb}
 .instrument-subtitle{display:none}
-.instrument-light{position:absolute;width:31%;height:500px;left:37%;top:210px;transform:skewX(-18deg);background:linear-gradient(150deg,#b29cdb22,#b29cdb08 65%,transparent);border-left:1px solid #c4a7ef38;border-right:1px solid #c4a7ef16;z-index:0;pointer-events:none}
-.instrument-model{inset:215px 21% auto;height:470px;z-index:2;cursor:grab;touch-action:pan-y}
-.instrument-model:active{cursor:grabbing}
-.instrument-note{position:absolute;left:var(--pad);top:490px;z-index:3;pointer-events:none}
-.instrument-note .eyebrow{font-size:8px;letter-spacing:1.4px;color:#a193b3}
-.instrument-note p{margin-top:15px;font-size:clamp(20px,2.1vw,34px);line-height:1.16;letter-spacing:-.04em}
-.instrument-index{position:absolute;right:var(--pad);top:485px;display:flex;flex-direction:column;align-items:flex-end;color:#c3afd9;pointer-events:none}
-.instrument-index>span{font:italic 76px/.9 Georgia,serif;letter-spacing:-7px}
-.instrument-index i{font:8px var(--mono);letter-spacing:1.4px;margin-top:20px}
-.instrument-tools{position:relative;z-index:4;display:flex;justify-content:center;align-items:center;gap:22px;margin-top:270px;min-height:44px}
-.instrument-tools>span{font:8px var(--mono);letter-spacing:1px;color:#c0b0cf}
-.instrument-tools>div{display:flex;align-items:center;gap:8px}
-.instrument-tools button{font-size:10px;border:1px solid #ffffff30;background:#ffffff05;padding:9px 14px;border-radius:30px;color:#ddd3e9}
-.instrument-tools button:hover:enabled{background:#ffffff16}
-.instrument-tools .motion-toggle{min-width:115px}
-.instrument-bottom{position:relative;z-index:3;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:30px;margin-top:25px;padding:28px 0 34px;border-top:1px solid #ffffff24}
-.instrument-bottom .eyebrow{font-size:8px;color:#ac9bbe;letter-spacing:1.2px}
-.instrument-bottom p{font-size:14px;line-height:1.6;margin-top:9px;color:#e0dae6}
-.instrument-bottom .button{background:#d5c4f1;border-radius:0;min-width:225px;padding:19px 24px}
+.instrument-light{position:absolute;width:36%;left:34%;top:210px;bottom:170px;transform:skewX(-18deg);background:linear-gradient(150deg,#b29cdb22,#b29cdb08 65%,transparent);border-left:1px solid #c4a7ef38;border-right:1px solid #c4a7ef16;z-index:0;pointer-events:none}
+.instrument-model{inset:220px 13% 175px;z-index:2;pointer-events:none}
+.instrument-note{position:absolute;left:var(--pad);top:515px;z-index:3;pointer-events:none}
+.instrument-note p{font-size:clamp(18px,1.6vw,25px);line-height:1.4;letter-spacing:-.025em;color:#e0d6ec}
+.instrument-bottom{position:absolute;left:var(--pad);right:var(--pad);bottom:0;z-index:3;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:30px;padding:28px 0 34px;border-top:1px solid #ffffff30}
+.instrument-bottom .eyebrow{font-size:12px;color:#c9b8dd;letter-spacing:1px;line-height:1.6}
+.instrument-bottom p{font-size:17px;line-height:1.65;margin-top:10px;color:#eee8f5}
+.instrument-bottom .button{font-size:15px;background:#d5c4f1;border-radius:0;min-width:225px;padding:20px 24px}
 .instrument-bottom .button:hover{background:#ece1ff}
-.instrument-inquiry{justify-self:end;display:flex;gap:22px;font-size:11px;color:#d5c9e2;padding:16px 0}
+.instrument-inquiry{justify-self:end;display:flex;gap:22px;font-size:15px;color:#e0d4ec;padding:16px 0}
 .instrument-inquiry:hover{text-decoration:underline;text-underline-offset:5px}
 .field-story{padding-top:94px;padding-bottom:90px}
 .field-heading{display:grid;grid-template-columns:1.45fr 1fr;gap:8%;margin-top:44px;align-items:start}
@@ -58,21 +51,35 @@ a.collection-row:hover{padding-left:16px;padding-right:16px;background:#f5eef780
 .instrument-home .contact .section-kicker,.instrument-home .contact-bottom p{color:#bcb0ca}
 .instrument-home .contact-title .serif,.instrument-home .contact-arrow{color:#cbb5e9}
 .instrument-home .contact-bottom{border-color:#ffffff25}
-@media(min-width:1700px){.instrument-hero{min-height:1000px}.instrument-model{top:270px;height:580px}.instrument-tools{margin-top:390px}.instrument-note,.instrument-index{top:600px}}
-@media(max-width:1100px){.instrument-hero{padding-top:114px;min-height:770px}.instrument-model{top:205px;height:405px;left:19%;right:19%}.instrument-note,.instrument-index{top:400px}.instrument-tools{margin-top:320px}.instrument-note p{font-size:22px}.instrument-index>span{font-size:60px}.instrument-bottom{gap:20px}.instrument-bottom p{font-size:12px}.instrument-inquiry{font-size:10px;gap:12px}.collection-row{grid-template-columns:40px 1.3fr 1fr auto;gap:18px}}
-@media(max-width:760px){
- .instrument-hero{padding:108px 24px 0;min-height:0}.instrument-topline{font-size:8px;letter-spacing:.6px}.instrument-topline>span{display:none}
- .instrument-hero h1{font-size:21.5vw;margin-top:25px;letter-spacing:-.075em}
- .instrument-light{top:190px;left:24%;width:55%;height:340px}
- .instrument-model{top:252px;height:340px;left:0;right:0}
- .instrument-subtitle{display:block;margin-top:18px;font-size:12px;line-height:1.5;color:#c6b7d5;position:relative;z-index:3}
- .instrument-note,.instrument-index{display:none}
- .instrument-tools{margin-top:355px;flex-direction:column;gap:12px}.instrument-tools button{font-size:10px;padding:10px 14px}.instrument-tools>span{font-size:8px}
- .instrument-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:22px;margin-top:25px;padding:26px 0 28px}.instrument-bottom>div{width:100%}.instrument-bottom p{font-size:15px}.instrument-bottom .button{min-width:210px;padding:17px 20px}.instrument-inquiry{font-size:11px}
- .field-story{padding-top:60px;padding-bottom:60px}.field-heading{grid-template-columns:1fr;gap:30px;margin-top:32px}.field-heading h2{font-size:clamp(37px,7vw,55px)}.field-heading>div{max-width:100%}.field-heading p{font-size:16px}
- .field-sequence{grid-template-columns:1fr;margin-top:42px}.field-sequence article,.field-sequence article+article{padding:24px 0;border-left:0}.field-sequence article+article{border-top:1px solid var(--line)}.field-sequence h3{margin:16px 0 10px}.field-sequence p{max-width:100%;font-size:14px}
- .collection{padding-top:50px;padding-bottom:60px}.collection-heading{display:block;margin-bottom:40px}.collection-heading h2{width:auto;margin-top:30px;font-size:43px}
- .collection-row{grid-template-columns:26px 1fr auto;gap:12px;padding:26px 0}.collection-row p{grid-column:2;grid-row:2;font-size:12px}.collection-row .availability,.collection-link{grid-column:3;grid-row:1 / 3;font-size:8px}.collection-link{gap:12px}.collection-row h3{font-size:32px}.collection-row .eyebrow{font-size:7px;letter-spacing:.6px}.collection-number{font-size:20px}.collection-row .availability{padding:6px 8px}
+
+/* Labels are secondary, but never miniature. */
+.instrument-home .section-kicker{font-size:12px;letter-spacing:.8px;line-height:1.7}
+.field-heading p+p,.field-sequence p,.collection-row p{font-size:16px;line-height:1.7;color:#5f5668}
+.field-sequence article>span,.collection-row .eyebrow{font-size:11px;line-height:1.6;letter-spacing:.6px;color:#695675}
+.field-link,.collection-link{font-size:15px}
+.collection-row .availability{font-size:12px;color:#655075;padding:9px 13px}
+.instrument-home .contact-bottom p,.instrument-home .contact-bottom>div{font-size:16px;line-height:1.7}
+.instrument-home footer>p,.instrument-home footer>span,.instrument-home footer>a:last-child{font-size:12px;line-height:1.6}
+@media(min-width:1700px){.instrument-model{top:255px}.instrument-note{top:550px}}
+@media(max-width:1100px){
+ .instrument-home{--cover-height:900px}.instrument-cover{padding-top:114px}.instrument-model{top:215px;left:8%;right:8%;bottom:190px}
+ .instrument-note{display:none}.instrument-topline{font-size:13px}.instrument-bottom{gap:20px}.instrument-bottom p{font-size:16px}.instrument-inquiry{font-size:14px;gap:12px}
+ .collection-row{grid-template-columns:40px 1.3fr 1fr auto;gap:18px}
 }
-@media(min-width:521px) and (max-width:760px){.instrument-model{top:300px}.instrument-light{top:290px}}
-@media(max-width:390px){.instrument-tools button{padding:9px 11px}.instrument-bottom .button{width:100%}.instrument-inquiry{padding:0}.collection-row{column-gap:9px}.collection-row h3{font-size:28px}.collection-row .availability{font-size:7px;padding:5px}.collection-row .eyebrow{font-size:6px}}
+@media(max-width:760px){
+ .instrument-home{--cover-height:960px}.instrument-cover{padding:108px 24px 0}.instrument-topline{font-size:13px;line-height:1.5}.instrument-topline>span{display:none}
+ .instrument-home .site-header nav{font-size:14px;gap:18px}.instrument-home .header-contact{font-size:12px}
+ .instrument-hero h1{font-size:21.5vw;margin-top:25px;letter-spacing:-.075em}
+ .instrument-subtitle{display:block;margin-top:18px;font-size:15px;line-height:1.6;color:#d4c7e1;position:relative;z-index:3}
+ .instrument-light{top:245px;left:24%;width:55%;bottom:295px}
+ .instrument-model{top:280px;bottom:285px;left:0;right:0}
+ .instrument-bottom{left:24px;right:24px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:19px;padding:25px 0 30px}.instrument-bottom>div{width:100%}.instrument-bottom p{font-size:16px}.instrument-bottom .button{min-width:210px;padding:17px 20px}.instrument-inquiry{font-size:14px;padding:0}
+ .field-story{padding-top:60px;padding-bottom:60px}.field-heading{grid-template-columns:1fr;gap:30px;margin-top:32px}.field-heading h2{font-size:clamp(37px,7vw,55px)}.field-heading>div{max-width:100%}.field-heading p{font-size:18px}
+ .field-sequence{grid-template-columns:1fr;margin-top:42px}.field-sequence article,.field-sequence article+article{padding:24px 0;border-left:0}.field-sequence article+article{border-top:1px solid var(--line)}.field-sequence h3{margin:16px 0 10px;font-size:24px}.field-sequence p{max-width:100%}
+ .collection{padding-top:50px;padding-bottom:60px}.collection-heading{display:block;margin-bottom:40px}.collection-heading h2{width:auto;margin-top:30px;font-size:43px}
+ .collection-row{grid-template-columns:28px 1fr;gap:12px 16px;padding:28px 0}.collection-row p{grid-column:2;grid-row:2}.collection-row .availability,.collection-link{grid-column:2;grid-row:3;justify-self:start}.collection-link{gap:20px}.collection-row h3{font-size:38px}.collection-number{font-size:23px}.collection-row .availability{font-size:12px}
+ .instrument-home .contact-bottom>div{font-size:14px}.instrument-home .contact-bottom a{gap:8px;overflow-wrap:anywhere}
+}
+@media(min-width:521px) and (max-width:760px){.instrument-model{top:325px}.instrument-light{top:300px}}
+@media(max-width:520px){.instrument-bottom .button{width:100%}.instrument-home .site-header nav{font-size:16px}.instrument-bottom .eyebrow{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.instrument-hero.scroll-ready{height:var(--cover-height)}.scroll-ready .instrument-cover{position:relative;top:0}}
