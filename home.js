@@ -283,26 +283,18 @@ function startGame(gltf) {
   const navy = new THREE.MeshStandardMaterial({ color: '#2a2f55', roughness: .4, metalness: .35 });
   const frame = new THREE.Mesh(new RoundedBoxGeometry(.72, .014, .42, 3, .006), navy);
   frame.position.y = -.037; frame.castShadow = true; scene.add(frame);
-  // four drone arms carry the table, each with a motor and a two-blade propeller
-  const armMat = new THREE.MeshPhysicalMaterial({ color: '#c9ced8', metalness: .9, roughness: .3, clearcoat: .3 });
-  const motorMat = new THREE.MeshStandardMaterial({ color: '#2b2f45', roughness: .45, metalness: .5 });
-  const bladeMat = new THREE.MeshStandardMaterial({ color: '#2b2f45', roughness: .4, metalness: .2 });
-  const blurMat = new THREE.MeshBasicMaterial({ color: '#c9d1f2', transparent: true, opacity: .32, depthWrite: false, side: THREE.DoubleSide });
-  const rotors = [];
-  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
-    const from = V3(sx * .34, -.03, sz * .2), to = V3(sx * .45, -.012, sz * .3);
-    const arm = new THREE.Mesh(new THREE.CylinderGeometry(.007, .009, from.distanceTo(to), 12), armMat);
-    arm.position.copy(from).add(to).multiplyScalar(.5);
-    arm.quaternion.setFromUnitVectors(V3(0, 1, 0), to.clone().sub(from).normalize());
-    const motor = new THREE.Mesh(new THREE.CylinderGeometry(.016, .018, .026, 20), motorMat); motor.position.copy(to);
-    const bell = new THREE.Mesh(new THREE.CylinderGeometry(.012, .016, .008, 20), armMat); bell.position.set(to.x, to.y + .017, to.z);
-    const rotor = new THREE.Group(); rotor.position.set(to.x, to.y + .025, to.z);
-    rotor.add(new THREE.Mesh(new THREE.CylinderGeometry(.005, .005, .006, 12), motorMat));
-    for (const k of [-1, 1]) { const b = new THREE.Mesh(new THREE.BoxGeometry(.07, .0025, .015), bladeMat); b.position.x = k * .037; b.rotation.x = k * .22; rotor.add(b); }
-    const blur = new THREE.Mesh(new THREE.CircleGeometry(.075, 48), blurMat); blur.rotation.x = -Math.PI / 2; blur.position.set(to.x, to.y + .026, to.z);
-    for (const m of [arm, motor, bell]) { m.castShadow = true; scene.add(m); }
-    rotor.traverse(o => { if (o.isMesh) o.castShadow = true; });
-    scene.add(rotor, blur); rotors.push(rotor);
+  // the table rests on a soft cloud of overlapping puffs, lit by the same sun
+  const cloud = new THREE.Group(); scene.add(cloud);
+  const puffMat = new THREE.MeshStandardMaterial({ color: '#f3f1fb', roughness: 1, emissive: '#c3cbef', emissiveIntensity: .16 });
+  const puffGeo = new THREE.IcosahedronGeometry(1, 3);
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 34; i++) {
+    const a = rnd() * Math.PI * 2, rim = i < 22, rr = rim ? .82 + rnd() * .22 : rnd() * .6;
+    const r = rim ? .07 + rnd() * .05 : .1 + rnd() * .06;
+    const puff = new THREE.Mesh(puffGeo, puffMat);
+    puff.position.set(Math.cos(a) * .44 * rr, -.07 - rnd() * .07 - (rim ? 0 : .04), Math.sin(a) * .27 * rr);
+    puff.scale.set(r * 1.25, r * .8, r);
+    puff.receiveShadow = true; cloud.add(puff);
   }
 
   // the gripper, jaws down, grasp point at the rig origin
@@ -348,7 +340,7 @@ function startGame(gltf) {
     const c = contactFor(r);
     return { kind, g, r, h: kind === 'apple' ? r * .92 : r, contact: c, hold: holdFor(c), inBowl: false, slot: -1, settle: null };
   }
-  const items = [fruit('apple', Math.min(rB * 1.08, w0 * .44)), fruit('orange', rB), fruit('lime', rB * .86)];
+  const items = [fruit('apple', Math.min(rB * 1.08, w0 * .44))];
   const maxR = Math.max(...items.map(i => i.r));
   const bowl = new THREE.Mesh(new THREE.LatheGeometry([
     [0, 0], [.05, 0], [.056, .004], [.088, .028], [.108, .058], [.112, .062], [.106, .062], [.084, .034], [.05, .013], [0, .013]
@@ -375,7 +367,7 @@ function startGame(gltf) {
     // the closest camera that still frames the table, all four propellers and the hovering gripper
     const el = THREE.MathUtils.degToRad(aspect < 1 ? 46 : 36), target = V3(0, .02, .03);
     const pts = [];
-    for (const sx of [-1, 1]) for (const sz of [-1, 1]) pts.push(V3(sx * .41, 0, sz * .26), V3(sx * .47, 0, sz * .32));
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) pts.push(V3(sx * .42, 0, sz * .26), V3(sx * .44, -.13, sz * .26));
     pts.push(V3(0, .24, -.18));
     const place = d => { camera.position.set(target.x, target.y + Math.sin(el) * d, target.z + Math.cos(el) * d); camera.lookAt(target); camera.updateMatrixWorld(); camera.updateProjectionMatrix(); };
     const ndc = () => pts.map(q => q.clone().project(camera));
@@ -389,7 +381,7 @@ function startGame(gltf) {
       target.z -= cy * .25;
     }
     place(d); camBase.copy(camera.position); void h;
-    const size = Math.round(Math.min(190, width * .27));
+    const size = Math.round(clamp(width * .18, 96, 130));
     fe.style.width = fe.style.height = size + 'px';
     view.fe = size;
   }
@@ -476,7 +468,7 @@ function startGame(gltf) {
   function finishEpisode() {
     rec.done = true; rec.on = false;
     const S = rec.samples, dur = S.length ? S[S.length - 1].t : 0;
-    $('#rec-status').textContent = 'Episode saved. All three in the bowl.';
+    $('#rec-status').textContent = 'Episode saved. The apple is in the bowl.';
     $('#r-time').textContent = dur.toFixed(1) + ' s';
     $('#r-frames').textContent = S.length;
     $('#r-path').textContent = Math.round(rec.path * 100) + ' cm';
@@ -500,7 +492,7 @@ function startGame(gltf) {
   view.tick = (now, dt) => {
     if (!view.visible) return;
     view.t += dt;
-    rotors.forEach((r, i) => { r.rotation.y += dt * (i % 2 ? -46 : 46); });
+    if (!reduceMotion) { cloud.position.y = Math.sin(view.t * .7) * .006; cloud.rotation.y = Math.sin(view.t * .25) * .03; }
     const k = .35 * dt;
     if (st.keys.has('ArrowLeft')) st.tx -= k;
     if (st.keys.has('ArrowRight')) st.tx += k;
@@ -576,7 +568,7 @@ function startGame(gltf) {
       rec.samples.push({ t: (now - rec.t0) / 1000, x: st.x, y: st.y, z: st.z, w, f });
       $('#v-jaw').textContent = Math.round(w) + ' mm';
       $('#v-force').textContent = f.toFixed(1) + ' N';
-      $('#rec-status').textContent = `Recording, ${((now - rec.t0) / 1000).toFixed(1)} s. ${items.filter(i => i.inBowl).length} of 3 in the bowl.`;
+      $('#rec-status').textContent = `Recording, ${((now - rec.t0) / 1000).toFixed(1)} s.`;
       spark($('#c-jaw'), 'w', w0 * 1000 * 1.05, false);
       spark($('#c-force'), 'f', 10, true);
     }
@@ -656,7 +648,7 @@ function buildReport(S) {
     '{',
     `  "index": ${k},`,
     `  "timestamp": ${f3(S[k].t)},`,
-    '  "task": "Put the fruit in the bowl",',
+    '  "task": "Put the apple in the bowl",',
     `  "observation.state": ${state(S[k])},`,
     `  "action": ${state(S[k + 1])},`,
     `  "observation.force": [${S[k].f.toFixed(2)}],`,
@@ -666,7 +658,7 @@ function buildReport(S) {
   ].join('\n');
   const pad = (a, b) => a.padEnd(34) + b;
   $('#layout').textContent = [
-    pad('vernia_fruit_bowl/', 'LeRobot v3'),
+    pad('vernia_apple_bowl/', 'LeRobot v3'),
     pad('  meta/info.json', `fps ${RATES.video}, state 8`),
     '  meta/stats.json',
     '  meta/tasks.parquet',
