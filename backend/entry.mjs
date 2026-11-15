@@ -5,6 +5,9 @@ import {collect,forwardPosthog} from './analytics.mjs';
 import adminHtml from './ui/index.html';
 import adminCss from './ui/admin.css';
 import adminJs from './ui/admin.js';
+import brandMark from '../assets/brand/vernia-mark.jpg';
+import favicon from '../favicon.svg';
+const brandBytes=Uint8Array.from(atob(brandMark.split(',')[1]),character=>character.charCodeAt(0));
 
 const signupHandler=createHandler(fetch,async(signup,row,env)=>{
   if(signup.analyticsSession) {
@@ -23,7 +26,7 @@ export default {
       if(['/admin/api/login','/admin/api/verify','/admin/api/logout'].includes(path)) return await authRoute(request,env);
       if(path==='/admin/api/data') return await dashboardData(request,env);
       if(path.startsWith('/admin/api/')) return json({error:'Not found'},404);
-      const asset={'/admin':[adminHtml,'text/html'],'/admin/':[adminHtml,'text/html'],'/admin/admin.css':[adminCss,'text/css'],'/admin/admin.js':[adminJs,'text/javascript']}[path];
+      const asset={'/admin/vernia-mark.jpg':[brandBytes,'image/jpeg'],'/admin/favicon.svg':[favicon,'image/svg+xml'],'/admin':[adminHtml,'text/html'],'/admin/':[adminHtml,'text/html'],'/admin/admin.css':[adminCss,'text/css'],'/admin/admin.js':[adminJs,'text/javascript']}[path];
       if(asset) return new Response(asset[0],{headers:{...secure,'Content-Type':asset[1]+'; charset=utf-8'}});
       const response=await signupHandler(request,env);
       if(path==='/waitlist' && response.status===201) ctx.waitUntil(drainOutbox(env).catch(()=>{}));
