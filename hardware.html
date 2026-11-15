@@ -18,18 +18,21 @@
   <link rel="canonical" href="https://vernia.in/hardware.html">
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=hardware5">
-  <link rel="stylesheet" href="home.css?v=hardware5">
+  <link rel="stylesheet" href="home.css?v=fit2">
   <link rel="stylesheet" href="hardware.css?v=hardware5">
-  <link rel="stylesheet" href="hardware-explorer.css?v=1">
+  <link rel="stylesheet" href="hardware-explorer.css?v=fit2">
   <link rel="stylesheet" href="production.css?v=1">
-  <script type="module" src="app.js?v=explorer1"></script>
+  <script type="module" src="app.js?v=fit2"></script>
+  <link rel="modulepreload" href="assets/vendor/three.module.min.js">
+  <link rel="modulepreload" href="assets/vendor/GLTFLoader.js">
+  <link rel="modulepreload" href="assets/vendor/BufferGeometryUtils.js">
   <link rel="stylesheet" href="analytics.css?v=1">
   <script type="module" src="analytics.js?v=2"></script>
 </head>
 <body class="hardware-page instrument-home hardware-refresh hardware-explorer">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header" id="home">
-    <a class="brand" href="index.html" aria-label="Vernia Labs home"><svg class="brand-mark" viewBox="100 200 1050 980" aria-hidden="true"><image href="assets/brand/vernia-mark.jpg" width="1254" height="1254"/></svg><span>vernia<span class="brand-labs">labs</span></span></a>
+    <a class="brand" href="index.html" aria-label="Vernia Labs home"><svg class="brand-mark" viewBox="100 200 1050 980" aria-hidden="true"><image href="assets/brand/vernia-mark.webp" width="1254" height="1254"/></svg><span>vernia<span class="brand-labs">labs</span></span></a>
     <nav aria-label="Main navigation" id="navigation"><a href="index.html#vision">Our vision</a><a href="hardware.html" aria-current="page">Hardware</a><a href="index.html#data">Data</a></nav>
     <a class="header-contact" href="waitlist.html?from=hardware">Join the waitlist <span aria-hidden="true">↗</span></a>
     <button class="menu-toggle" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
@@ -43,12 +46,12 @@
         <p class="showroom-copy">A handheld UMI gripper for collecting real-world manipulation demonstrations. See the scene, measure contact, and capture how the grip changes.</p>
         <div class="weight-note"><strong>200<span>g</span></strong><div>Device weight<br><span>Made for handheld capture.</span></div></div>
         <a class="button button-accent" href="waitlist.html?from=hardware&amp;interest=grip-one">Join the waitlist <span aria-hidden="true">↗</span></a>
-        <a class="showroom-detail-link" href="#specifications">Explore the sensors <span aria-hidden="true">↓</span></a>
+        <div class="showroom-links"><a class="showroom-detail-link" href="#cad-explorer">Explore the CAD <span aria-hidden="true">↓</span></a><a class="showroom-detail-link" href="#specifications">Specifications <span aria-hidden="true">↓</span></a></div>
       </div>
-      <div class="cad-explorer" aria-label="Grip One CAD explorer">
+      <div class="cad-explorer" id="cad-explorer" aria-label="Grip One CAD explorer">
         <div class="explorer-topline"><span>GRIP ONE / CAD EXPLORER</span><span class="cad-badge">3D MODEL</span></div>
         <div class="explorer-ground" aria-hidden="true"></div>
-        <div class="model-stage explorer-stage" id="product-model" tabindex="0" role="group" aria-label="Interactive Grip One CAD. Drag horizontally or use the arrow keys to rotate. Zoom and grip controls follow."><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.png" width="1000" height="1000" alt="The assembled Grip One reference CAD, showing the two camera modules, open frame, and opposing jaws" fetchpriority="high"></div>
+        <div class="model-stage explorer-stage" id="product-model" tabindex="0" role="group" aria-label="Interactive Grip One CAD. Drag horizontally or use the arrow keys to rotate. Zoom and grip controls follow."><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.webp" width="800" height="800" alt="The assembled Grip One reference CAD, showing the two camera modules, open frame, and opposing jaws" fetchpriority="high"></div>
         <div class="explorer-view-label"><span id="cad-view-label">Three-quarter view</span><span id="viewer-hint" role="status">Loading interactive model…</span></div>
         <div class="explorer-controls">
           <div class="view-presets" role="group" aria-label="Choose a CAD view"><button type="button" data-cad-view="perspective" aria-pressed="true" disabled>Overview</button><button type="button" data-cad-view="front" aria-pressed="false" disabled>Cameras</button><button type="button" data-cad-view="side" aria-pressed="false" disabled>Side</button><button type="button" data-cad-view="rear" aria-pressed="false" disabled>Rear</button></div>
@@ -62,7 +65,7 @@
       <span id="details" aria-hidden="true"></span>
       <div class="sensor-heading"><div><p class="section-kicker"><span class="tiny-cross">+</span> BUILT TO OBSERVE THE WHOLE ACTION</p><h2 id="specifications-title">More than<br><span class="serif">what a camera sees.</span></h2></div><p>Visual context, scene depth, contact force, and grip position. Four complementary signals describe what happens during a demonstration.</p></div>
       <div class="sensor-layout">
-        <figure class="sensor-study"><div class="study-grid" aria-hidden="true"></div><div class="study-title"><span>GRIP ONE</span><span>INSTRUMENTED BY DESIGN</span></div><img src="assets/models/grip-one/grip-one-poster-metal.png" width="1000" height="1000" alt="CAD study of Grip One's camera tower, frame and gripper mechanism" loading="lazy"><figcaption>One handheld tool.<br><em>Several ways to understand an action.</em></figcaption></figure>
+        <figure class="sensor-study"><div class="study-grid" aria-hidden="true"></div><div class="study-title"><span>GRIP ONE</span><span>INSTRUMENTED BY DESIGN</span></div><img src="assets/models/grip-one/grip-one-poster-metal.webp" width="800" height="800" alt="CAD study of Grip One's camera tower, frame and gripper mechanism" loading="lazy"><figcaption>One handheld tool.<br><em>Several ways to understand an action.</em></figcaption></figure>
         <dl class="sensor-specs">
           <div><dt><span class="spec-index">01</span><span>Fisheye camera<small>VISUAL CONTEXT</small></span><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="10"/><path d="M6 24h36M24 6c-12 10-12 26 0 36M24 6c12 10 12 26 0 36"/></svg></dt><dd>A wide view of the gripper and its surroundings, keeping the object and the wider scene in context.</dd></div>
           <div><dt><span class="spec-index">02</span><span>Depth camera<small>SPATIAL CONTEXT</small></span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 17 10v19L24 44 7 34V15Zm0 20v19M7 15l17 10 17-10M15 20l17-10"/></svg></dt><dd>Captures distance and scene geometry, adding a spatial dimension to the visual record of an interaction.</dd></div>
@@ -89,9 +92,9 @@
       <div class="hardware-next-row"><span class="hardware-next-number" aria-hidden="true">02</span><div><span class="availability">Coming soon</span><h2 id="tactile-title">Tactile <span class="serif">gloves.</span></h2><p>The next addition to Vernia’s hardware lineup.</p><a class="field-link" href="waitlist.html?from=hardware&amp;interest=tactile-gloves">Keep me updated <span aria-hidden="true">↗</span></a></div></div>
     </section>
     <section class="waitlist-band" aria-labelledby="waitlist-heading"><div><span class="eyebrow">STAY CLOSE TO WHAT’S NEXT</span><h2 id="waitlist-heading">Build with us, from the beginning.</h2><p>One waitlist for Grip One, tactile gloves, and Data.<br>Choose your interests. Hear from us as things take shape.</p></div><a class="button button-dark" href="waitlist.html?from=hardware">Join the waitlist <span aria-hidden="true">↗</span></a></section>
-    <section class="contact section-pad" id="contact"><div class="section-kicker reveal"><span class="tiny-cross">+</span> LET’S BUILD WHAT COMES NEXT</div><a class="contact-title reveal" href="mailto:ishan.upadhyay.iitb@gmail.com">Bring your<br><span class="serif">curiosity.</span><span class="contact-arrow" aria-hidden="true">↗</span></a><div class="contact-bottom reveal"><p>Exploring physical AI? Building a dataset?<br>We’d love to hear what you’re working on.</p><div><a href="mailto:ishan.upadhyay.iitb@gmail.com">ishan.upadhyay.iitb@gmail.com <span aria-hidden="true">↗</span></a><a href="tel:+918302952133">+91 83029 52133 <span aria-hidden="true">↗</span></a></div></div></section>
+    <section class="contact section-pad" id="contact"><div class="section-kicker reveal"><span class="tiny-cross">+</span> LET’S BUILD WHAT COMES NEXT</div><a class="contact-title reveal" href="mailto:team@vernia.in">Bring your<br><span class="serif">curiosity.</span><span class="contact-arrow" aria-hidden="true">↗</span></a><div class="contact-bottom reveal"><p>Exploring physical AI? Building a dataset?<br>We’d love to hear what you’re working on.</p><div><a href="mailto:team@vernia.in">team@vernia.in <span aria-hidden="true">↗</span></a><a href="tel:+918302952133">+91 83029 52133 <span aria-hidden="true">↗</span></a></div></div></section>
   </main>
-  <footer><a class="brand" href="index.html" aria-label="Vernia Labs home"><img class="brand-lockup" src="assets/brand/vernia-logo-transparent.png" width="1254" height="1254" alt="Vernia.in" loading="lazy"></a><p>Physical intelligence. Human beginnings.</p><span>© <span id="year">2026</span> Vernia Labs</span><a class="footer-policy" href="privacy.html">Privacy</a><a href="#home">Back to top ↑</a></footer>
+  <footer><a class="brand" href="index.html" aria-label="Vernia Labs home"><img class="brand-lockup" src="assets/brand/vernia-logo-footer.webp" width="384" height="384" alt="Vernia.in" loading="lazy"></a><p>Physical intelligence. Human beginnings.</p><span>© <span id="year">2026</span> Vernia Labs</span><a class="footer-policy" href="privacy.html">Privacy</a><a href="#home">Back to top ↑</a></footer>
   <!-- Cloudflare Web Analytics: public site token; no form fields are sent. -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"bb77381b2d524f4d95a134a748b5c096"}'></script>
 </body>

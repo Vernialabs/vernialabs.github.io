@@ -19,6 +19,9 @@ Changes by Vernia Labs:
 - Added a joint-limited illustrative closure pose, not a physics simulation.
 - Rendered a transparent static poster from the assembled CAD.
 - Compressed the model with gzip for faster browser downloads.
+- Added grip-one-web.glb: 16-bit position / 8-bit normal quantization and
+  identical-vertex welding for display, with all triangles and joints retained.
+  The full-precision source GLB remains available in this directory.
 
 Grip One is Vernia Labs' working product name. The reference CAD and display
 finishes do not certify the final supplied configuration. Attribution to

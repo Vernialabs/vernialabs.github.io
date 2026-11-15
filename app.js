@@ -52,24 +52,25 @@ if (document.querySelector('#cinematic-stage')) {
   }).catch(() => { document.querySelector('.cinematic-study').classList.add('still-only'); });
 }
 
+// Download in parallel with the renderer modules, not after their import chain.
+async function downloadModel() {
+  const compressed = 'DecompressionStream' in window;
+  const response = await fetch(`./assets/models/grip-one/grip-one-web.glb${compressed ? '.gz' : ''}`);
+  if (!response.ok) throw new Error('CAD download failed');
+  return compressed
+    ? new Response(response.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer()
+    : response.arrayBuffer();
+}
 // UI remains usable when WebGL is disabled or the local renderer cannot load.
 if (document.querySelector('.model-stage')) Promise.all([
   import('./assets/vendor/three.module.min.js'),
   import('./assets/vendor/GLTFLoader.js'),
-]).then(async ([THREE, { GLTFLoader }]) => {
+  downloadModel(),
+]).then(async ([THREE, { GLTFLoader }, modelBytes]) => {
   const loader = new GLTFLoader();
-  // Static hosting cannot set Content-Encoding for a .gz asset; decode it here.
-  // Older browsers retain the normal GLB path, and failures retain the poster.
-  let model;
-  if ('DecompressionStream' in window) {
-    const response = await fetch('./assets/models/grip-one/grip-one.glb.gz');
-    if (!response.ok) throw new Error('CAD download failed');
-    const decoded = new Response(response.body.pipeThrough(new DecompressionStream('gzip')));
-    model = await loader.parseAsync(await decoded.arrayBuffer(), './assets/models/grip-one/');
-  } else {
-    model = await loader.loadAsync('./assets/models/grip-one/grip-one.glb');
-  }
+  const model = await loader.parseAsync(modelBytes, './assets/models/grip-one/');
   // Showcase-only metal finishes; source geometry and joint definitions stay intact.
+  const materials = new Map();
   model.scene.traverse(object => {
     if (!object.isMesh) return;
     const name = object.name;
@@ -80,7 +81,9 @@ if (document.querySelector('.model-stage')) Promise.all([
     if (/arducam|lens|611_00020/.test(name)) Object.assign(finish, { color: '#12151f', metalness: .55, roughness: .09, clearcoat: 1, clearcoatRoughness: .08 });
     if (/lens/.test(name) && object.material.opacity < 1) Object.assign(finish, { color: '#3a3d47', metalness: 0, opacity: .24, transparent: true, depthWrite: false });
     if (/button|hmi/.test(name)) Object.assign(finish, { color: '#73618f', metalness: .85, roughness: .3 });
-    object.material = new THREE.MeshPhysicalMaterial(finish);
+    const key = JSON.stringify(finish);
+    if (!materials.has(key)) materials.set(key, new THREE.MeshPhysicalMaterial(finish));
+    object.material = materials.get(key);
   });
 
   function studioEnvironment(renderer) {
@@ -132,7 +135,7 @@ if (document.querySelector('.model-stage')) Promise.all([
     let renderer;
     try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' }); }
     catch { if (interactive) document.querySelector('#viewer-hint').textContent = 'Static CAD view · 3D is unavailable in this browser'; return; }
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = interactive ? .95 : 1.05;
@@ -150,13 +153,23 @@ if (document.querySelector('.model-stage')) Promise.all([
     const initial = { x: .28, y: 2.65, z: -.18 };
     group.rotation.set(initial.x, initial.y, initial.z);
     const view = { stage, renderer, scene, camera, group, setGrip, closure: 0, initial, interactive, scrollDriven, scrollProgress: 0, visible: true, closed: false, dragged: interactive, angle: initial.y, tilt: initial.x, tick: 0, dirty: true, zoom: 1, baseDistance: 8.1 };
+    const fittedBounds = new THREE.Box3(), fittedSize = new THREE.Vector3(), fittedCenter = new THREE.Vector3();
+    // Fit the complete posed assembly, including depth, in the limiting axis.
+    // Even maximum zoom retains a margin; rotation and articulation refit it.
+    view.fitCamera = () => {
+      fittedBounds.setFromObject(group);
+      fittedBounds.getSize(fittedSize); fittedBounds.getCenter(fittedCenter);
+      const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const fit = Math.max(fittedSize.y / (2 * tanV), fittedSize.x / (2 * tanV * camera.aspect));
+      view.baseDistance = fittedSize.z / 2 + fit * 1.32;
+      camera.position.set(fittedCenter.x, fittedCenter.y, fittedCenter.z + fittedSize.z / 2 + fit * 1.32 / view.zoom);
+      camera.lookAt(fittedCenter);
+    };
     function resize() {
       const { width, height } = stage.getBoundingClientRect();
       if (!width || !height) return;
       renderer.setSize(width, height); camera.aspect = width / height;
-      // Fit the diagonal silhouette on both portrait phones and wide desktop stages.
-      view.baseDistance = scrollDriven ? Math.max(7.5, 7.3 / camera.aspect) : Math.max(8.1, 7.8 / camera.aspect);
-      camera.position.z = view.baseDistance / view.zoom;
+      view.fitCamera();
       camera.updateProjectionMatrix(); view.dirty = true;
     }
     new ResizeObserver(resize).observe(stage); resize();
@@ -184,8 +197,8 @@ if (document.querySelector('.model-stage')) Promise.all([
       grip.disabled = false; reset.disabled = false;
       grip.addEventListener('click', () => { view.closed = !view.closed; grip.textContent = view.closed ? 'Open grip' : 'Close grip'; grip.setAttribute('aria-pressed', String(view.closed)); view.dirty = true; });
       const zoomIn=document.querySelector('#zoom-in'),zoomOut=document.querySelector('#zoom-out');
-      const updateZoom=()=>{camera.position.z=view.baseDistance/view.zoom;view.dirty=true;if(zoomIn)zoomIn.disabled=view.zoom>=1.45;if(zoomOut)zoomOut.disabled=view.zoom<=.8;};
-      if(zoomIn){zoomIn.disabled=false;zoomIn.addEventListener('click',()=>{view.zoom=Math.min(1.45,view.zoom+.15);updateZoom();});}
+      const updateZoom=()=>{view.fitCamera();view.dirty=true;if(zoomIn)zoomIn.disabled=view.zoom>=1.25;if(zoomOut)zoomOut.disabled=view.zoom<=.8;};
+      if(zoomIn){zoomIn.disabled=false;zoomIn.addEventListener('click',()=>{view.zoom=Math.min(1.25,view.zoom+.125);updateZoom();});}
       if(zoomOut){zoomOut.disabled=false;zoomOut.addEventListener('click',()=>{view.zoom=Math.max(.8,view.zoom-.15);updateZoom();});}
       const angles={perspective:[.28,2.65,-.18,'Three-quarter view'],front:[.08,Math.PI,0,'Camera view'],side:[.12,Math.PI/2,0,'Side view'],rear:[.12,0,0,'Rear assembly']};
       for(const button of presets){button.disabled=false;button.addEventListener('click',()=>{const [tilt,angle,roll,label]=angles[button.dataset.cadView];view.tilt=tilt;view.angle=angle;view.initial.z=roll;view.dirty=true;view.dragged=true;presets.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));if(viewLabel)viewLabel.textContent=label;});}
@@ -210,6 +223,7 @@ if (document.querySelector('.model-stage')) Promise.all([
         v.scrollProgress = Math.abs(delta) < .0001 ? targetProgress : v.scrollProgress + delta * (1 - Math.exp(-frameDt * 10));
         const turn = v.scrollProgress * v.scrollProgress * (3 - 2 * v.scrollProgress);
         v.group.rotation.set(v.initial.x - turn * .22, v.initial.y + turn * 2.1, v.initial.z + turn * .28);
+        v.fitCamera();
         v.renderer.render(v.scene, v.camera); v.dirty = false;
         continue;
       }
@@ -225,6 +239,7 @@ if (document.querySelector('.model-stage')) Promise.all([
       v.group.position.y = v.interactive ? 0 : Math.sin(v.tick * .7) * .07;
       v.closure = THREE.MathUtils.lerp(v.closure, target, reducedMotion.matches || paused ? 1 : .15);
       v.setGrip(v.closure);
+      v.fitCamera();
       v.renderer.render(v.scene, v.camera); v.dirty = false;
     }
   }

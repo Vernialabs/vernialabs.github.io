@@ -27,3 +27,26 @@
 @media(prefers-reduced-motion:reduce){.explorer-controls button,.explorer-stage canvas{transition:none}}
 
 .view-presets button[aria-pressed=true]:hover:not(:disabled){background:#463052}
+
+/* The complete viewer fits a laptop window or phone screen, including controls. */
+.grip-showroom{min-height:0;align-items:start}
+.showroom-links{display:flex;gap:28px;flex-wrap:wrap}.showroom-links .showroom-detail-link{gap:12px}
+/* Cancel the shared 90px header offset: this page's header scrolls away. */
+#cad-explorer{scroll-margin-top:-70px}
+.showroom-intro{padding-top:42px;padding-bottom:38px}
+.showroom-intro h1{margin-top:26px}
+.cad-explorer{position:sticky;top:16px;align-self:start;min-height:0;height:clamp(400px,calc(100svh - 104px),760px)}
+.explorer-stage.model-stage{flex:1 1 0;min-height:0;width:100%;overflow:hidden}
+.explorer-stage canvas{width:100%!important;height:100%!important;transition:none}
+.explorer-topline{padding:18px 24px;flex-shrink:0}
+.explorer-view-label{padding:8px 24px 12px;flex-shrink:0}
+.explorer-controls{padding:12px 24px;flex-shrink:0;gap:10px}
+.explorer-ground{bottom:145px;height:30px;opacity:.5}
+@media(max-width:1100px){.explorer-controls{padding:12px 16px}.explorer-topline,.explorer-view-label{padding-left:20px;padding-right:20px}}
+@media(max-width:800px){
+ .cad-explorer{position:relative;top:auto;height:clamp(440px,calc(100svh - 32px),640px)}
+ .showroom-intro{padding-top:32px;padding-bottom:30px}
+ .showroom-intro h1{margin:20px 0}.showroom-copy{margin-top:14px}.weight-note{margin:20px 0;padding:15px 0}
+ .explorer-stage.model-stage{min-height:0}.explorer-controls{padding:12px 20px}
+}
+@media(max-width:420px){.cad-explorer{height:clamp(440px,calc(100svh - 32px),590px)}.explorer-view-label{padding-top:6px;padding-bottom:10px}.explorer-topline{padding-top:16px;padding-bottom:16px}}

@@ -89,7 +89,7 @@ Waitlist links support `from=home` or `from=hardware`, `interest=grip-one|tactil
 
 ### Email setup
 
-Requested addresses: `sanskar@vernia.in`, `dewaansh@vernia.in`, `ishan@vernia.in`, and `team@vernia.in`. Incoming mail uses Spacemail, with its MX, SPF, DKIM and autodiscovery records configured in Cloudflare. The owner saved the team mailbox password directly as an encrypted Worker secret. Public contact links still use the established owner inbox.
+Requested addresses: `sanskar@vernia.in`, `dewaansh@vernia.in`, `ishan@vernia.in`, and `team@vernia.in`. Incoming mail uses Spacemail, with its MX, SPF, DKIM and autodiscovery records configured in Cloudflare. The owner saved the team mailbox password directly as an encrypted Worker secret. All public contact, project inquiry, waitlist fallback, and privacy request links now use team@vernia.in.
 
 ### Deployment and rollback
 
@@ -122,3 +122,13 @@ References reviewed: [Grabette on Hugging Face](https://huggingface.co/blog/grab
 Rollback target for this Hardware update: `5a9bd1e`. Static publication remains GitHub Pages from `main`; no backend, admin, mail, or DNS deployment is required.
 
 Hardware QA: JavaScript syntax, local asset/link/anchor checks, and `git diff --check` pass. Browser checks passed for four view presets, keyboard rotation, pointer drag, grip toggle, zoom, reset, and layouts at 1440, 768, 390 and 360 px (no horizontal overflow). The browser console reported no errors. Static fallback markup is retained; a forced WebGL failure and physical touchscreen testing were not performed in this update.
+
+### Framing, loading and vision follow-up — 15 November 2026
+
+The CAD explorer now sizes to the available viewport height, with a separate mobile height and a direct “Explore the CAD” anchor. Camera fitting uses the complete posed assembly and both screen axes; zoom is bounded so the whole model remains inside the canvas. The homepage uses the same fitting and reserves its scroll height before loading WebGL, preventing late shifts of the Our vision anchor. Vision is a single editorial statement instead of three repetitive cards.
+
+The browser uses `grip-one-web.glb.gz` (987,538 bytes, down from 1,802,994 bytes: 45.2% less). The uncompressed fallback is 2,593,048 bytes instead of 5,550,120. The original full-precision CAD remains unchanged. The web copy uses glTF Transform 4.2.1 with 16-bit positions, 8-bit normals and identical-vertex welding; no mesh simplification, component removal, or articulation changes. Reproduce with the setup/run commands in `tools/optimize-gripper.mjs`. It checks triangle counts and joint metadata. All 81,796 unique-mesh triangles, 64 visual instances, and nine joint nodes remain. The display copy retains the existing license and source attribution.
+
+The model download starts alongside renderer imports; module preloads remove the dependency discovery waterfall. Identical display materials are shared and pixel density is capped at 1.5 to reduce GPU work. Optimized WebP assets replace the display poster (167,054 → 31,776 bytes), footer logo (482,263 → 17,204 bytes), and header mark (74,379 → 22,492 bytes); source images remain available. These are measured byte reductions, not a claimed real-user loading-time score.
+
+Follow-up QA: source/display assembly bounds were compared at three grip positions (maximum observed bounds difference under 0.5 micrometres, not a manufacturing tolerance). Projection checks on every display vertex passed 120 combinations of aspect ratio, rotation, and grip position at maximum zoom. Browser checks cover short desktop 1280×551, tablet 768×1024, phones 390×844 and 360×667, control states, no horizontal overflow, and fresh cross-page navigation to Vision after model loading. Physical phone hardware and constrained-network lab timings were not tested. Rollback target: `2781b4c`; publication is the existing GitHub Pages site, with no backend or mail-service changes.
