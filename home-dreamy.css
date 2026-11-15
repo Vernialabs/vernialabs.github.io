@@ -90,10 +90,10 @@ h2{font-size:clamp(34px,4.4vw,64px)}
 .product-view .drag-hint{left:0}
 .buy{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;border-top:1px solid var(--line-strong);padding-top:18px}
 .buy h3{font-size:clamp(30px,2.8vw,40px)}
-@media (max-width:980px){.hardware{grid-template-columns:minmax(0,1fr);gap:64px}}
+@media (max-width:980px){.hardware{grid-template-columns:minmax(0,1fr);gap:48px}}
 @media (max-width:640px){
   .stage{height:auto}
-  .stage-canvas{position:relative;width:100%;height:320px}
+  .stage-canvas{position:relative;width:100%;height:280px}
   .lines,.drag-hint{display:none}
   .callouts{position:static;width:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;margin-top:8px;text-align:left!important}
   .callout{position:static;transform:none}
@@ -117,12 +117,19 @@ h2{font-size:clamp(34px,4.4vw,64px)}
 .trace-row b{font-weight:560;color:var(--ink);font-variant-numeric:tabular-nums}
 .trace canvas{width:100%;height:52px;display:block}
 .grip-btn{width:100%;min-height:56px;touch-action:none}
-@media (pointer:coarse){.grip-btn{display:none}}
+@media (pointer:coarse){.grip-btn{display:none}.game{touch-action:manipulation}}
 .grip-btn[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
 .summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px;margin:0}
 .summary dt{font-size:13px;color:var(--ink-2)}
 .summary dd{margin:2px 0 0;font-size:24px;font-weight:620;font-stretch:108%;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-@media (max-width:900px){.play{padding-block:40px 80px}.play-head,.play-body{grid-template-columns:minmax(0,1fr)}.game{aspect-ratio:1/1}}
+@media (max-width:900px){
+  .play{padding-block:40px 80px}.play-head,.play-body{grid-template-columns:minmax(0,1fr)}.game{aspect-ratio:1/1}
+  .play-body{gap:20px}
+  .rec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;padding:16px}
+  .rec-status{grid-column:1/-1;min-height:0;font-size:17px}
+  .rec .summary,.rec .btn{grid-column:1/-1}
+  .trace canvas{height:40px}
+}
 
 /* the episode report */
 .report{margin-top:40px;background:var(--ground);border-radius:20px;padding:clamp(20px,3vw,40px);display:flex;flex-direction:column;gap:36px}

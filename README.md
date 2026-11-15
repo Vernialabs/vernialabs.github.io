@@ -26,6 +26,8 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 3. Game: put the apple and the orange in the bowl (on touch screens, tap a fruit, then tap the bowl), on a table held up by four small jet thrusters. The camera distance is solved each resize so the table, the flames and the hovering gripper stay in frame as close as possible. Mouse or arrow keys aim, the mouse button or Space grips; on touch, drag to aim and hold the grip button. A wrist-camera inset renders from Grip One's camera mount. Fruit released over the bowl or its rim rolls in; fruit dropped on other fruit slides clear.
 4. Episode report: appears once both are in the bowl. Pipeline steps, a per-stream table, one LeRobot v3 training row, the dataset layout with `meta/info.json`, and every frame. Durations, frame counts, jaw range, idle frames and acceleration come from the visitor's own episode. Part names, rates, resolutions and bitrates are the `PARTS` constant at the top of `home.js`.
 5. What we do, where we record, what every lot includes.
+Phones: the 3D views render at up to 1.25× pixel density, the game uses 1024 px shadows, the two showcase models draw at 30 fps unless touched, the game lets vertical swipes scroll the page, and the recording panel is a compact two-column block.
+
 6. Plan a pilot: name, work email, optional organisation, interests (`data`, `grip-one`, `headset`) and consent, protected by Turnstile, posted to the Worker with `source: 'home'`. "Reserve" buttons pre-select the matching interest. No payment is taken.
 
 | Claim | Source / date | Status | Where |
