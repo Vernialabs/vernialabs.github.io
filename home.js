@@ -121,8 +121,8 @@ function buildHeadset() {
   const glass = new THREE.MeshPhysicalMaterial({ color: '#12151f', metalness: .55, roughness: .09, clearcoat: 1, clearcoatRoughness: .08 });
   const accent = new THREE.MeshPhysicalMaterial({ color: '#3d3f8f', metalness: .85, roughness: .3 });
   const add = (geo, mat, f) => { const m = new THREE.Mesh(geo, mat); if (f) f(m); g.add(m); return m; };
-  add(new THREE.CylinderGeometry(.098, .098, .034, 96, 1, true), fabric, m => m.scale.set(1, 1, 1.2));
-  add(new THREE.CylinderGeometry(.093, .093, .03, 96, 1, true), fabric, m => m.scale.set(1, 1, 1.2));
+  add(new THREE.CylinderGeometry(.098, .098, .034, 64, 1, true), fabric, m => m.scale.set(1, 1, 1.2));
+  add(new THREE.CylinderGeometry(.093, .093, .03, 64, 1, true), fabric, m => m.scale.set(1, 1, 1.2));
   const strap = add(new THREE.TorusGeometry(.104, .009, 10, 72, Math.PI), fabric, m => { m.rotation.y = Math.PI / 2; m.scale.set(1.18, .82, 2.2); m.position.y = .012; });
   add(new RoundedBoxGeometry(.132, .05, .04, 4, .012), metal, m => m.position.set(0, .012, .126));
   add(new RoundedBoxGeometry(.122, .04, .006, 3, .003), glass, m => m.position.set(0, .012, .146));
@@ -283,18 +283,23 @@ function startGame(gltf) {
   const navy = new THREE.MeshStandardMaterial({ color: '#2a2f55', roughness: .4, metalness: .35 });
   const frame = new THREE.Mesh(new RoundedBoxGeometry(.72, .014, .42, 3, .006), navy);
   frame.position.y = -.037; frame.castShadow = true; scene.add(frame);
-  // the table rests on a soft cloud of overlapping puffs, lit by the same sun
-  const cloud = new THREE.Group(); scene.add(cloud);
-  const puffMat = new THREE.MeshStandardMaterial({ color: '#f3f1fb', roughness: 1, emissive: '#c3cbef', emissiveIntensity: .16 });
-  const puffGeo = new THREE.IcosahedronGeometry(1, 3);
-  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  for (let i = 0; i < 34; i++) {
-    const a = rnd() * Math.PI * 2, rim = i < 22, rr = rim ? .82 + rnd() * .22 : rnd() * .6;
-    const r = rim ? .07 + rnd() * .05 : .1 + rnd() * .06;
-    const puff = new THREE.Mesh(puffGeo, puffMat);
-    puff.position.set(Math.cos(a) * .44 * rr, -.07 - rnd() * .07 - (rim ? 0 : .04), Math.sin(a) * .27 * rr);
-    puff.scale.set(r * 1.25, r * .8, r);
-    puff.receiveShadow = true; cloud.add(puff);
+  // four small jet thrusters under the corners hold the table up
+  const nozzleMat = new THREE.MeshPhysicalMaterial({ color: '#c9ced8', metalness: .95, roughness: .25, clearcoat: .4 });
+  const throatMat = new THREE.MeshStandardMaterial({ color: '#2b2f45', roughness: .5, metalness: .4 });
+  const flameOuter = new THREE.MeshBasicMaterial({ color: '#5f7cff', transparent: true, opacity: .62, depthWrite: false });
+  const flameCore = new THREE.MeshBasicMaterial({ color: '#e4eaff', transparent: true, opacity: .95, depthWrite: false });
+  const flames = [];
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+    const jet = new THREE.Group(); jet.position.set(sx * .39, -.03, sz * .23); jet.scale.setScalar(1.35); scene.add(jet);
+    const mount = new THREE.Mesh(new THREE.CylinderGeometry(.022, .022, .008, 24), throatMat); mount.position.y = -.004;
+    const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(.017, .026, .034, 28, 1, true), nozzleMat); nozzle.position.y = -.025;
+    nozzle.material.side = THREE.DoubleSide;
+    const lip = new THREE.Mesh(new THREE.TorusGeometry(.026, .003, 8, 28), nozzleMat); lip.rotation.x = Math.PI / 2; lip.position.y = -.042;
+    const throat = new THREE.Mesh(new THREE.CylinderGeometry(.015, .015, .004, 20), throatMat); throat.position.y = -.01;
+    for (const m of [mount, nozzle, lip, throat]) { m.castShadow = true; jet.add(m); }
+    const outer = new THREE.Mesh(new THREE.ConeGeometry(.021, .085, 20, 1, true), flameOuter); outer.rotation.x = Math.PI; outer.position.y = -.085;
+    const core = new THREE.Mesh(new THREE.ConeGeometry(.011, .05, 16, 1, true), flameCore); core.rotation.x = Math.PI; core.position.y = -.068;
+    jet.add(outer, core); flames.push(outer, core);
   }
 
   // the gripper, jaws down, grasp point at the rig origin
@@ -340,7 +345,7 @@ function startGame(gltf) {
     const c = contactFor(r);
     return { kind, g, r, h: kind === 'apple' ? r * .92 : r, contact: c, hold: holdFor(c), inBowl: false, slot: -1, settle: null };
   }
-  const items = [fruit('apple', Math.min(rB * 1.08, w0 * .44))];
+  const items = [fruit('apple', Math.min(rB * 1.08, w0 * .44)), fruit('orange', rB)];
   const maxR = Math.max(...items.map(i => i.r));
   const bowl = new THREE.Mesh(new THREE.LatheGeometry([
     [0, 0], [.05, 0], [.056, .004], [.088, .028], [.108, .058], [.112, .062], [.106, .062], [.084, .034], [.05, .013], [0, .013]
@@ -367,7 +372,7 @@ function startGame(gltf) {
     // the closest camera that still frames the table, all four propellers and the hovering gripper
     const el = THREE.MathUtils.degToRad(aspect < 1 ? 46 : 36), target = V3(0, .02, .03);
     const pts = [];
-    for (const sx of [-1, 1]) for (const sz of [-1, 1]) pts.push(V3(sx * .42, 0, sz * .26), V3(sx * .44, -.13, sz * .26));
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) pts.push(V3(sx * .41, 0, sz * .26), V3(sx * .41, -.2, sz * .25));
     pts.push(V3(0, .24, -.18));
     const place = d => { camera.position.set(target.x, target.y + Math.sin(el) * d, target.z + Math.cos(el) * d); camera.lookAt(target); camera.updateMatrixWorld(); camera.updateProjectionMatrix(); };
     const ndc = () => pts.map(q => q.clone().project(camera));
@@ -468,7 +473,7 @@ function startGame(gltf) {
   function finishEpisode() {
     rec.done = true; rec.on = false;
     const S = rec.samples, dur = S.length ? S[S.length - 1].t : 0;
-    $('#rec-status').textContent = 'Episode saved. The apple is in the bowl.';
+    $('#rec-status').textContent = 'Episode saved. Both are in the bowl.';
     $('#r-time').textContent = dur.toFixed(1) + ' s';
     $('#r-frames').textContent = S.length;
     $('#r-path').textContent = Math.round(rec.path * 100) + ' cm';
@@ -492,7 +497,7 @@ function startGame(gltf) {
   view.tick = (now, dt) => {
     if (!view.visible) return;
     view.t += dt;
-    if (!reduceMotion) { cloud.position.y = Math.sin(view.t * .7) * .006; cloud.rotation.y = Math.sin(view.t * .25) * .03; }
+    if (!reduceMotion) flames.forEach((f, i) => { const k = .85 + Math.random() * .25 + Math.sin(view.t * 30 + i) * .05; f.scale.set(1, k, 1); });
     const k = .35 * dt;
     if (st.keys.has('ArrowLeft')) st.tx -= k;
     if (st.keys.has('ArrowRight')) st.tx += k;
@@ -568,7 +573,7 @@ function startGame(gltf) {
       rec.samples.push({ t: (now - rec.t0) / 1000, x: st.x, y: st.y, z: st.z, w, f });
       $('#v-jaw').textContent = Math.round(w) + ' mm';
       $('#v-force').textContent = f.toFixed(1) + ' N';
-      $('#rec-status').textContent = `Recording, ${((now - rec.t0) / 1000).toFixed(1)} s.`;
+      $('#rec-status').textContent = `Recording, ${((now - rec.t0) / 1000).toFixed(1)} s. ${items.filter(i => i.inBowl).length} of 2 in the bowl.`;
       spark($('#c-jaw'), 'w', w0 * 1000 * 1.05, false);
       spark($('#c-force'), 'f', 10, true);
     }
@@ -648,7 +653,7 @@ function buildReport(S) {
     '{',
     `  "index": ${k},`,
     `  "timestamp": ${f3(S[k].t)},`,
-    '  "task": "Put the apple in the bowl",',
+    '  "task": "Put the apple and orange in the bowl",',
     `  "observation.state": ${state(S[k])},`,
     `  "action": ${state(S[k + 1])},`,
     `  "observation.force": [${S[k].f.toFixed(2)}],`,
@@ -658,7 +663,7 @@ function buildReport(S) {
   ].join('\n');
   const pad = (a, b) => a.padEnd(34) + b;
   $('#layout').textContent = [
-    pad('vernia_apple_bowl/', 'LeRobot v3'),
+    pad('vernia_fruit_bowl/', 'LeRobot v3'),
     pad('  meta/info.json', `fps ${RATES.video}, state 8`),
     '  meta/stats.json',
     '  meta/tasks.parquet',
@@ -759,16 +764,6 @@ async function loadModel() {
 
 startForm();
 const views = [];
-const fail = () => { $('#game-msg').textContent = 'This demo needs WebGL, which this browser has turned off.'; };
-try {
-  const probe = document.createElement('canvas');
-  if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) throw new Error('WebGL unavailable');
-  const gltf = await loadModel();
-  try { views.push(productStage($('#stage-grip'), buildGripper(gltf), { yaw: 2.65, pitch: .28, roll: -.18, side: 'left' })); } catch (e) { console.error(e); }
-  try { views.push(productStage($('#stage-view'), buildHeadset(), { yaw: -.6, pitch: .22, phase: 1.7, side: 'right' })); } catch (e) { console.error(e); }
-  try { views.push(startGame(gltf)); } catch (e) { console.error(e); fail(); }
-} catch (e) { console.error(e); fail(); }
-
 let last = performance.now();
 function frame(now) {
   const dt = Math.min(.05, (now - last) / 1000); last = now;
@@ -776,3 +771,13 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+const fail = () => { $('#game-msg').textContent = 'This demo needs WebGL, which this browser has turned off.'; };
+try {
+  const probe = document.createElement('canvas');
+  if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) throw new Error('WebGL unavailable');
+  const model = loadModel();
+  try { views.push(productStage($('#stage-view'), buildHeadset(), { yaw: -.6, pitch: .22, phase: 1.7, side: 'right' })); } catch (e) { console.error(e); }
+  const gltf = await model;
+  try { views.push(productStage($('#stage-grip'), buildGripper(gltf), { yaw: 2.65, pitch: .28, roll: -.18, side: 'left' })); } catch (e) { console.error(e); }
+  try { views.push(startGame(gltf)); } catch (e) { console.error(e); fail(); }
+} catch (e) { console.error(e); fail(); }

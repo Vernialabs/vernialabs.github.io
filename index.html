@@ -68,9 +68,7 @@
         </div>
         <div class="buy">
           <h3 id="grip-name">Grip One</h3>
-          <p class="price">$300</p>
-          <p>A handheld gripper for manipulation demonstrations.</p>
-          <a class="btn btn-line" href="#pilot" data-interest="grip-one">Reserve Grip One</a>
+          <a class="btn btn-line" href="#pilot" data-interest="grip-one" aria-label="Reserve Grip One">Reserve now</a>
         </div>
       </article>
       <article class="product product-view" aria-labelledby="view-name">
@@ -89,20 +87,18 @@
         </div>
         <div class="buy">
           <h3 id="view-name">View One</h3>
-          <p class="price">$250</p>
-          <p>A head-worn camera rig for first-person demonstrations.</p>
-          <a class="btn btn-line" href="#pilot" data-interest="headset">Reserve View One</a>
+          <a class="btn btn-line" href="#pilot" data-interest="headset" aria-label="Reserve View One">Reserve now</a>
         </div>
       </article>
     </section>
 
     <section class="play" id="play" aria-labelledby="play-title">
       <div class="wrap play-head">
-        <h2 id="play-title">Put the apple in the bowl.</h2>
+        <h2 id="play-title">Put the fruit in the bowl.</h2>
         <p>Move to aim and hold to grip. Grip One records you the way it records our operators.</p>
       </div>
       <div class="wrap play-body">
-        <div class="game" id="game-stage" tabindex="0" aria-label="Demo: a table floating on a cloud. Put the apple in the bowl. Move the gripper with the mouse or arrow keys. Hold the mouse button or Space to grip.">
+        <div class="game" id="game-stage" tabindex="0" aria-label="Demo: a table held up by jet thrusters. Put the apple and the orange in the bowl. Move the gripper with the mouse or arrow keys. Hold the mouse button or Space to grip.">
           <div class="fisheye" id="fisheye" hidden><span>Wrist camera</span></div>
           <p class="game-msg" id="game-msg">Loading Grip One</p>
         </div>
@@ -217,8 +213,8 @@
           <legend>I'm interested in</legend>
           <div class="choices">
             <label><input type="checkbox" name="interest" value="data">A data pilot</label>
-            <label><input type="checkbox" name="interest" value="grip-one">Grip One, $300</label>
-            <label><input type="checkbox" name="interest" value="headset">View One, $250</label>
+            <label><input type="checkbox" name="interest" value="grip-one">Grip One</label>
+            <label><input type="checkbox" name="interest" value="headset">View One</label>
           </div>
         </fieldset>
         <div class="trap" aria-hidden="true"><label for="lead-website">Leave this field empty</label><input id="lead-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
