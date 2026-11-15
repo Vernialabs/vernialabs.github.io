@@ -1,0 +1,17 @@
+{
+  "main_module":"worker.mjs",
+  "compatibility_date":"2026-11-15",
+  "compatibility_flags":["nodejs_compat"],
+  "keep_bindings":["secret_text"],
+  "bindings":[
+    {"type":"d1","name":"DB","id":"85335bb0-0538-4ef4-8926-d61c8de16288"},
+    {"type":"ratelimit","name":"SIGNUP_LIMITER","namespace_id":"76111501","simple":{"limit":5,"period":60}},
+    {"type":"ratelimit","name":"AUTH_LIMITER","namespace_id":"76111502","simple":{"limit":10,"period":60}},
+    {"type":"ratelimit","name":"ANALYTICS_LIMITER","namespace_id":"76111503","simple":{"limit":60,"period":60}},
+    {"type":"plain_text","name":"ADMIN_EMAILS","text":"sanskar@vernia.in,dewaansh@vernia.in,ishan@vernia.in,team@vernia.in"},
+    {"type":"plain_text","name":"POSTHOG_PROJECT_KEY","text":"phc_BH4x9rX6EwsnGsUmzDtH8KCzcYtdgNrYEzAxZG5yrEBn"},
+    {"type":"plain_text","name":"POSTHOG_HOST","text":"https://us.i.posthog.com"},
+    {"type":"plain_text","name":"POSTHOG_DASHBOARD_URL","text":"https://us.posthog.com/project/737840/web"}
+  ],
+  "observability":{"enabled":false}
+}

@@ -1,0 +1,3 @@
+import {DatabaseSync} from 'node:sqlite';
+import {readFileSync} from 'node:fs';
+export function testDatabase(){const db=new DatabaseSync(':memory:');for(const path of['schema.sql','operations.sql'])db.exec(readFileSync(new URL(path,import.meta.url),'utf8'));const adapter={prepare(sql){let args=[];const item={bind(...values){args=values;return item;},async first(){return db.prepare(sql).get(...args)||null;},async all(){return {results:db.prepare(sql).all(...args)};},async run(){return db.prepare(sql).run(...args);}};return item;},batch(items){return Promise.all(items.map(i=>i.run()));}};return {db,DB:adapter};}

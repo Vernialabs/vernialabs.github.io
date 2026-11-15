@@ -54,7 +54,7 @@ form.addEventListener('submit', async event => {
   try {
     const response = await fetch(siteConfig.waitlistEndpoint, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'omit', signal: AbortSignal.timeout(15000),
-      body: JSON.stringify({ email: data.get('email'), name: data.get('name'), organisation: data.get('organisation'), interests: chosen, consent: data.get('consent') === 'yes', website: data.get('website'), source, campaign, turnstileToken: token }),
+      body: JSON.stringify({ email: data.get('email'), name: data.get('name'), organisation: data.get('organisation'), interests: chosen, consent: data.get('consent') === 'yes', website: data.get('website'), source, campaign, turnstileToken: token, analyticsSession: window.verniaAnalyticsSession?.() || '' }),
     });
     const result = await response.json();
     if (!response.ok || result.accepted !== true) throw new Error(result.error || 'We could not save your request. Please try again.');

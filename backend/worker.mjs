@@ -18,7 +18,8 @@ export function validateSignup(input) {
   const token = text(input.turnstileToken, 2048);
   if (!token) throw new Error('Complete the security check and try again.');
   const campaign = text(input.campaign, 80);
-  return { email, name: text(input.name, 100), organisation: text(input.organisation, 160), interests: [...new Set(input.interests)], source: SOURCES.has(input.source) ? input.source : 'direct', campaign: /^[a-zA-Z0-9_-]{0,80}$/.test(campaign) ? campaign : '', token };
+  const analyticsSession = typeof input.analyticsSession === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(input.analyticsSession) ? input.analyticsSession : '';
+  return { email, name: text(input.name, 100), organisation: text(input.organisation, 160), interests: [...new Set(input.interests)], source: SOURCES.has(input.source) ? input.source : 'direct', campaign: /^[a-zA-Z0-9_-]{0,80}$/.test(campaign) ? campaign : '', token, analyticsSession };
 }
 
 async function readBody(request) {
@@ -41,7 +42,7 @@ async function readBody(request) {
   try { return JSON.parse(new TextDecoder().decode(bytes)); } catch { throw new Error('The form could not be read.'); }
 }
 
-export function createHandler(verifyFetch = fetch) {
+export function createHandler(verifyFetch = fetch, onSignup = async () => {}) {
   return async (request, env) => {
     const origin = request.headers.get('origin');
     const allowed = ORIGINS.has(origin);
@@ -76,6 +77,8 @@ export function createHandler(verifyFetch = fetch) {
         SELECT ?, ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM waitlist WHERE email = ?)
         ON CONFLICT(email) DO NOTHING RETURNING id`).bind(signup.email, signup.name, signup.organisation, JSON.stringify(signup.interests), signup.source, signup.campaign, '2026-11-15', signup.email).first();
       if (!row) return reply(200, { accepted: true, message: 'Your request has been received. If this email is already registered, its original place and preferences are unchanged.' });
+      // Reporting failures must never turn an accepted signup into an error.
+      try { await onSignup(signup, row, env); } catch {}
       return reply(201, { accepted: true, position: row.id, message: 'You’re on the Vernia waitlist.' });
     } catch {
       // Never log form payloads, email addresses, IPs, or provider secrets.

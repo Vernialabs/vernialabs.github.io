@@ -75,9 +75,9 @@ Run `node --test backend/worker.test.mjs` with Node 22. Tests use an in-memory S
 
 Email and at least one interest are required, along with explicit update consent. Name and organisation are optional. The backend normalizes email, uses bound SQL parameters, restricts request size, checks origin, validates Turnstile success/hostname/action, and applies a per-IP limit of five attempts per minute per Cloudflare location. Cloudflare rate limits are approximate, not a strict global quota. Raw IP addresses are not stored in D1.
 
-The database assigns increasing signup numbers. A repeated email keeps the original record and cannot change its interests or retrieve its number without authentication. Concurrent duplicate submissions cannot create multiple records. The UI reports success only after a database write or a verified duplicate lookup path. Signup numbers are not promised delivery positions. No automated email is sent yet; email ownership is not verified, so report these as submitted leads, not confirmed customers.
+The database assigns increasing signup numbers. A repeated email keeps the original record and cannot change its interests or retrieve its number without authentication. Concurrent duplicate submissions cannot create multiple records. The UI reports success only after a database write or a verified duplicate lookup path. Signup numbers are not promised delivery positions. New signups enqueue an automated confirmation from team@vernia.in through Spacemail. Duplicate submissions do not resend it. Email ownership is not verified, so report these as submitted leads, not confirmed customers.
 
-Open D1 in the Cloudflare dashboard to manage the private FIFO queue. Use `backend/reports.sql` for daily signups, interests, source/campaign breakdowns, and the waiting list. Do not publish query results or customer exports. An operator can mark contacted/invited entries, correct preferences after verifying the requester, or delete a specific record on an authenticated removal request. Keep database exports outside this public repository. D1 recovery is managed through Cloudflare; the source schema is not a customer-data backup.
+Open https://admin.vernia.in/admin to view the private queue and delivery status. Administrative record changes remain in D1. Use `backend/reports.sql` for daily signups, interests, source/campaign breakdowns, and the waiting list. Do not publish query results or customer exports. An operator can mark contacted/invited entries, correct preferences after verifying the requester, or delete a specific record on an authenticated removal request. Keep database exports outside this public repository. D1 recovery is managed through Cloudflare; the source schema is not a customer-data backup.
 
 ### Traffic measurement
 
@@ -89,10 +89,14 @@ Waitlist links support `from=home` or `from=hardware`, `interest=grip-one|tactil
 
 ### Email setup
 
-Requested addresses: `sanskar@vernia.in`, `dewaansh@vernia.in`, `ishan@vernia.in`, and `team@vernia.in`. Full mailbox provisioning depends on the owner's provider choice and account setup; `team@` is intended as a shared team address. Until these are provisioned and tested, public contact links continue to use the established owner inbox. No mail DNS records have been changed.
+Requested addresses: `sanskar@vernia.in`, `dewaansh@vernia.in`, `ishan@vernia.in`, and `team@vernia.in`. Incoming mail uses Spacemail, with its MX, SPF, DKIM and autodiscovery records configured in Cloudflare. The owner saved the team mailbox password directly as an encrypted Worker secret. Public contact links still use the established owner inbox.
 
 ### Deployment and rollback
 
 Website publication remains GitHub Pages from `main`; retain `CNAME` and `.nojekyll`. Check mobile and desktop form behavior, privacy links, and beacon loading before publication, then verify the live version. The pre-change website revision is `86955d3`. Revert the website change to roll back; do not delete the D1 database. The Worker is independently deployed and should be rolled back independently if required.
 
 The current Cloudflare plugin connection supports Workers and D1 but lacks DNS, account-settings and Turnstile management scopes. The existing logged-in Cloudflare dashboard was used to configure the analytics site and Turnstile widget. These are not access grants to new people. Any future email DNS change must use the selected provider's exact verification, MX, SPF, DKIM and DMARC instructions and preserve unrelated records.
+
+## Team dashboard and automated mail
+
+The protected dashboard at https://admin.vernia.in/admin combines consented website visits, engagement, sources, countries, waitlist conversions, and email submission status. PostHog receives the same optional events; RB2B is deferred. Access is restricted to the four approved Vernia addresses using emailed single-use codes. See [backend/README.md](backend/README.md) for authentication, delivery retries, retention, testing, deployment, and rollback.
