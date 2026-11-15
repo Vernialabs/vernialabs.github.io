@@ -25,6 +25,8 @@ const RATES = { video: PARTS.wide.fps };
 const $ = s => document.querySelector(s);
 const V3 = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const COARSE = matchMedia('(pointer: coarse)').matches;
+const PHONE = COARSE || innerWidth < 700;
 const css = getComputedStyle(document.documentElement);
 const tok = n => css.getPropertyValue(n).trim();
 const clamp = THREE.MathUtils.clamp;
@@ -71,7 +73,7 @@ function studioEnv(renderer) {
 }
 function makeRenderer(opts) {
   const r = new THREE.WebGLRenderer({ antialias: true, ...opts });
-  r.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 700 ? 1.5 : 2));
+  r.setPixelRatio(Math.min(devicePixelRatio, PHONE ? 1.25 : 2));
   r.toneMapping = THREE.ACESFilmicToneMapping;
   return r;
 }
@@ -222,6 +224,7 @@ function productStage(stage, built, { yaw, pitch, roll = 0, phase = 0, side }) {
     pivot.rotation.set(st.pitch, st.yaw + Math.sin(st.t * .35 + phase) * .2 * idle, roll);
     pivot.position.y = reduceMotion ? 0 : Math.sin(st.t * .8 + phase) * .1;
     if (built.update) built.update(dt);
+    if (PHONE && !st.drag && (st.skip = !st.skip)) return;
     renderer.render(scene, camera);
     if (!geo.on) return;
     pivot.updateMatrixWorld(true);
@@ -250,7 +253,7 @@ function startGame(gltf) {
   const stage = $('#game-stage');
   const renderer = makeRenderer({ alpha: true });
   renderer.setClearColor(0x000000, 0);
-  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = PHONE ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
   stage.prepend(renderer.domElement);
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
@@ -258,7 +261,7 @@ function startGame(gltf) {
   scene.environmentIntensity = .8;
   scene.add(new THREE.HemisphereLight('#e6ecff', '#b9b2a6', .65));
   const sun = new THREE.DirectionalLight('#fff4e6', 2.3);
-  sun.position.set(-.35, 1.15, .55); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+  sun.position.set(-.35, 1.15, .55); sun.castShadow = true; sun.shadow.mapSize.setScalar(PHONE ? 1024 : 2048);
   Object.assign(sun.shadow.camera, { left: -.7, right: .7, top: .7, bottom: -.7, near: .1, far: 3 });
   sun.shadow.bias = -.0004; sun.shadow.normalBias = .01; sun.shadow.radius = 3;
   sun.shadow.camera.layers.enableAll();
@@ -502,7 +505,7 @@ function startGame(gltf) {
     stage.focus({ preventScroll: true });
   });
 
-  const coarse = matchMedia('(pointer: coarse)').matches;
+  const coarse = COARSE;
   const idleText = coarse ? 'Tap a fruit to pick it up, then tap the bowl.' : 'Move over the table to start recording.';
   $('#rec-status').textContent = idleText;
   $('#game-msg').textContent = coarse ? 'Tap a fruit, then tap the bowl.' : 'Move to aim. Hold the mouse button or Space to grip.';
