@@ -61,3 +61,13 @@ test('uses bound SQL parameters and restricts campaign labels', async () => {
   const { send, db } = setup(); await send({ ...payload, name: "'); DROP TABLE waitlist;--", campaign: 'person@example.com' });
   const row = db.prepare('SELECT * FROM waitlist').get(); assert.equal(row.name, "'); DROP TABLE waitlist;--"); assert.equal(row.campaign, '');
 });
+test('accepts the View One headset and a data pilot from the homepage form', async () => {
+  const { db, send } = setup();
+  const response = await send({ ...payload, email: 'lab@example.com', interests: ['data', 'grip-one', 'headset'], source: 'home' });
+  assert.equal(response.status, 201);
+  const row = db.prepare('SELECT * FROM waitlist').get();
+  assert.deepEqual(JSON.parse(row.interests), ['data', 'grip-one', 'headset']);
+  assert.equal(row.source, 'home');
+  const unknown = await send({ ...payload, email: 'x@example.com', interests: ['jetpack'] });
+  assert.equal(unknown.status, 400);
+});

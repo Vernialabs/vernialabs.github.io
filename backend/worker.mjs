@@ -1,5 +1,5 @@
 const ORIGINS = new Set(['https://vernia.in', 'https://www.vernia.in']);
-const INTERESTS = new Set(['grip-one', 'tactile-gloves', 'data']);
+const INTERESTS = new Set(['grip-one', 'headset', 'tactile-gloves', 'data']);
 const SOURCES = new Set(['home', 'hardware', 'direct']);
 const MAX_BODY = 8192;
 
@@ -13,7 +13,7 @@ export function validateSignup(input) {
   const email = text(input.email, 254).toLowerCase();
   if (!/^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(email)) throw new Error('Enter a valid email address.');
   if (input.consent !== true) throw new Error('Please agree to receive updates about your selected interests.');
-  if (!Array.isArray(input.interests) || !input.interests.length || input.interests.length > 3 || input.interests.some(item => !INTERESTS.has(item))) throw new Error('Choose at least one interest.');
+  if (!Array.isArray(input.interests) || !input.interests.length || input.interests.length > 4 || input.interests.some(item => !INTERESTS.has(item))) throw new Error('Choose at least one interest.');
   if (text(input.website, 300)) throw new Error('We could not accept this submission.');
   const token = text(input.turnstileToken, 2048);
   if (!token) throw new Error('Complete the security check and try again.');

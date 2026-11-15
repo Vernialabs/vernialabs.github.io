@@ -30,7 +30,7 @@ export function createMailer(env) {
     catch(error){await mailHealth(env,error);throw error;}
   };
 }
-const labels = {'grip-one':'Grip One','tactile-gloves':'Tactile gloves',data:'Data'};
+const labels = {'grip-one':'Grip One',headset:'View One headset','tactile-gloves':'Tactile gloves',data:'Data pilot'};
 export function welcomeMessage(lead) {
   const interests = JSON.parse(lead.interests).map(i=>labels[i]).filter(Boolean).join(', ');
   return {
