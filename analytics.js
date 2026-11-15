@@ -1,14 +1,16 @@
 // Optional first-party measurement. No names, email addresses, form values, or full URLs.
 import {siteConfig} from './site-config.js';
+import {sessionTracker} from './analytics-session.mjs';
 const preferenceKey='vernia-analytics-choice';
 const sessionKey='vernia-analytics-session';
 let enabled=false,session='',engagementTimer;
 const storage={get(key){try{return localStorage.getItem(key);}catch{return null;}},set(key,value){try{localStorage.setItem(key,value);}catch{}}};
-function sessionId(){try{const saved=JSON.parse(sessionStorage.getItem(sessionKey)||'null');const now=Date.now();const id=saved&&now-saved.time<1800000?saved.id:crypto.randomUUID();sessionStorage.setItem(sessionKey,JSON.stringify({id,time:now}));return id;}catch{return session||(session=crypto.randomUUID());}}
+const sessionStorageSafe={getItem(key){return sessionStorage.getItem(key);},setItem(key,value){sessionStorage.setItem(key,value);}};
+let sessionId=sessionTracker(sessionStorageSafe);
 const params=new URLSearchParams(location.search);const label=v=>/^[a-zA-Z0-9_.-]{1,80}$/.test(v||'')?v:'';
 function send(event){if(!enabled||document.visibilityState!=='visible')return;session=sessionId();let referrer='';try{referrer=new URL(document.referrer).origin;}catch{}fetch(siteConfig.waitlistEndpoint.replace(/\/waitlist$/,'/collect'),{method:'POST',credentials:'omit',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({id:crypto.randomUUID(),session,event,path:location.pathname,referrer,source:label(params.get('utm_source')),campaign:label(params.get('utm_campaign'))})}).catch(()=>{});}
 function begin(){if(enabled)return;enabled=true;send('pageview');if(location.pathname==='/waitlist.html')send('waitlist_view');engagementTimer=setTimeout(()=>send('engaged'),10000);}
-function stop(){enabled=false;clearTimeout(engagementTimer);try{sessionStorage.removeItem(sessionKey);}catch{}session='';}
+function stop(){enabled=false;clearTimeout(engagementTimer);try{sessionStorage.removeItem(sessionKey);}catch{}session='';sessionId=sessionTracker(sessionStorageSafe);}
 window.verniaAnalyticsSession=()=>enabled?sessionId():'';
 const dnt=navigator.doNotTrack==='1'||navigator.globalPrivacyControl===true;
 function choose(value){storage.set(preferenceKey,value);if(value==='allow'&&!dnt)begin();else stop();document.getElementById('analytics-choice')?.remove();updatePreferences();}

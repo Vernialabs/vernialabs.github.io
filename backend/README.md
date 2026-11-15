@@ -18,7 +18,7 @@ Replies and unsubscribe requests go to the team inbox. Mark a verified request `
 
 ## Analytics
 
-The public site retains Cloudflare Web Analytics. Additional first-party tracking runs only after visitors select Allow analytics, and respects Do Not Track / Global Privacy Control. It sends page paths, referring hostname, campaign labels, country, device category, engagement, and opaque session IDs. It does not capture form content or full URLs. Session IDs are random, scoped to one tab, and refreshed after 30 minutes of inactivity; D1 stores a hash. Browser choices use local storage. Events in D1 are retained for 90 days.
+The public site retains Cloudflare Web Analytics. Additional first-party tracking runs only after visitors select Allow analytics, and respects Do Not Track / Global Privacy Control. It sends page paths, referring hostname, campaign labels, country, device category, engagement, and opaque session IDs. It does not capture form content or full URLs. Session IDs are random, scoped to one tab, and refreshed after 30 minutes of inactivity or 24 hours total; UUIDv7 timestamps enable PostHog session aggregation; D1 stores a hash. Browser choices use local storage. Events in D1 are retained for 90 days.
 
 The central dashboard queries D1 directly. PostHog project **737840** receives the same consented events through its public ingestion token. PostHog is an exploration destination, not the dashboard's source of historical numbers. The integration does not use a personal PostHog API key. Do not describe data from before installation as available here; prior aggregate Cloudflare history remains in Cloudflare. PostHog retention is governed by that project's settings.
 
