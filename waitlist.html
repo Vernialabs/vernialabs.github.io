@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com https://vernia-waitlist.ishan-upadhyay-iitb.workers.dev; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Join the waitlist — Vernia Labs</title>
+  <meta name="description" content="Join the Vernia Labs waitlist for Grip One, tactile gloves, and physical AI data updates.">
+  <meta name="theme-color" content="#15131d">
+  <meta property="og:title" content="Join the waitlist — Vernia Labs">
+  <meta property="og:description" content="Join the Vernia Labs waitlist for Grip One, tactile gloves, and physical AI data updates.">
+  <meta property="og:image" content="https://vernia.in/assets/brand/vernia-logo.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vernia.in/waitlist.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://vernia.in/waitlist.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=production1">
+  <link rel="stylesheet" href="production.css?v=1">
+  <script type="module" src="app.js?v=production1"></script>
+  <script type="module" src="waitlist.js?v=1"></script>
+</head>
+<body class="utility-page">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+    <a class="brand" href="index.html" aria-label="Vernia Labs home"><svg class="brand-mark" viewBox="100 200 1050 980" aria-hidden="true"><image href="assets/brand/vernia-mark.jpg" width="1254" height="1254"/></svg><span>vernia<span class="brand-labs">labs</span></span></a>
+    <nav aria-label="Main navigation" id="navigation"><a href="index.html#vision">Our vision</a><a href="hardware.html">Hardware</a><a href="index.html#data">Data</a></nav>
+    <a class="header-contact" href="waitlist.html?from=home">Join the waitlist <span aria-hidden="true">↗</span></a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
+  </header>
+<main id="main">
+<div class="utility-layout">
+  <section class="utility-intro" aria-labelledby="waitlist-title">
+    <span class="eyebrow">BUILDING THE NEXT LAYER</span>
+    <h1 id="waitlist-title">Your next step<br>starts <span class="serif">here.</span></h1>
+    <p>Join the Vernia waitlist for Grip One, tactile gloves, and our work on physical AI data. Choose what you’re interested in; we’ll share relevant updates as there’s more to tell.</p>
+    <div class="waitlist-notes">
+      <p><strong>One list. Your interests.</strong><br>Select one or more areas. There’s no payment or purchase commitment.</p>
+      <p><strong>What happens next?</strong><br>We save your place and interests. Availability and invitations may differ by product; a signup number is not a delivery date.</p>
+      <p>Have a project to discuss?<br><a href="mailto:ishan.upadhyay.iitb@gmail.com?subject=Vernia%20project%20inquiry">Talk to the team ↗</a></p>
+    </div>
+  </section>
+  <section class="signup-card" aria-label="Join the waitlist">
+    <form id="waitlist-form">
+      <div class="form-field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@your-lab.com"></div>
+      <div class="form-field"><label for="name">Your name <span class="optional">(optional)</span></label><input id="name" name="name" type="text" autocomplete="name" maxlength="100"></div>
+      <div class="form-field"><label for="organisation">Organisation or lab <span class="optional">(optional)</span></label><input id="organisation" name="organisation" type="text" autocomplete="organization" maxlength="160"></div>
+      <fieldset><legend>I’m interested in</legend><div class="interest-options">
+        <label><input type="checkbox" name="interest" value="grip-one">Grip One</label>
+        <label><input type="checkbox" name="interest" value="tactile-gloves">Tactile gloves</label>
+        <label><input type="checkbox" name="interest" value="data">Data</label>
+      </div></fieldset>
+      <div class="form-trap" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="consent-label"><input type="checkbox" name="consent" value="yes" required><span>I’d like Vernia Labs to email me updates about my selected interests. I can ask to leave the list at any time.</span></label>
+      <div id="security-check"></div>
+      <p id="form-status" class="form-status" role="status" aria-live="polite">Loading the security check…</p>
+      <button type="submit" class="button button-dark" disabled>Join the waitlist</button>
+      <p class="form-help">Read how we handle your information in our <a href="privacy.html">privacy notice</a>. Already joined? Your original place is preserved.</p>
+      <noscript><p class="form-help">This form needs JavaScript for its security check. You can also <a href="mailto:ishan.upadhyay.iitb@gmail.com?subject=Vernia%20waitlist">contact us by email</a>.</p></noscript>
+    </form>
+    <div id="signup-success" class="signup-success" hidden tabindex="-1" role="status">
+      <span class="success-symbol" aria-hidden="true">✓</span><h2>You’re on the list.</h2>
+      <p data-success-message></p><p data-position hidden></p>
+      <p>We’ll share updates about your selected interests. This is an expression of interest, not a reservation or an order.</p>
+      <a class="button button-dark" href="hardware.html">Explore the hardware <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+</div></main>
+<footer><a class="brand" href="index.html" aria-label="Vernia Labs home"><img class="brand-lockup" src="assets/brand/vernia-logo-transparent.png" width="1254" height="1254" alt="Vernia.in" loading="lazy"></a><p>Physical intelligence. Human beginnings.</p><span>© <span id="year">2026</span> Vernia Labs</span><a class="footer-policy" href="privacy.html">Privacy</a></footer>
+  <!-- Cloudflare Web Analytics: public site token; no form fields are sent. -->
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"bb77381b2d524f4d95a134a748b5c096"}'></script>
+</body>
+</html>

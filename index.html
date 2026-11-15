@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com https://vernia-waitlist.ishan-upadhyay-iitb.workers.dev; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vernia Labs — Physical AI research</title>
   <meta name="description" content="Hardware for the data layer of physical AI. Meet Grip One, Vernia Labs’ handheld UMI gripper for real-world manipulation demonstrations.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#15131d">
   <meta property="og:title" content="Vernia Labs — Physical AI research">
   <meta property="og:description" content="Meet Grip One. A handheld UMI gripper for capturing human demonstrations and building the data layer for physical AI.">
@@ -16,14 +19,15 @@
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=hardware5">
   <link rel="stylesheet" href="home.css?v=hardware5">
-  <script type="module" src="app.js?v=hardware5"></script>
+  <link rel="stylesheet" href="production.css?v=1">
+  <script type="module" src="app.js?v=production1"></script>
 </head>
 <body class="instrument-home">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <a class="brand" href="index.html" aria-label="Vernia Labs home"><svg class="brand-mark" viewBox="100 200 1050 980" aria-hidden="true"><image href="assets/brand/vernia-mark.jpg" width="1254" height="1254"/></svg><span>vernia<span class="brand-labs">labs</span></span></a>
     <nav aria-label="Main navigation" id="navigation"><a href="index.html#vision">Our vision</a><a href="hardware.html">Hardware</a><a href="index.html#data">Data</a></nav>
-    <a class="header-contact" href="mailto:ishan.upadhyay.iitb@gmail.com">Let’s talk <span aria-hidden="true">↗</span></a>
+    <a class="header-contact" href="waitlist.html?from=home">Join the waitlist <span aria-hidden="true">↗</span></a>
     <button class="menu-toggle" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
   </header>
   <main id="main">
@@ -49,8 +53,11 @@
       <a class="collection-row" href="hardware.html#tactile-gloves"><span class="collection-number">02</span><div><span class="eyebrow">HARDWARE / WHAT’S NEXT</span><h3>Tactile gloves</h3></div><p>The next addition to<br>our hardware lineup.</p><span class="availability">Coming soon</span></a>
       <article class="collection-row" id="data"><span class="collection-number">03</span><div><span class="eyebrow">THE NEXT LAYER</span><h3>Data</h3></div><p>The data layer for physical AI.<br>More to come.</p><span class="availability">Coming soon</span></article>
     </section>
+    <section class="waitlist-band" aria-labelledby="waitlist-heading"><div><span class="eyebrow">STAY CLOSE TO WHAT’S NEXT</span><h2 id="waitlist-heading">Build with us, from the beginning.</h2><p>One waitlist for Grip One, tactile gloves, and Data.<br>Choose your interests. Hear from us as things take shape.</p></div><a class="button button-dark" href="waitlist.html?from=home">Join the waitlist <span aria-hidden="true">↗</span></a></section>
     <section class="contact section-pad" id="contact"><div class="section-kicker reveal"><span class="tiny-cross">+</span> LET’S BUILD WHAT COMES NEXT</div><a class="contact-title reveal" href="mailto:ishan.upadhyay.iitb@gmail.com">Bring your<br><span class="serif">curiosity.</span><span class="contact-arrow" aria-hidden="true">↗</span></a><div class="contact-bottom reveal"><p>Exploring physical AI? Building a dataset?<br>We’d love to hear what you’re working on.</p><div><a href="mailto:ishan.upadhyay.iitb@gmail.com">ishan.upadhyay.iitb@gmail.com <span aria-hidden="true">↗</span></a><a href="tel:+918302952133">+91 83029 52133 <span aria-hidden="true">↗</span></a></div></div></section>
   </main>
-  <footer><a class="brand" href="#home" aria-label="Vernia Labs home"><img class="brand-lockup" src="assets/brand/vernia-logo-transparent.png" width="1254" height="1254" alt="Vernia.in" loading="lazy"></a><p>Physical intelligence. Human beginnings.</p><span>© <span id="year">2026</span> Vernia Labs</span><a href="#home">Back to top ↑</a></footer>
+  <footer><a class="brand" href="#home" aria-label="Vernia Labs home"><img class="brand-lockup" src="assets/brand/vernia-logo-transparent.png" width="1254" height="1254" alt="Vernia.in" loading="lazy"></a><p>Physical intelligence. Human beginnings.</p><span>© <span id="year">2026</span> Vernia Labs</span><a class="footer-policy" href="privacy.html">Privacy</a><a href="#home">Back to top ↑</a></footer>
+  <!-- Cloudflare Web Analytics: public site token; no form fields are sent. -->
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"bb77381b2d524f4d95a134a748b5c096"}'></script>
 </body>
 </html>
