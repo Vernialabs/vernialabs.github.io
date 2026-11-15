@@ -4,20 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vernia Labs — Physical AI research</title>
-  <meta name="description" content="Vernia Labs is a physical AI research company building the data layer for real-world learning. Explore our hardware and research direction.">
+  <meta name="description" content="Hardware for the data layer of physical AI. Meet Grip One, Vernia Labs’ handheld UMI gripper for real-world manipulation demonstrations.">
   <meta name="theme-color" content="#15131d">
   <meta property="og:title" content="Vernia Labs — Physical AI research">
-  <meta property="og:description" content="Building the data layer for physical AI. Human experience. Machine intelligence.">
+  <meta property="og:description" content="Meet Grip One. A handheld UMI gripper for capturing human demonstrations and building the data layer for physical AI.">
   <meta property="og:image" content="https://vernia.in/assets/brand/vernia-logo.jpg">
   <meta property="og:image:alt" content="Vernia logo with violet orbital mark">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vernia.in/">
   <link rel="canonical" href="https://vernia.in/">
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=gesture2">
-  <script type="module" src="app.js?v=gesture2"></script>
+  <link rel="stylesheet" href="styles.css?v=hardware3">
+  <link rel="stylesheet" href="home.css?v=hardware3">
+  <script type="module" src="app.js?v=hardware3"></script>
 </head>
-<body>
+<body class="instrument-home">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <a class="brand" href="index.html" aria-label="Vernia Labs home"><svg class="brand-mark" viewBox="100 200 1050 980" aria-hidden="true"><image href="assets/brand/vernia-mark.jpg" width="1254" height="1254"/></svg><span>vernia<span class="brand-labs">labs</span></span></a>
@@ -26,40 +27,27 @@
     <button class="menu-toggle" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><span></span><span></span></button>
   </header>
   <main id="main">
-    <section class="hero research-hero" id="home" aria-labelledby="hero-title">
-      <div class="research-heading">
-        <p class="eyebrow">VERNIA LABS / PHYSICAL AI RESEARCH</p>
-        <h1 id="hero-title">Human action.<br><em>Machine understanding.</em></h1>
-        <p class="research-intro">We’re building the data layer that connects<br>human experience to physical intelligence.</p>
-      </div>
-      <figure class="cinematic-study" aria-label="An articulated human hand reaches, closes into a pinch, then gradually dissolves into flowing particles.">
-        <div id="cinematic-stage"><picture><source media="(max-width: 760px)" srcset="assets/brand/cinematic-poster-mobile.webp"><img class="cinematic-poster" src="assets/brand/cinematic-poster.webp" width="1440" height="576" alt="A human hand with flowing violet particles" fetchpriority="high"></picture></div>
-        <figcaption class="cinematic-caption"><span>Experience, in motion.</span><button class="motion-toggle" aria-pressed="false">Pause motion <span aria-hidden="true">Ⅱ</span></button></figcaption>
-      </figure>
-      <div class="research-bottom"><p>Human demonstrations. Richer data.<br>A foundation for robots that learn.</p><a class="button button-accent" href="hardware.html">Explore our hardware <span aria-hidden="true">↗</span></a><a class="research-hardware" href="mailto:ishan.upadhyay.iitb@gmail.com">Get in touch <span aria-hidden="true">↗</span></a></div>
+    <section class="instrument-hero" id="home" aria-labelledby="hero-title">
+      <div class="instrument-topline"><p>PHYSICAL AI BEGINS WITH THE PHYSICAL.</p><span>VERNIA LABS / HARDWARE 01</span></div>
+      <h1 id="hero-title">Grip <span>One.</span></h1>
+      <p class="instrument-subtitle">A handheld UMI gripper for physical AI.</p>
+      <div class="instrument-light" aria-hidden="true"></div>
+      <div class="instrument-note"><span class="eyebrow">A HUMAN STARTING POINT</span><p>Real actions.<br>Robot possibilities.</p></div>
+      <div class="instrument-model model-stage" id="product-model" tabindex="0" role="img" aria-label="Interactive Grip One handheld gripper. Drag or use left and right arrow keys to rotate."><img class="model-fallback" src="assets/models/grip-one/grip-one-poster-metal.png" width="1000" height="1000" alt="Grip One metallic handheld UMI gripper" fetchpriority="high"></div>
+      <div class="instrument-index" aria-hidden="true"><span>01</span><i>HUMAN → MACHINE</i></div>
+      <div class="instrument-tools"><span id="viewer-hint">DRAG TO EXPLORE ↔</span><div><button id="grip-toggle" aria-pressed="false" disabled>Close grip</button><button id="view-reset" aria-label="Reset 3D view" disabled>↺</button><button class="motion-toggle" aria-pressed="false" disabled>Pause motion <span aria-hidden="true">Ⅱ</span></button></div></div>
+      <div class="instrument-bottom"><div><span class="eyebrow">THE TOOL BEHIND THE DATA</span><p>A handheld UMI gripper for capturing<br>real-world manipulation demonstrations.</p></div><a class="button button-accent" href="hardware.html#grip-one">Explore Grip One <span aria-hidden="true">↗</span></a><a class="instrument-inquiry" href="mailto:ishan.upadhyay.iitb@gmail.com?subject=Grip%20One%20inquiry">Talk to us about Grip One <span aria-hidden="true">↗</span></a></div>
     </section>
-    <section class="vision section-pad" id="vision">
-      <div class="section-kicker reveal"><span class="tiny-cross">+</span> 01 / THE VISION</div>
-      <div class="vision-body"><h2 class="reveal">The world doesn’t<br>come with a <span class="serif">dataset.</span></h2><div class="vision-copy reveal"><p>A grasp is more than a pose. It unfolds over time: reaching, making contact, moving, and letting go.</p><p>At Vernia Labs, we research the data layer for physical AI. Our starting point is human demonstration: how to capture real-world interaction and turn it into useful data for robot learning.</p></div></div>
-      <div class="signal-strip reveal" aria-hidden="true"><span>HUMAN EXPERIENCE</span><div class="signal-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>MACHINE LEARNING</span></div>
+    <section class="field-story section-pad" id="vision" aria-labelledby="vision-title">
+      <div class="section-kicker"><span class="tiny-cross">+</span> FROM HANDS TO HARDWARE</div>
+      <div class="field-heading"><h2 id="vision-title">Before a robot learns,<br>someone <span class="serif">shows it how.</span></h2><div><p>We build tools to capture that starting point.</p><p>Vernia Labs is a physical AI research company working on the data layer. Grip One is our first offering: a handheld UMI gripper for collecting manipulation demonstrations in the real world.</p><a class="field-link" href="hardware.html">Explore our hardware <span aria-hidden="true">↗</span></a></div></div>
+      <div class="field-sequence"><article><span>01 / HUMAN</span><h3>Start with an action.</h3><p>A reach. A grasp. A placement. Human demonstrations give robot learning a place to begin.</p></article><article><span>02 / HARDWARE</span><h3>Put a tool in hand.</h3><p>Grip One brings a handheld interface to the process of collecting those demonstrations.</p></article><article><span>03 / DATA</span><h3>Build from experience.</h3><p>Our focus is the data layer that connects physical interaction to robot learning.</p></article></div>
     </section>
-    <section class="focus section-pad" id="focus" aria-labelledby="focus-title">
-      <div class="section-kicker"><span class="tiny-cross">+</span> 02 / WHAT WE BUILD</div>
-      <h2 id="focus-title">From the physical world.<br>Into <span class="serif">possibility.</span></h2>
-      <div class="focus-grid">
-        <a class="focus-hardware" href="hardware.html"><span class="eyebrow">01 / TOOLS FOR INTERACTION</span><h3>Hardware<span aria-hidden="true">↗</span></h3><p>Tools for capturing human demonstrations<br>in the real world.</p><span class="focus-action">Explore hardware <span aria-hidden="true">↗</span></span></a>
-        <article class="focus-data" id="data" aria-labelledby="data-title"><div class="focus-data-top"><span class="eyebrow">02 / THE NEXT LAYER</span><span class="availability">Coming soon</span></div><h3 id="data-title">Data</h3><p>The data layer for physical AI.<br>More to come.</p><div class="data-lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
-      </div>
-    </section>
-    <section class="approach section-pad" id="approach">
-      <div class="section-kicker reveal"><span class="tiny-cross">+</span> 03 / OUR APPROACH</div>
-      <div class="approach-heading reveal"><h2>From doing.<br>To <span class="serif">understanding.</span></h2><p>We start where intelligence starts.<br>In contact with the real world.</p></div>
-      <div class="approach-steps">
-        <article class="step reveal"><div class="step-top"><span>01</span><svg viewBox="0 0 100 80" aria-hidden="true"><path d="M20 60V34a5 5 0 0 1 10 0v8-24a5 5 0 0 1 10 0v23-30a5 5 0 0 1 10 0v30-23a5 5 0 0 1 10 0v29l10-12q7-6 11 2L65 65q-7 9-21 9H35q-15-3-15-14Z"/></svg></div><h3>Capture the action.</h3><p>Start with human demonstrations. Bring everyday actions into the data collection process.</p></article>
-        <article class="step reveal"><div class="step-top"><span>02</span><svg viewBox="0 0 100 80" aria-hidden="true"><path d="m15 22 35-16 35 16-35 16Zm0 16 35 16 35-16M15 54l35 16 35-16M15 22v32M85 22v32M50 38v32"/></svg></div><h3>Preserve the sequence.</h3><p>Study the relationship between movement, contact, and time. The sequence matters as much as the outcome.</p></article>
-        <article class="step reveal"><div class="step-top"><span>03</span><svg viewBox="0 0 100 80" aria-hidden="true"><circle cx="50" cy="40" r="9"/><circle cx="50" cy="40" r="27" stroke-dasharray="3 5"/><path d="M50 0v18m0 44v18M10 40h18m44 0h18M22 12l12 12m32 32 12 12m0-56L66 24M34 56 22 68"/></svg></div><h3>Make learning accessible.</h3><p>Lower the barrier to getting started. Put practical collection tools in more researchers’ hands.</p></article>
-      </div>
-      <div class="approach-bottom reveal"><span class="status-dot"></span> BETTER DATA STARTS WITH MORE PEOPLE PARTICIPATING.</div>
+    <section class="collection section-pad" id="focus" aria-labelledby="collection-title">
+      <div class="collection-heading"><div class="section-kicker"><span class="tiny-cross">+</span> THE VERNIA LINEUP</div><h2 id="collection-title">Starting with grip.<br>Building <span class="serif">beyond it.</span></h2></div>
+      <a class="collection-row collection-live" href="hardware.html#grip-one"><span class="collection-number">01</span><div><span class="eyebrow">HARDWARE / UMI GRIPPER</span><h3>Grip One</h3></div><p>Human demonstrations.<br>A handheld starting point.</p><span class="collection-link">Explore <span aria-hidden="true">↗</span></span></a>
+      <a class="collection-row" href="hardware.html#tactile-gloves"><span class="collection-number">02</span><div><span class="eyebrow">HARDWARE / WHAT’S NEXT</span><h3>Tactile gloves</h3></div><p>The next addition to<br>our hardware lineup.</p><span class="availability">Coming soon</span></a>
+      <article class="collection-row" id="data"><span class="collection-number">03</span><div><span class="eyebrow">THE NEXT LAYER</span><h3>Data</h3></div><p>The data layer for physical AI.<br>More to come.</p><span class="availability">Coming soon</span></article>
     </section>
     <section class="contact section-pad" id="contact"><div class="section-kicker reveal"><span class="tiny-cross">+</span> LET’S BUILD WHAT COMES NEXT</div><a class="contact-title reveal" href="mailto:ishan.upadhyay.iitb@gmail.com">Bring your<br><span class="serif">curiosity.</span><span class="contact-arrow" aria-hidden="true">↗</span></a><div class="contact-bottom reveal"><p>Exploring physical AI? Building a dataset?<br>We’d love to hear what you’re working on.</p><div><a href="mailto:ishan.upadhyay.iitb@gmail.com">ishan.upadhyay.iitb@gmail.com <span aria-hidden="true">↗</span></a><a href="tel:+918302952133">+91 83029 52133 <span aria-hidden="true">↗</span></a></div></div></section>
   </main>

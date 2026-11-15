@@ -8,28 +8,29 @@ Run `python -m http.server 4173` in this directory and open http://localhost:417
 
 ## Files
 
-- `index.html`: company homepage, vision, Hardware entry point, and Data coming-soon section. No Grip One imagery or product pitch appears here.
+- `index.html`: product-led company homepage with interactive Grip One, company vision, and Hardware / Data lineup.
+- `home.css`: scoped full-width product cover, responsive layout, and editorial lineup styling.
 - `hardware.html`: Grip One with interactive 3D, followed by tactile gloves marked Coming soon.
 - `styles.css`: responsive layouts, visual design, and motion preferences.
 - `app.js`: navigation, reveal effects, and the articulated Three.js CAD viewer.
-- `cinematic-motion.js`: timed reach, pinch, surface dissolution, and flowing particles.
-- `gesture-rig.js`: anatomical rig setup, joint constraints, and fingertip-contact pose solution.
+- `cinematic-motion.js`: archived hand animation, not used on the current site.
+- `gesture-rig.js`: archived hand rig, retained with its source assets.
 - `assets/models/gesture-hand/`: preserved CC0 anatomical hand GLB and source provenance.
-- `assets/brand/cinematic-hand.png`: preserved artwork from the earlier treatment, no longer loaded. Matching WebP posters render the current 3D scene as static fallbacks.
+- `assets/brand/cinematic-hand.png`: preserved artwork from the earlier treatment, no longer loaded. Hand-scene WebP posters are also preserved but unused.
 - `assets/models/grip-one/`: assembled CAD, matching rendered fallback, original URDF, provenance, and upstream license notices.
 - `assets/vendor/`: locally hosted Three.js 0.170.0 and its MIT license.
 - `CNAME`: existing custom domain; keep this file when updating the site.
 
 ## Content and navigation
 
-The homepage introduces Vernia Labs to physical AI researchers; the Hardware page answers what tools Vernia offers. Main navigation links to Our vision, Hardware, and Data. Data remains a compact coming-soon section, without a catalog or platform claims. Existing `/#grip-one` links redirect to `hardware.html#grip-one`. Product and general inquiries open the owner's email client; no form or waitlist collects data.
+The homepage immediately introduces Grip One to physical AI researchers, then explains Vernia’s data-layer focus. The Hardware page provides product details. Main navigation links to Our vision, Hardware, and Data. Data remains a compact coming-soon section, without a catalog or platform claims. Existing `/#grip-one` links redirect to `hardware.html#grip-one`. Product and general inquiries open the owner's email client; no form or waitlist collects data.
 
-The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage uses an articulated 3D hand with a 16-second reach, pinch, hold, dissolve, and particle-flow cycle. Real finger-joint rotations drive the skinned mesh; the index and thumb are solved into contact with an approximately 1.3 mm model-space pad gap. A clipped wrist boundary is extended into the forearm. Dissolution progresses from the fingertips toward the arm, and particles are released from the corresponding deformed surface vertices. This is a designed animation, not recorded motion capture. The prior photographic moving-image treatment is no longer rendered. The primary CTA is Explore our hardware and opens `hardware.html`; the secondary action opens the contact email. Motion pauses offscreen, in background tabs, and on request. Reduced-motion preferences show a still transition pose; desktop and mobile WebP posters cover unavailable JavaScript/WebGL.
+The owner supplied the Product Website Builder skill on 2026-11-15. It is installed locally in Codex and used for this information architecture, copy, and verification pass. The original brief, supplied brand assets, and product geometry are preserved. The existing charcoal, lavender, serif accents, and metallic product styling carry across both pages. The homepage now opens with Grip One in a full-width product cover: oversized typography, a diagonal lavender light field, and the metallic CAD at its centre. Visitors can rotate, close, reset, and pause the gripper. The primary CTA opens `hardware.html#grip-one`; a secondary action opens a product email inquiry. A concise human / hardware / data explanation leads to a three-row lineup for Grip One, tactile gloves, and Data. The latter two are clearly marked Coming soon. The earlier hand animation files remain archived in the repository and are no longer requested by the homepage. Reduced-motion preferences stop automatic movement; the product poster covers unavailable JavaScript/WebGL. Product motion stops offscreen and in background tabs.
 
 | Claim | Source / date | Status | Public wording / location |
 | --- | --- | --- | --- |
 | Vernia researches the physical AI data layer | Owner brief, 2026-11-14 | Owner-stated | Company introduction on homepage |
-| Grip One is a handheld UMI gripper | Owner brief, 2026-11-14 | Owner-stated offering; fulfillment details unspecified | Hardware page; inquiry CTA |
+| Grip One is a handheld UMI gripper | Owner brief, 2026-11-14 | Owner-stated offering; fulfillment details unspecified | Homepage and Hardware page; inquiry CTA |
 | Tactile gloves are forthcoming | Owner request, 2026-11-15 | Planned | Coming soon, Hardware page; no specs or release date |
 | Data offering is not ready to present | Owner request, 2026-11-15 | Deferred | Coming soon, homepage; no availability claims |
 
@@ -37,7 +38,7 @@ The owner supplied the Product Website Builder skill on 2026-11-15. It is instal
 
 The working product name is **Vernia Grip One**, with pricing currently hidden from the page and metadata. Contact links use `ishan.upadhyay.iitb@gmail.com` and `+91 83029 52133` (India country code assumed from the supplied ten-digit number).
 
-The Hardware page uses the assembled right-hand viewer CAD from [Pollen Robotics' Grabette repository](https://github.com/pollen-robotics/grabette), pinned to commit `1707d4e2ec542a3038b858fae7e919f95ea27305`. All 64 visual instances from 30 source STL meshes are retained, with the original URDF transforms and joint axes. The model is converted to indexed glTF 2.0, with a 1.8 MB gzip download and a standard GLB fallback for browsers without native decompression. The Hardware page fetches the model for its interactive viewer. The homepage does not load product CAD; its separate particle scene shares the vendored Three.js renderer.
+The Hardware page uses the assembled right-hand viewer CAD from [Pollen Robotics' Grabette repository](https://github.com/pollen-robotics/grabette), pinned to commit `1707d4e2ec542a3038b858fae7e919f95ea27305`. All 64 visual instances from 30 source STL meshes are retained, with the original URDF transforms and joint axes. The model is converted to indexed glTF 2.0, with a 1.8 MB gzip download and a standard GLB fallback for browsers without native decompression. The homepage and Hardware page each fetch the model once for their interactive viewer. The homepage does not load the hand animation or its assets.
 
 Grip One remains Vernia's public product name. This reference CAD does not certify Vernia's final hardware configuration. Satin aluminum, graphite metal, and studio-reflection finishes are illustrative; the closure animation moves the two original joints within their source limits and is not a physics simulation or a measured hardware stroke. A matching transparent CAD render replaces the old procedural fallback. The upstream copyright, Apache-2.0 license, and notices are retained under `assets/models/grip-one/`, without a public-facing source/license link in the product showcase.
 

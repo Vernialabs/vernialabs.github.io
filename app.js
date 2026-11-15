@@ -1,6 +1,6 @@
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 // Preserve previously shared product links after moving the hardware collection.
-if (!document.querySelector('.model-stage') && location.hash === '#grip-one') {
+if (!document.querySelector('#grip-one') && location.hash === '#grip-one') {
   location.replace('hardware.html#grip-one');
 }
 let paused = reducedMotion.matches;
@@ -160,8 +160,10 @@ if (document.querySelector('.model-stage')) Promise.all([
     new ResizeObserver(resize).observe(stage); resize();
     new IntersectionObserver(entries => { view.visible = entries[0].isIntersecting; view.dirty = true; }).observe(stage);
     renderer.render(scene, camera); stage.classList.add('loaded');
+    if (motionButton) motionButton.disabled = false;
     renderer.domElement.addEventListener('webglcontextlost', event => {
       event.preventDefault(); stage.classList.remove('loaded'); view.visible = false;
+      if (motionButton) motionButton.disabled = true;
       if (interactive) { document.querySelector('#viewer-hint').textContent = 'GRIP ONE'; document.querySelector('#grip-toggle').disabled = true; document.querySelector('#view-reset').disabled = true; }
     });
     if (interactive) {
