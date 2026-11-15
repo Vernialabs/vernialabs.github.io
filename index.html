@@ -57,12 +57,12 @@
           <div class="stage-canvas"><img class="poster" src="assets/models/grip-one/grip-one-poster-metal.webp" width="800" height="800" alt="Grip One, Vernia's handheld gripper"></div>
           <svg class="lines" aria-hidden="true"></svg>
           <ul class="callouts">
-            <li class="callout" data-anchor="fisheye" style="top:8%"><b>Fisheye camera</b><span>The jaws and the scene around them</span></li>
-            <li class="callout" data-anchor="depth" style="top:24%"><b>Stereo depth camera</b><span>Distance to every surface</span></li>
-            <li class="callout" data-anchor="imu" style="top:40%"><b>IMU</b><span>Acceleration and rotation</span></li>
-            <li class="callout" data-anchor="encoder" style="top:56%"><b>Jaw encoder</b><span>How far the jaws open, every frame</span></li>
-            <li class="callout" data-anchor="force" style="top:72%"><b>Force sensor</b><span>How hard the fingertips press</span></li>
-            <li class="callout" data-anchor="button" style="top:88%"><b>Record button</b><span>Starts and stops an episode</span></li>
+            <li class="callout" data-anchor="fisheye" style="top:8%"><b>Wide RGB camera</b><span>Sony IMX219, 8 MP, 160° field of view</span></li>
+            <li class="callout" data-anchor="depth" style="top:24%"><b>Stereo pair</b><span>2 × OV9281, 1 MP mono, global shutter</span></li>
+            <li class="callout" data-anchor="imu" style="top:40%"><b>IMU</b><span>Bosch BMI270, 6-axis</span></li>
+            <li class="callout" data-anchor="encoder" style="top:56%"><b>Jaw encoder</b><span>AS5600 magnetic, 12-bit</span></li>
+            <li class="callout" data-anchor="force" style="top:72%"><b>Force sensor</b><span>Thumb-tip FSR, 16-bit ADC</span></li>
+            <li class="callout" data-anchor="button" style="top:88%"><b>Record button</b><span>Tactile switch with status LED</span></li>
           </ul>
           <p class="drag-hint">Drag to turn. Tap to grip.</p>
         </div>
@@ -78,11 +78,11 @@
           <div class="stage-canvas"></div>
           <svg class="lines" aria-hidden="true"></svg>
           <ul class="callouts">
-            <li class="callout" data-anchor="stereo" style="top:10%"><b>Stereo cameras</b><span>Two eyes at head height</span></li>
-            <li class="callout" data-anchor="fisheye" style="top:27%"><b>Fisheye camera</b><span>Both hands in view</span></li>
-            <li class="callout" data-anchor="imu" style="top:44%"><b>IMU</b><span>Head motion and gravity</span></li>
-            <li class="callout" data-anchor="compute" style="top:61%"><b>Compute and battery</b><span>Records and stores on the headset</span></li>
-            <li class="callout" data-anchor="button" style="top:78%"><b>Record button</b><span>One press per episode</span></li>
+            <li class="callout" data-anchor="stereo" style="top:10%"><b>Stereo pair</b><span>2 × OV9281, 1 MP mono, global shutter</span></li>
+            <li class="callout" data-anchor="fisheye" style="top:27%"><b>Wide RGB camera</b><span>Sony IMX219, 8 MP, 160° field of view</span></li>
+            <li class="callout" data-anchor="imu" style="top:44%"><b>IMU</b><span>Bosch BMI270, 6-axis</span></li>
+            <li class="callout" data-anchor="compute" style="top:61%"><b>Recorder and battery</b><span>Raspberry Pi, 64 GB, 10,000 mAh</span></li>
+            <li class="callout" data-anchor="button" style="top:78%"><b>Record button</b><span>Tactile switch with status LED</span></li>
             <li class="callout" data-anchor="strap" style="top:93%"><b>Adjustable strap</b><span>Fits most heads</span></li>
           </ul>
           <p class="drag-hint">Drag to turn.</p>
@@ -131,27 +131,24 @@
         <section class="report" id="report" hidden aria-labelledby="report-title">
           <div class="report-head">
             <h3 id="report-title">Your episode, as we would deliver it</h3>
-            <p>Every number below comes from the episode you just recorded.</p>
+            <p>Built from your recording.</p>
           </div>
-          <div>
-            <h4>From hand to dataset</h4>
-            <ol class="steps" id="steps"></ol>
-          </div>
+          <ol class="steps" id="steps" aria-label="From hand to dataset"></ol>
           <div>
             <h4>Streams</h4>
             <div class="table-scroll">
               <table class="tbl">
-                <thead><tr><th scope="col">Stream</th><th scope="col">Rate</th><th scope="col" class="num">Samples</th><th scope="col">Stored as</th><th scope="col" class="num">Size</th></tr></thead>
+                <thead><tr><th scope="col">Stream</th><th scope="col">Part</th><th scope="col">Rate</th><th scope="col" class="num">Samples</th><th scope="col">Format</th><th scope="col" class="num">Size</th></tr></thead>
                 <tbody id="streams"></tbody>
               </table>
             </div>
           </div>
           <div class="code-pair">
-            <div><h4>One frame, as a training row</h4><pre class="code" id="sample-row"></pre></div>
-            <div><h4>Dataset layout</h4><pre class="code" id="layout"></pre></div>
+            <div><h4>One frame</h4><pre class="code" id="sample-row"></pre></div>
+            <div><h4>Dataset</h4><pre class="code" id="layout"></pre></div>
           </div>
           <details class="frames">
-            <summary>Every frame of your episode</summary>
+            <summary>All frames</summary>
             <div class="table-scroll">
               <table class="tbl">
                 <thead><tr><th scope="col">Frame</th><th scope="col" class="num">Time (s)</th><th scope="col" class="num">x (mm)</th><th scope="col" class="num">y (mm)</th><th scope="col" class="num">z (mm)</th><th scope="col" class="num">Jaw (mm)</th><th scope="col" class="num">Force (N)</th><th scope="col" class="num">Accel up (m/s²)</th></tr></thead>

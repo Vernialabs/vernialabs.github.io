@@ -9,10 +9,18 @@ import { siteConfig } from './site-config.js';
 // Preview builds (outside vernia.in) may set window.VERNIA_PREVIEW before this module runs.
 const PREVIEW = window.VERNIA_PREVIEW || null;
 
-// Sensor rates used for the episode report. Update these when the Grip One firmware is final.
-const RATES = { video: 30, depth: 30, imu: 200, encoder: 100, force: 100, pose: 30 };
-const VIDEO = { width: 1280, height: 800, mbps: 6 };
-const DEPTH = { width: 640, height: 400, ratio: .35 };
+// Parts in the current Grip One build (buy list, 14 Nov 2026) and the recording settings the episode
+// report assumes. Update the rates and bitrates when the firmware is final.
+const PARTS = {
+  wide: { name: 'Waveshare IMX219-160', fps: 30, width: 1640, height: 1232, mbps: 8 },
+  stereo: { name: '2 × Arducam B0332 (OV9281)', fps: 30, width: 1280, height: 800, mbps: 3 },
+  imu: { name: 'Bosch BMI270', hz: 200 },
+  encoder: { name: 'AS5600', hz: 100 },
+  force: { name: 'RP-C10-LT + ADS1115', hz: 100 },
+  pose: { name: 'SLAM on stereo + IMU', hz: 30 },
+  compute: 'Raspberry Pi 3B+'
+};
+const RATES = { video: PARTS.wide.fps };
 
 const $ = s => document.querySelector(s);
 const V3 = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
@@ -178,10 +186,11 @@ function productStage(stage, built, { yaw, pitch, roll = 0, phase = 0, side }) {
   }
   new ResizeObserver(measure).observe(stage); measure();
 
-  const st = { yaw, pitch, vyaw: 0, drag: null, last: -10, t: 0, visible: true, dirty: true };
+  const st = { yaw, pitch, yaw0: yaw, pitch0: pitch, vyaw: 0, drag: null, last: -10, t: 0, visible: true };
+  const turning = () => { stage.classList.add('is-turning'); st.last = st.t; };
   watch(stage, st);
   const el = renderer.domElement;
-  el.addEventListener('pointerdown', e => { st.drag = { x: e.clientX, y: e.clientY, moved: 0 }; el.setPointerCapture(e.pointerId); st.vyaw = 0; });
+  el.addEventListener('pointerdown', e => { st.drag = { x: e.clientX, y: e.clientY, moved: 0 }; el.setPointerCapture(e.pointerId); st.vyaw = 0; turning(); });
   el.addEventListener('pointermove', e => {
     if (!st.drag) return;
     const dx = e.clientX - st.drag.x, dy = e.clientY - st.drag.y;
@@ -192,7 +201,7 @@ function productStage(stage, built, { yaw, pitch, roll = 0, phase = 0, side }) {
   el.addEventListener('pointerup', end); el.addEventListener('pointercancel', () => { st.drag = null; });
   stage.addEventListener('keydown', e => {
     const k = { ArrowLeft: [-.18, 0], ArrowRight: [.18, 0], ArrowUp: [0, -.12], ArrowDown: [0, .12] }[e.key];
-    if (k) { e.preventDefault(); st.yaw += k[0]; st.pitch = clamp(st.pitch + k[1], -.8, 1); st.last = st.t; }
+    if (k) { e.preventDefault(); st.yaw += k[0]; st.pitch = clamp(st.pitch + k[1], -.8, 1); turning(); }
     if ((e.key === 'Enter' || e.key === ' ') && built.tap) { e.preventDefault(); built.tap(); }
   });
 
@@ -202,7 +211,14 @@ function productStage(stage, built, { yaw, pitch, roll = 0, phase = 0, side }) {
     if (!st.visible) return;
     st.t += dt;
     if (!st.drag) { st.yaw += st.vyaw; st.vyaw *= .9; }
-    const idle = reduceMotion ? 0 : clamp((st.t - st.last - 2.5) / 2, 0, 1);
+    if (!st.drag && st.t - st.last > 2.2) {
+      const tau = Math.PI * 2;
+      let dy = (st.yaw0 - st.yaw) % tau; if (dy > Math.PI) dy -= tau; if (dy < -Math.PI) dy += tau;
+      const k = Math.min(1, dt * 2.4);
+      st.yaw += dy * k; st.pitch += (st.pitch0 - st.pitch) * k;
+      if (Math.abs(dy) < .04 && Math.abs(st.pitch0 - st.pitch) < .03) stage.classList.remove('is-turning');
+    }
+    const idle = reduceMotion ? 0 : clamp((st.t - st.last - 4) / 2, 0, 1);
     pivot.rotation.set(st.pitch, st.yaw + Math.sin(st.t * .35 + phase) * .2 * idle, roll);
     pivot.position.y = reduceMotion ? 0 : Math.sin(st.t * .8 + phase) * .1;
     if (built.update) built.update(dt);
@@ -228,13 +244,6 @@ function canvasTexture(w, h, draw, repeat) {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
   t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...repeat); t.anisotropy = 4;
   return t;
-}
-function glowTexture() {
-  const c = document.createElement('canvas'); c.width = c.height = 128;
-  const g = c.getContext('2d'), r = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-  r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.35, 'rgba(200,210,255,.55)'); r.addColorStop(1, 'rgba(200,210,255,0)');
-  g.fillStyle = r; g.fillRect(0, 0, 128, 128);
-  return new THREE.CanvasTexture(c);
 }
 
 function startGame(gltf) {
@@ -269,26 +278,31 @@ function startGame(gltf) {
       g.fillStyle = 'rgba(90,70,50,.18)'; g.fillRect(0, y, w, 1.2);
     }
   }, [1, 1]);
-  const table = new THREE.Mesh(new RoundedBoxGeometry(.92, .03, .52, 4, .012), new THREE.MeshStandardMaterial({ map: birch, roughness: .55 }));
+  const table = new THREE.Mesh(new RoundedBoxGeometry(.8, .03, .5, 4, .012), new THREE.MeshStandardMaterial({ map: birch, roughness: .55 }));
   table.position.y = -.015; table.receiveShadow = table.castShadow = true; scene.add(table);
   const navy = new THREE.MeshStandardMaterial({ color: '#2a2f55', roughness: .4, metalness: .35 });
-  const frame = new THREE.Mesh(new RoundedBoxGeometry(.84, .014, .44, 3, .006), navy);
+  const frame = new THREE.Mesh(new RoundedBoxGeometry(.72, .014, .42, 3, .006), navy);
   frame.position.y = -.037; frame.castShadow = true; scene.add(frame);
-  const fanMetal = new THREE.MeshPhysicalMaterial({ color: '#c9ced8', metalness: .9, roughness: .3, clearcoat: .3 });
-  const fanDark = new THREE.MeshStandardMaterial({ color: '#2b2f45', roughness: .6, metalness: .4, side: THREE.DoubleSide });
-  const glowTex = glowTexture();
-  const rotors = [], glows = [];
+  // four drone arms carry the table, each with a motor and a two-blade propeller
+  const armMat = new THREE.MeshPhysicalMaterial({ color: '#c9ced8', metalness: .9, roughness: .3, clearcoat: .3 });
+  const motorMat = new THREE.MeshStandardMaterial({ color: '#2b2f45', roughness: .45, metalness: .5 });
+  const bladeMat = new THREE.MeshStandardMaterial({ color: '#2b2f45', roughness: .4, metalness: .2 });
+  const blurMat = new THREE.MeshBasicMaterial({ color: '#c9d1f2', transparent: true, opacity: .32, depthWrite: false, side: THREE.DoubleSide });
+  const rotors = [];
   for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
-    const pod = new THREE.Group(); pod.position.set(sx * .43, -.07, sz * .24); scene.add(pod);
-    const duct = new THREE.Mesh(new THREE.TorusGeometry(.052, .009, 12, 40), fanMetal); duct.rotation.x = Math.PI / 2; pod.add(duct);
-    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(.046, .046, .022, 36, 1, true), fanDark); pod.add(shroud);
-    const hub = new THREE.Mesh(new THREE.CylinderGeometry(.011, .011, .024, 16), navy); pod.add(hub);
-    const strut = new THREE.Mesh(new THREE.CylinderGeometry(.005, .005, .045, 10), navy); strut.position.y = .03; pod.add(strut);
-    const rotor = new THREE.Group(); pod.add(rotor); rotors.push(rotor);
-    for (let k = 0; k < 3; k++) { const b = new THREE.Mesh(new THREE.BoxGeometry(.04, .002, .011), fanDark); b.position.x = .022; const arm = new THREE.Group(); arm.rotation.y = k * Math.PI * 2 / 3; b.rotation.x = .3; arm.add(b); rotor.add(arm); }
-    const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: '#c8d2ff', transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: .7 }));
-    glow.scale.set(.16, .16, 1); glow.position.y = -.045; pod.add(glow); glows.push(glow);
-    pod.traverse(o => { if (o.isMesh) o.castShadow = true; });
+    const from = V3(sx * .34, -.03, sz * .2), to = V3(sx * .45, -.012, sz * .3);
+    const arm = new THREE.Mesh(new THREE.CylinderGeometry(.007, .009, from.distanceTo(to), 12), armMat);
+    arm.position.copy(from).add(to).multiplyScalar(.5);
+    arm.quaternion.setFromUnitVectors(V3(0, 1, 0), to.clone().sub(from).normalize());
+    const motor = new THREE.Mesh(new THREE.CylinderGeometry(.016, .018, .026, 20), motorMat); motor.position.copy(to);
+    const bell = new THREE.Mesh(new THREE.CylinderGeometry(.012, .016, .008, 20), armMat); bell.position.set(to.x, to.y + .017, to.z);
+    const rotor = new THREE.Group(); rotor.position.set(to.x, to.y + .025, to.z);
+    rotor.add(new THREE.Mesh(new THREE.CylinderGeometry(.005, .005, .006, 12), motorMat));
+    for (const k of [-1, 1]) { const b = new THREE.Mesh(new THREE.BoxGeometry(.07, .0025, .015), bladeMat); b.position.x = k * .037; b.rotation.x = k * .22; rotor.add(b); }
+    const blur = new THREE.Mesh(new THREE.CircleGeometry(.075, 48), blurMat); blur.rotation.x = -Math.PI / 2; blur.position.set(to.x, to.y + .026, to.z);
+    for (const m of [arm, motor, bell]) { m.castShadow = true; scene.add(m); }
+    rotor.traverse(o => { if (o.isMesh) o.castShadow = true; });
+    scene.add(rotor, blur); rotors.push(rotor);
   }
 
   // the gripper, jaws down, grasp point at the rig origin
@@ -357,11 +371,24 @@ function startGame(gltf) {
     renderer.setSize(width, height, false);
     const aspect = width / height; camera.aspect = aspect;
     const v = THREE.MathUtils.degToRad(camera.fov / 2), h = Math.atan(Math.tan(v) * aspect);
-    xLim = aspect < 1 ? .3 : .38;
-    const d = Math.max((xLim + .2) / Math.tan(h), .44 / Math.tan(v)) * 1.12;
-    const el = THREE.MathUtils.degToRad(aspect < 1 ? 44 : 32);
-    camBase.set(0, -.02 + Math.sin(el) * d, Math.cos(el) * d);
-    camera.position.copy(camBase); camera.lookAt(0, -.02, 0); camera.updateProjectionMatrix();
+    xLim = aspect < 1 ? .28 : .33;
+    // the closest camera that still frames the table, all four propellers and the hovering gripper
+    const el = THREE.MathUtils.degToRad(aspect < 1 ? 46 : 36), target = V3(0, .02, .03);
+    const pts = [];
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) pts.push(V3(sx * .41, 0, sz * .26), V3(sx * .47, 0, sz * .32));
+    pts.push(V3(0, .24, -.18));
+    const place = d => { camera.position.set(target.x, target.y + Math.sin(el) * d, target.z + Math.cos(el) * d); camera.lookAt(target); camera.updateMatrixWorld(); camera.updateProjectionMatrix(); };
+    const ndc = () => pts.map(q => q.clone().project(camera));
+    let d = 1;
+    for (let pass = 0; pass < 3; pass++) {
+      let lo = .3, hi = 4;
+      for (let i = 0; i < 28; i++) { const m = (lo + hi) / 2; place(m); if (ndc().every(n => Math.abs(n.x) < .97 && Math.abs(n.y) < .94)) hi = m; else lo = m; }
+      d = hi; place(d);
+      // centre the scene vertically, then fit again
+      const ys = ndc().map(n => n.y), cy = (Math.max(...ys) + Math.min(...ys)) / 2;
+      target.z -= cy * .25;
+    }
+    place(d); camBase.copy(camera.position); void h;
     const size = Math.round(Math.min(190, width * .27));
     fe.style.width = fe.style.height = size + 'px';
     view.fe = size;
@@ -455,7 +482,7 @@ function startGame(gltf) {
     $('#r-path').textContent = Math.round(rec.path * 100) + ' cm';
     $('#r-grasps').textContent = rec.grasps;
     $('#summary').hidden = false; $('#again').hidden = false; gb.hidden = true;
-    buildReport(S, rec);
+    buildReport(S);
   }
   $('#again').addEventListener('click', () => {
     Object.assign(rec, { on: false, done: false, samples: [], grasps: 0, path: 0, prev: null });
@@ -473,8 +500,7 @@ function startGame(gltf) {
   view.tick = (now, dt) => {
     if (!view.visible) return;
     view.t += dt;
-    for (const r of rotors) r.rotation.y += dt * 38;
-    glows.forEach((g, i) => { g.material.opacity = .55 + Math.sin(view.t * 9 + i * 1.7) * .12; });
+    rotors.forEach((r, i) => { r.rotation.y += dt * (i % 2 ? -46 : 46); });
     const k = .35 * dt;
     if (st.keys.has('ArrowLeft')) st.tx -= k;
     if (st.keys.has('ArrowRight')) st.tx += k;
@@ -555,7 +581,7 @@ function startGame(gltf) {
       spark($('#c-force'), 'f', 10, true);
     }
 
-    camera.position.set(camBase.x, camBase.y + (reduceMotion ? 0 : Math.sin(view.t * .9) * .004), camBase.z);
+    camera.position.set(camBase.x, camBase.y + (reduceMotion ? 0 : Math.sin(view.t * .9) * .003), camBase.z);
     const { width, height } = renderer.domElement.getBoundingClientRect();
     renderer.setScissorTest(false); renderer.setViewport(0, 0, width, height);
     renderer.render(scene, camera);
@@ -579,37 +605,36 @@ function startGame(gltf) {
 // ---------- the episode report ----------
 function bytes(n) { return n >= 1e6 ? (n / 1e6).toFixed(1) + ' MB' : n >= 1e3 ? Math.round(n / 1e3) + ' KB' : Math.round(n) + ' B'; }
 function cell(tr, text, cls) { const td = document.createElement('td'); td.textContent = text; if (cls) td.className = cls; tr.append(td); }
-function buildReport(S, rec) {
+function buildReport(S) {
   const N = S.length, D = N ? S[N - 1].t : 0;
-  // acceleration from the recorded trajectory (what the IMU would see, gravity added on the up axis)
+  // acceleration from the recorded trajectory, gravity added on the up axis: what the BMI270 would read
   const acc = S.map((s, i) => {
     if (i === 0 || i === N - 1) return [0, 9.81, 0];
     const a = S[i - 1], b = S[i + 1], h1 = s.t - a.t || 1 / 30, h2 = b.t - s.t || 1 / 30;
     const d2 = k => 2 * ((b[k] - s[k]) / h2 - (s[k] - a[k]) / h1) / (h1 + h2);
     return [d2('x'), d2('y') + 9.81, d2('z')];
   });
-  const jaws = S.map(s => s.w), speeds = S.map((s, i) => i ? Math.hypot(s.x - S[i - 1].x, s.y - S[i - 1].y, s.z - S[i - 1].z) / ((s.t - S[i - 1].t) || 1 / 30) : 0);
-  const idle = speeds.filter(v => v < .01).length;
-  const vidB = VIDEO.mbps * 1e6 / 8 * D;
-  const depB = N * DEPTH.width * DEPTH.height * 2 * DEPTH.ratio;
+  const jaws = S.map(s => s.w);
+  const idle = S.filter((s, i) => i && Math.hypot(s.x - S[i - 1].x, s.y - S[i - 1].y, s.z - S[i - 1].z) / ((s.t - S[i - 1].t) || 1 / 30) < .01).length;
+  const P = PARTS;
   const streams = [
-    ['Wrist fisheye video', `${RATES.video} fps`, N, `H.264, ${VIDEO.width} × ${VIDEO.height}`, vidB],
-    ['Stereo depth', `${RATES.depth} fps`, N, `16-bit, lossless, ${DEPTH.width} × ${DEPTH.height}`, depB],
-    ['IMU', `${RATES.imu} Hz`, Math.round(D * RATES.imu), '6 × float32', D * RATES.imu * 24],
-    ['Jaw encoder', `${RATES.encoder} Hz`, Math.round(D * RATES.encoder), 'uint16', D * RATES.encoder * 2],
-    ['Grip force', `${RATES.force} Hz`, Math.round(D * RATES.force), 'float32', D * RATES.force * 4],
-    ['Gripper pose', `${RATES.pose} Hz`, N, '7 × float32', N * 28]
+    ['Wide RGB video', P.wide.name, `${P.wide.fps} fps`, N, `H.264, ${P.wide.width} × ${P.wide.height}`, P.wide.mbps * 1e6 / 8 * D],
+    ['Stereo pair', P.stereo.name, `${P.stereo.fps} fps`, 2 * N, `H.264 mono, ${P.stereo.width} × ${P.stereo.height}`, 2 * P.stereo.mbps * 1e6 / 8 * D],
+    ['IMU', P.imu.name, `${P.imu.hz} Hz`, Math.round(D * P.imu.hz), '6 × float32', D * P.imu.hz * 24],
+    ['Jaw angle', P.encoder.name, `${P.encoder.hz} Hz`, Math.round(D * P.encoder.hz), 'uint16', D * P.encoder.hz * 2],
+    ['Grip force', P.force.name, `${P.force.hz} Hz`, Math.round(D * P.force.hz), 'int16', D * P.force.hz * 2],
+    ['Gripper pose', P.pose.name, `${P.pose.hz} Hz`, N, '7 × float32', N * 28]
   ];
-  const total = streams.reduce((a, s) => a + s[4], 0);
+  const total = streams.reduce((a, s) => a + s[5], 0);
   const tb = $('#streams'); tb.textContent = '';
-  for (const s of streams) { const tr = document.createElement('tr'); cell(tr, s[0]); cell(tr, s[1]); cell(tr, s[2].toLocaleString('en-US'), 'num'); cell(tr, s[3]); cell(tr, bytes(s[4]), 'num'); tb.append(tr); }
+  for (const s of streams) { const tr = document.createElement('tr'); cell(tr, s[0]); cell(tr, s[1]); cell(tr, s[2]); cell(tr, s[3].toLocaleString('en-US'), 'num'); cell(tr, s[4]); cell(tr, bytes(s[5]), 'num'); tb.append(tr); }
 
   const steps = [
-    ['Capture', 'Six streams on one device clock.', `${D.toFixed(1)} s, 6 streams`],
-    ['Sync', `Faster sensors aligned to the ${RATES.video} Hz camera clock.`, `${N} aligned frames`],
-    ['Encode', 'Video to H.264, depth lossless, sensors to Parquet.', `${bytes(total)} in total`],
-    ['Check', 'Tracking, jaw range and idle time.', `Jaw ${Math.round(Math.min(...jaws))}–${Math.round(Math.max(...jaws))} mm, ${idle} idle frames`],
-    ['Package', 'LeRobot v3, ready for a training loop.', `1 episode, ${N} rows`]
+    ['Capture', P.compute, `${D.toFixed(1)} s, 6 streams`],
+    ['Sync', 'Stereo pair hardware-triggered', `${N} frames at ${RATES.video} Hz`],
+    ['Encode', 'H.264 and Parquet', bytes(total)],
+    ['Check', 'Tracking, jaw range, idle time', `Jaw ${Math.round(Math.min(...jaws))}–${Math.round(Math.max(...jaws))} mm, ${idle} idle`],
+    ['Package', 'LeRobot v3', `${N} rows`]
   ];
   const ol = $('#steps'); ol.textContent = '';
   steps.forEach(([b, s, e], i) => {
@@ -623,32 +648,34 @@ function buildReport(S, rec) {
 
   let k = S.reduce((best, s, i) => (s.f > S[best].f ? i : best), 0);
   if (!S[k] || S[k].f === 0) k = Math.floor(N / 2);
-  k = Math.min(k, N - 2);
-  const r4 = v => Math.round(v * 1e4) / 1e4;
-  const state = s => [r4(s.x), r4(s.y), r4(s.z), 0, 0, 0, 1, r4(s.w / 1000)];
-  const row = {
-    index: k, episode_index: 0, frame_index: k, timestamp: r4(S[k].t),
-    task: 'Put the fruit in the bowl',
-    'observation.state': state(S[k]),
-    action: state(S[k + 1]),
-    'observation.force': [r4(S[k].f)],
-    'observation.imu': [...acc[k].map(r4), 0, 0, 0],
-    'observation.images.wrist': { path: 'videos/observation.images.wrist/chunk-000/file-000.mp4', timestamp: r4(S[k].t) }
-  };
-  $('#sample-row').textContent = JSON.stringify(row, null, 2).replace(/\[\n\s+([^\]]+?)\n\s+\]/g, (m, inner) => '[' + inner.replace(/\s*\n\s*/g, ' ') + ']');
-  const info = { codebase_version: 'v3.0', robot_type: 'vernia_grip_one', fps: RATES.video, total_episodes: 1, total_frames: N, features: { 'observation.state': { dtype: 'float32', shape: [8], names: ['x', 'y', 'z', 'qx', 'qy', 'qz', 'qw', 'jaw'] }, action: { dtype: 'float32', shape: [8] }, 'observation.images.wrist': { dtype: 'video', shape: [VIDEO.height, VIDEO.width, 3] }, 'observation.force': { dtype: 'float32', shape: [1] }, 'observation.imu': { dtype: 'float32', shape: [6] } } };
+  k = Math.max(0, Math.min(k, N - 2));
+  const f3 = v => (Math.round(v * 1000) / 1000).toString();
+  const vec = a => '[' + a.map(f3).join(', ') + ']';
+  const state = s => vec([s.x, s.y, s.z, 0, 0, 0, 1, s.w / 1000]);
+  $('#sample-row').textContent = [
+    '{',
+    `  "index": ${k},`,
+    `  "timestamp": ${f3(S[k].t)},`,
+    '  "task": "Put the fruit in the bowl",',
+    `  "observation.state": ${state(S[k])},`,
+    `  "action": ${state(S[k + 1])},`,
+    `  "observation.force": [${S[k].f.toFixed(2)}],`,
+    `  "observation.imu": ${vec([...acc[k], 0, 0, 0])},`,
+    `  "observation.images.wide": "frame ${k}"`,
+    '}'
+  ].join('\n');
+  const pad = (a, b) => a.padEnd(34) + b;
   $('#layout').textContent = [
-    'vernia_fruit_bowl/',
-    '  meta/info.json',
+    pad('vernia_fruit_bowl/', 'LeRobot v3'),
+    pad('  meta/info.json', `fps ${RATES.video}, state 8`),
     '  meta/stats.json',
     '  meta/tasks.parquet',
-    '  meta/episodes/chunk-000/file-000.parquet',
-    `  data/chunk-000/file-000.parquet        ${N} rows`,
-    '  videos/observation.images.wrist/chunk-000/file-000.mp4',
-    '  videos/observation.images.depth/chunk-000/file-000.mkv',
-    '',
-    'meta/info.json',
-    JSON.stringify(info, null, 2).replace(/\[\n\s+([^\]]+?)\n\s+\]/g, (m, inner) => '[' + inner.replace(/\s*\n\s*/g, ' ') + ']')
+    '  meta/episodes/chunk-000/…',
+    pad('  data/chunk-000/file-000.parquet', `${N} rows`),
+    pad('  videos/…images.wide/', bytes(streams[0][5])),
+    pad('  videos/…images.stereo_left/', bytes(streams[1][5] / 2)),
+    pad('  videos/…images.stereo_right/', bytes(streams[1][5] / 2)),
+    ''
   ].join('\n');
 
   const body = $('#frames-body'); body.textContent = '';
@@ -660,7 +687,6 @@ function buildReport(S, rec) {
     frag.append(tr);
   });
   body.append(frag);
-  void rec;
   $('#report').hidden = false;
 }
 
@@ -701,11 +727,17 @@ function startForm() {
     if (!chosen.length) { say('Choose at least one thing you are interested in.', true); return; }
     if (!live) { say('This preview does not send anything. On vernia.in your details go straight to the team.'); return; }
     if (!token) { say('Please complete the security check.', true); return; }
+    let interests = chosen, organisation = String(data.get('organisation') || '');
+    if (!siteConfig.headsetInterest && interests.includes('headset')) {
+      interests = interests.filter(i => i !== 'headset');
+      if (!interests.length) interests = ['data'];
+      organisation = `${organisation} [wants View One]`.trim().slice(0, 160);
+    }
     sending = true; submit.disabled = true; submit.textContent = 'Sending'; say('');
     try {
       const res = await fetch(siteConfig.waitlistEndpoint, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'omit', signal: AbortSignal.timeout(15000),
-        body: JSON.stringify({ email: data.get('email'), name: data.get('name'), organisation: data.get('organisation'), interests: chosen, consent: data.get('consent') === 'yes', website: data.get('website'), source: 'home', campaign, turnstileToken: token, analyticsSession: window.verniaAnalyticsSession?.() || '' })
+        body: JSON.stringify({ email: data.get('email'), name: data.get('name'), organisation, interests, consent: data.get('consent') === 'yes', website: data.get('website'), source: 'home', campaign, turnstileToken: token, analyticsSession: window.verniaAnalyticsSession?.() || '' })
       });
       const result = await res.json();
       if (!res.ok || result.accepted !== true) throw new Error(result.error || 'We could not save your details. Please try again.');
