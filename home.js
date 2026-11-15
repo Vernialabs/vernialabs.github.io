@@ -392,6 +392,7 @@ function startGame(gltf) {
     const size = Math.round(clamp(width * .18, 96, 130));
     fe.style.width = fe.style.height = size + 'px';
     view.fe = size;
+    view.eye = getComputedStyle(fe).display !== 'none';
   }
 
   const hoverY = 2 * maxR + .07;
@@ -601,6 +602,7 @@ function startGame(gltf) {
     const { width, height } = renderer.domElement.getBoundingClientRect();
     renderer.setScissorTest(false); renderer.setViewport(0, 0, width, height);
     renderer.render(scene, camera);
+    if (view.eye === false) return;
     // the wrist camera
     rig.updateMatrixWorld(true);
     wp(camN, camP);
